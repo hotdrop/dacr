@@ -1,0 +1,12 @@
+{
+  "columnName": "test",
+  "primaryKey": true,
+  "dataType": "String",
+  "size": 5,
+  "valueType": "variable",
+  "value": "",
+  "format": "none",
+  "otherCodeSystem": "",
+  "hasMultiByte": false,
+  "fillMaxSize": false
+}

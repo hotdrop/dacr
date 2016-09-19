@@ -7,19 +7,22 @@ import java.io.File
  * レコード定義ファイルを保持するクラス
  */
 data class RecordPropertyData (
+
+        /** カラム名 */
+        val columnName : String,
         /** PKか否か */
-        val primary_key : Boolean,
+        val primaryKey : Boolean,
         /** カラムのデータ型 */
-        val data_type : String,
+        val dataType : String,
         /** カラムサイズ */
         val size : Int,
         /** 固定/可変 */
-        val value_type : String,
+        val valueType : String,
         /**
          * 値指定
          * 取りうる値が固定の場合はその値を指定する
          * 複数の場合はリストで列挙する（jsonに従う）
-         * AUTOINCREMENTSの場合はこの単語自体を指定する
+         * AUTOINCREMENTS の場合はこの単語自体を指定する
          **/
         val value : String,
         /**
@@ -53,10 +56,11 @@ data class RecordPropertyData (
 
 class RecordProperty(filePath : String) {
 
-    var filePath = filePath
+    val filePath = filePath
+    val data : RecordPropertyData
 
     init {
-        parseJson()
+        data = parseJson()
     }
 
     private fun parseJson() : RecordPropertyData {
