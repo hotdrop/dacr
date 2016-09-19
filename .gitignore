@@ -1,0 +1,7 @@
+*.iml
+*.gradle
+*.pro
+/build
+/src/main/res
+/src/main/*.xml
+

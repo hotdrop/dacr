@@ -1,0 +1,10 @@
+{
+  "column_name": "test",
+  "primary_key": true,
+  "data_type": "String",
+  "size": 5,
+  "value_type": "variable",
+  "value": "",
+  "format": "none",
+  "option": "日本語"
+}
