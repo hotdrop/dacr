@@ -1,26 +1,11 @@
 package dacr.outdata
 
 /**
- * 指定されたレコード数分のダミーデータを生成しCSVファイルで出力する。
- * ダミーデータは別途用意するレコード定義ファイルを元に生成する。
- *
- * とりあえずCsvFileクラスにしたが後で変更するかもしれない
- * 1テーブル分のCsvFileを作成担当する
+ * データを生成しCSV出力する。
+ * 1テーブル分のCsvFileを作成する。
+ * CSV形式以外にも対応したいので後でインタフェースにする。
  */
-class CsvFile(createRecordCnt: Int) {
-
-    /* 生成するレコード数 */
-    var createRecordCnt = createRecordCnt
-
-    /* 1テーブル分のレコード定義リスト。定義がいくつになるかはテーブル次第 */
-    //var RecordProperties: ArrayList<RecordProperty>
-
-    /**
-     * json形式のレコード定義ファイルを読み込んでレコード毎のプロパティを生成する。
-     * 生成したプロパティはリストに保持する
-     */
-    fun readProperty() {
-    }
+class CsvFile {
 
     /**
      * CSVファイルに出力する
@@ -37,7 +22,7 @@ class CsvFile(createRecordCnt: Int) {
      * 一番楽なのはそのコード値をマスターとして別途jsonかなんかに定義してもらって
      * それを読み込めばいいだけにする。
      *
-     * なお、重複チェックはキーを文字連結してHashMapのキーにすれば良いと思う。
+     * なお、重複チェックはキーを文字連結してHashMapのキーにすれば良い？
      */
     fun createPK() {
     }
