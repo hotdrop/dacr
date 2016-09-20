@@ -1,6 +1,6 @@
 package dacr
 
-import dacr.model.RecordProperty
+import dacr.indata.RecordAttributeJson
 import junit.framework.Assert
 
 class RecordPropertyTest {
@@ -8,7 +8,7 @@ class RecordPropertyTest {
     @org.junit.Test
     fun readJson() {
         val path = System.getProperty("user.dir") + "/src/test/kotlin/dacr/testdata/sample.json"
-        var rp = RecordProperty(path)
-        Assert.assertEquals(rp.data.columnName, "test")
+        var attr = RecordAttributeJson(path).parse()
+        Assert.assertEquals(attr.columnName, "test")
     }
 }

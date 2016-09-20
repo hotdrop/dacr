@@ -1,4 +1,4 @@
-package dacr.creator
+package dacr.outdata
 
 /**
  * 指定されたレコード数分のダミーデータを生成しCSVファイルで出力する。

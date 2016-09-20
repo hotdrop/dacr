@@ -1,12 +1,11 @@
-package dacr.model
-
-import com.google.gson.Gson
-import java.io.File
+package dacr.indata
 
 /**
- * レコード定義ファイルを保持するクラス
+ * レコード情報を保持するデータクラス
+ * レコード情報は何らかの形式から読み込む。今の所Jsonだけ。
+ * この情報をもとにsphereを生成する。
  */
-data class RecordPropertyData (
+data class RecordAttributeData (
 
         /** カラム名 */
         val columnName : String,
@@ -51,20 +50,5 @@ data class RecordPropertyData (
         const val VALUE_TYPE_FIXING = "fixing"
         const val VALUE_TYPE_VARIABLE = "variable"
         const val FORMAT_ZERO_PADDING = "zeroPadding"
-    }
-}
-
-class RecordProperty(filePath : String) {
-
-    val filePath = filePath
-    val data : RecordPropertyData
-
-    init {
-        data = parseJson()
-    }
-
-    private fun parseJson() : RecordPropertyData {
-        val source = File(filePath).readText(Charsets.UTF_8)
-        return Gson().fromJson(source, RecordPropertyData::class.java)
     }
 }
