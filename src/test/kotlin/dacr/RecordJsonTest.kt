@@ -12,5 +12,6 @@ class RecordJsonTest {
 
         Assert.assertEquals(columnList[0].name, "first")
         Assert.assertEquals(columnList[1].name, "second")
+        Assert.assertEquals(columnList[2].name, "third")
     }
 }
