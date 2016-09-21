@@ -3,7 +3,7 @@ package dacr
 import dacr.indata.RecordAttributeJson
 import org.junit.Assert
 
-class RecordPropertyTest {
+class RecordJsonTest {
 
     @org.junit.Test
     fun readJson() {

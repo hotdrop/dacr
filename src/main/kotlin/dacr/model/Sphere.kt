@@ -8,5 +8,14 @@ package dacr.model
  * 一度に指定数を生成すると、数百万を超えるレコード生成にヒープが耐えられない・・多分
  */
 class Sphere {
-    // TODO Grainのリスト
+
+    var grainList: MutableList<Grain> = mutableListOf()
+
+    fun add(grain : Grain) {
+        grainList.add(grain)
+    }
+
+    fun create() : List<String> {
+        return grainList.map { v -> v.createData() }
+    }
 }

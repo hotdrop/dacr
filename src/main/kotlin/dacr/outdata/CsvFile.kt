@@ -1,29 +1,41 @@
 package dacr.outdata
 
+import dacr.indata.ColumnAttributeData
+import dacr.model.Grain
+import dacr.model.Sphere
+import java.io.BufferedWriter
+import java.io.File
+
 /**
  * データを生成しCSV出力する。
+ *
  * 1テーブル分のCsvFileを作成する。
- * CSV形式以外にも対応したいので後でインタフェースにする。
+ * CSV形式以外にも対応したいので後でインタフェースを実装したい。
  */
-class CsvFile {
+class CsvFile(columnList : List<ColumnAttributeData>, outPath : String, lineNumber : Int) {
 
-    /**
-     * CSVファイルに出力する
-     * ダミーデータは都度作成して一定数ためたらファイルに書き込む
-     */
-    fun output() {
+    val outputPath = outPath
+    val outLineNum = lineNumber
+
+    val dataSphere = Sphere()
+
+    init {
+        for(column in columnList) {
+            val grain = Grain(column)
+            dataSphere.add(grain)
+        }
     }
 
-    /**
-     * プライマリキーが複合キーであった場合、ここで生成する。
-     * 生成が難しい。
-     * 組織など部門コードとチームコードがあってツリー状に有効なコード値が
-     * 紐付いている場合、どうやってその整合性を保ったままキーを生成するか。
-     * 一番楽なのはそのコード値をマスターとして別途jsonかなんかに定義してもらって
-     * それを読み込めばいいだけにする。
-     *
-     * なお、重複チェックはキーを文字連結してHashMapのキーにすれば良い？
-     */
-    fun createPK() {
+    fun BufferedWriter.writeLine(line : String) {
+        this.write(line)
+        this.newLine()
+    }
+
+    fun output() {
+        File(outputPath).bufferedWriter().use { out ->
+            for (i in 1..outLineNum) {
+                out.writeLine(dataSphere.create().joinToString(","))
+            }
+        }
     }
 }

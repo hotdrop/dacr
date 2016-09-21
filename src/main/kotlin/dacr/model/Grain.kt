@@ -24,31 +24,28 @@ class Grain(attrData : ColumnAttributeData) {
     //val fillMaxSize : Boolean
 
     init {
+        // TODO no implements
         columnName = attrData.name
         if(attrData.valueType.equals(ColumnAttributeData.VALUE_TYPE_FIXING)) {
             value = attrData.value
         } else {
             value = ""
         }
-        // PKならvalueの重複なし
         primarykey = attrData.primaryKey
-        // TODO この下実装なし
+
     }
 
     /**
      * カラム定義情報を元に、値を生成して取得する。
      * ここはかなりfat化する可能性が高い
      */
-    public fun createData() : String {
+    fun createData() : String {
         // TODO variableの場合は値を生成する。
         return value
     }
 
-    /**
-     * 定義情報をチェックする。
-     * ここでチェックするのがいいのか、読み込み時がいいのか・・
-     */
-    private fun attributeCheck() {
-
+    private fun attributeCheck() : Boolean {
+        // TODO 未実装 ここでチェックするのがいいのか、読み込み時がいいのか・・
+        return true
     }
 }
