@@ -1,12 +1,26 @@
-{
-  "columnName": "test",
-  "primaryKey": true,
-  "dataType": "String",
-  "size": 5,
-  "valueType": "variable",
-  "value": "",
-  "format": "none",
-  "otherCodeSystem": "",
-  "hasMultiByte": false,
-  "fillMaxSize": false
-}
+[
+  {
+    "name": "first",
+    "primaryKey": true,
+    "dataType": "Integer",
+    "size": 5,
+    "valueType": "variable",
+    "value": "",
+    "format": "none",
+    "otherCodeSystem": "",
+    "hasMultiByte": false,
+    "fillMaxSize": false
+  },
+  {
+    "name": "second",
+    "primaryKey": false,
+    "dataType": "String",
+    "size": 10,
+    "valueType": "Fixing",
+    "value": "testes",
+    "format": "none",
+    "otherCodeSystem": "",
+    "hasMultiByte": false,
+    "fillMaxSize": false
+  }
+]

@@ -1,6 +1,6 @@
 package dacr.model
 
-import dacr.indata.RecordAttributeData
+import dacr.indata.ColumnAttributeData
 
 /**
  * Grain
@@ -9,7 +9,7 @@ import dacr.indata.RecordAttributeData
  * すでにRecordAttributeDataがあるがそっちはあくまで外部から入ってきた情報の受け皿クラス
  * 本クラスは、このツール内でやりとりしやすいようにデータを加工する目的を持つ。
  */
-class Grain(attrData : RecordAttributeData) {
+class Grain(attrData : ColumnAttributeData) {
 
     val columnName : String
     val value : String
@@ -24,8 +24,8 @@ class Grain(attrData : RecordAttributeData) {
     //val fillMaxSize : Boolean
 
     init {
-        columnName = attrData.columnName
-        if(attrData.valueType.equals(RecordAttributeData.VALUE_TYPE_FIXING)) {
+        columnName = attrData.name
+        if(attrData.valueType.equals(ColumnAttributeData.VALUE_TYPE_FIXING)) {
             value = attrData.value
         } else {
             value = ""
@@ -35,4 +35,20 @@ class Grain(attrData : RecordAttributeData) {
         // TODO この下実装なし
     }
 
+    /**
+     * カラム定義情報を元に、値を生成して取得する。
+     * ここはかなりfat化する可能性が高い
+     */
+    public fun createData() : String {
+        // TODO variableの場合は値を生成する。
+        return value
+    }
+
+    /**
+     * 定義情報をチェックする。
+     * ここでチェックするのがいいのか、読み込み時がいいのか・・
+     */
+    private fun attributeCheck() {
+
+    }
 }

@@ -1,14 +1,13 @@
 package dacr.indata
 
 /**
- * レコード情報を保持するデータクラス
+ * レコード情報のうち、1つのカラムを保持するデータクラス
  * レコード情報は何らかの形式から読み込む。今の所Jsonだけ。
- * この情報をもとにsphereを生成する。
  */
-data class RecordAttributeData (
+data class ColumnAttributeData (
 
         /** カラム名 */
-        val columnName : String,
+        val name : String,
         /** PKか否か */
         val primaryKey : Boolean,
         /** カラムのデータ型 */
