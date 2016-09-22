@@ -1,6 +1,7 @@
 package dacr
 
 import dacr.indata.RecordAttributeJson
+import dacr.model.Sphere
 import dacr.outdata.CsvFile
 import org.junit.Assert
 import java.io.File
@@ -15,13 +16,13 @@ class CsvFileTest {
         val outPath = parentPath + "outfile.csv"
 
         val columnList = RecordAttributeJson(inPath).parse()
-
-        val csvFile = CsvFile(columnList, outPath, 3)
+        val dataSphere = Sphere(columnList)
+        val csvFile = CsvFile(dataSphere, outPath, 3)
         csvFile.output()
 
         File(outPath).bufferedReader().forEachLine { line ->
             Assert.assertTrue(if(line.contains("firstValue")) true else false)
-            Assert.assertFalse(if(line.contains("secondValue")) true else false)
+            Assert.assertTrue(if(line.contains("secondValue")) true else false)
             Assert.assertTrue(if(line.contains("thirdValue")) true else false)
         }
 

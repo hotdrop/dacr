@@ -20,7 +20,7 @@
     "format": "none",
     "autoIncrements": false,
     "fillMaxSize": false,
-    "valueType": "variable",
+    "valueType": "fixing",
     "value": "secondValue",
     "hasMultiByte": false,
     "otherCodeSystem": ""

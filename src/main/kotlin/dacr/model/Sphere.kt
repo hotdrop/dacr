@@ -1,21 +1,45 @@
 package dacr.model
 
+import dacr.indata.ColAttribute
+
 /**
  * Sphere
  *
  * Grainの集合体を表すモデルクラス。
- * ここでGrainのvalueを一定の数だけ生成し、何らかの形で取得できるようにする。
- * 一度に指定数を生成すると、数百万を超えるレコード生成にヒープが耐えられない・・多分
+ * Grainで生成した値をリスト形式で取得する。
+ * また、一度に1つのrowを生成する。
  */
-class Sphere {
+class Sphere(colList: List<ColAttribute>) {
 
-    var grainList: MutableList<Grain> = mutableListOf()
+    var grainList: MutableList<IGrain> = mutableListOf()
 
-    fun add(grain : Grain) {
-        grainList.add(grain)
+    init {
+        for(column in colList) {
+            //val grain = Grain(column)
+            when (column.dataType) {
+                ColAttribute.DATA_TYPE_CHAR -> {
+                    grainList.add(GrainChar(column))
+                }
+                ColAttribute.DATA_TYPE_VARCHAR -> {
+                    grainList.add(GrainVarChar(column))
+                }
+                ColAttribute.DATA_TYPE_NUMBER -> {
+                    grainList.add(GrainNumber(column))
+                }
+                ColAttribute.DATA_TYPE_DATE -> {
+                    grainList.add(GrainDate(column))
+                }
+                ColAttribute.DATA_TYPE_TIMESTAMP -> {
+                    grainList.add(GrainTimestamp(column))
+                }
+                else -> {
+                    throw IllegalStateException("DataTypeが不正です。指定されたType=" + column.dataType)
+                }
+            }
+        }
     }
 
     fun create() : List<String> {
-        return grainList.map { v -> v.createData() }
+        return grainList.map { v -> v.create() }
     }
 }

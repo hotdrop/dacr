@@ -7,26 +7,58 @@ data class ColAttribute(
 
         /** カラム名 */
         val name : String,
-        /** PKか */
+
+        /**
+         * PKか否か
+         * PKの場合はvalueTypeがvariableでなければならない
+         * 値を生成するときは一意になるよう制御する。
+         * 従って特に指定がない場合は連番で生成する。
+         **/
         val primaryKey : Boolean,
 
         /** カラムのデータ型 */
         val dataType : String,
-        /** カラムサイズ。次の型で有効「char varchar number」 */
+
+        /**
+         * カラムサイズ
+         * 次の型で有効「char varchar number」
+         * date型とtimestamp型も必要かもしれないが一旦はなしでいく
+         **/
         val size : Int,
-        /** フォーマット。次の型で有効「char varchar date timestamp」 */
+        /**
+         * フォーマット
+         * 次の型で有効「char varchar date timestamp」
+         * ただしcharとvarcharはzero paddingするか否かのみの指定となりそれ以外は無視する。
+         * たまにchar型に日付を設定しているが、そのvariable指定対応はしない。
+         **/
         val format : String,
 
-        /** 自動発番するか。次の型で有効「char varchar number」 */
+        /**
+         * 自動発番するか。
+         * 次の型で有効「char varchar number」
+         **/
         val autoIncrements : Boolean,
-        /** サイズの限界まで値を入れるか。次の型で有効「char varchar」 */
+        /**
+         * サイズの限界まで値を入れるか。
+         * 次の型で有効「char varchar」
+         **/
         val fillMaxSize : Boolean,
 
-        /** 固定/可変 */
+        /**
+         * 固定/可変
+         **/
         val valueType : String,
-        /** 値の指定。valueTypeが固定のみ有効 */
+        /**
+         * 値の指定。
+         * valueTypeが固定のみ有効
+         * 全ての型で有効だが、PK指定している場合は無効にする
+         **/
         val value : String,
-        /** マルチバイト文字でデータ作成するか。valueTypeが可変のみ有効 */
+        /**
+         * マルチバイト文字でデータ作成するか。
+         * 次の型で有効「char varchar」
+         * かつvalueTypeが可変のみ有効。
+         **/
         val hasMultiByte : Boolean,
 
         /**

@@ -1,7 +1,5 @@
 package dacr.outdata
 
-import dacr.indata.ColAttribute
-import dacr.model.Grain
 import dacr.model.Sphere
 import java.io.BufferedWriter
 import java.io.File
@@ -12,19 +10,11 @@ import java.io.File
  * 1テーブル分のCsvFileを作成する。
  * CSV形式以外にも対応したいので後でインタフェースを実装したい。
  */
-class CsvFile(colList: List<ColAttribute>, outPath : String, lineNumber : Int) {
+class CsvFile(sphere: Sphere, outPath : String, lineNumber : Int) {
 
+    val dataSphere = sphere
     val outputPath = outPath
     val outLineNum = lineNumber
-
-    val dataSphere = Sphere()
-
-    init {
-        for(column in colList) {
-            val grain = Grain(column)
-            dataSphere.add(grain)
-        }
-    }
 
     fun BufferedWriter.writeLine(line : String) {
         this.write(line)
