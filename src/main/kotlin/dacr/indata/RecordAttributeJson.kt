@@ -14,8 +14,8 @@ class RecordAttributeJson(filePath : String) : IRecord {
 
     inline fun <reified T> genericType() = object: TypeToken<T>() {}.type!!
 
-    override fun parse() : List<ColumnAttributeData> {
+    override fun parse() : List<ColAttribute> {
         val source = File(filePath).readText(Charsets.UTF_8)
-        return Gson().fromJson<List<ColumnAttributeData>>(source, genericType<List<ColumnAttributeData>>())
+        return Gson().fromJson<List<ColAttribute>>(source, genericType<List<ColAttribute>>())
     }
 }

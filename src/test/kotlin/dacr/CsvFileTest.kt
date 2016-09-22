@@ -18,7 +18,7 @@ class CsvFileTest {
 
         val csvFile = CsvFile(columnList, outPath, 3)
         csvFile.output()
-        
+
         File(outPath).bufferedReader().forEachLine { line ->
             Assert.assertTrue(if(line.contains("firstValue")) true else false)
             Assert.assertFalse(if(line.contains("secondValue")) true else false)

@@ -8,5 +8,5 @@ package dacr.indata
  */
 interface IRecord {
 
-    fun parse() : List<ColumnAttributeData>
+    fun parse() : List<ColAttribute>
 }

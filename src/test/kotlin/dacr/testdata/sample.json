@@ -2,37 +2,40 @@
   {
     "name": "first",
     "primaryKey": true,
-    "dataType": "Integer",
+    "dataType": "char",
     "size": 10,
+    "format": "",
+    "autoIncrements": false,
+    "fillMaxSize": false,
     "valueType": "fixing",
     "value": "firstValue",
-    "format": "none",
-    "otherCodeSystem": "",
     "hasMultiByte": false,
-    "fillMaxSize": false
+    "otherCodeSystem": ""
   },
   {
     "name": "second",
     "primaryKey": false,
-    "dataType": "String",
+    "dataType": "char",
     "size": 11,
+    "format": "none",
+    "autoIncrements": false,
+    "fillMaxSize": false,
     "valueType": "variable",
     "value": "secondValue",
-    "format": "none",
-    "otherCodeSystem": "",
     "hasMultiByte": false,
-    "fillMaxSize": false
+    "otherCodeSystem": ""
   },
   {
     "name": "third",
     "primaryKey": false,
-    "dataType": "String",
+    "dataType": "char",
     "size": 10,
+    "format": "none",
+    "autoIncrements": false,
+    "fillMaxSize": false,
     "valueType": "fixing",
     "value": "thirdValue",
-    "format": "none",
-    "otherCodeSystem": "",
     "hasMultiByte": false,
-    "fillMaxSize": false
+    "otherCodeSystem": ""
   }
 ]

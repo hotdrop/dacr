@@ -1,6 +1,6 @@
 package dacr.model
 
-import dacr.indata.ColumnAttributeData
+import dacr.indata.ColAttribute
 
 /**
  * Grain
@@ -9,43 +9,91 @@ import dacr.indata.ColumnAttributeData
  * すでにRecordAttributeDataがあるがそっちはあくまで外部から入ってきた情報の受け皿クラス
  * 本クラスは、このツール内でやりとりしやすいようにデータを加工する目的を持つ。
  */
-class Grain(attrData : ColumnAttributeData) {
+class Grain(attr: ColAttribute) {
 
     val columnName : String
+    val primaryKey: Boolean
+
+    val dataType : String
+    val size : Int
+    val dateFormat : String
+    val isZeroPadding : Boolean
+
+    val autoIncrements : Boolean
+    val fillMaxSize : Boolean
+
+    val isFixingValue: Boolean
     val value : String
+    val hasMultiByte : Boolean
 
-    val primarykey : Boolean
-    //val dataType : String
-    //val size : Int
-
-    //val format : String
     //val otherCodeSystem : String
-    //val hasMultiByte : Boolean
-    //val fillMaxSize : Boolean
 
     init {
-        // TODO no implements
-        columnName = attrData.name
-        if(attrData.valueType.equals(ColumnAttributeData.VALUE_TYPE_FIXING)) {
-            value = attrData.value
-        } else {
-            value = ""
-        }
-        primarykey = attrData.primaryKey
+        columnName = attr.name
+        primaryKey = attr.primaryKey
 
+        dataType = attr.dataType
+        size = attr.size
+
+        // formatはあまり増えないと思うので今はcaseでいちいち初期化する
+        when (attr.format) {
+            ColAttribute.FORMAT_ZERO_PADDING -> {
+                isZeroPadding = true
+                dateFormat = ""
+            }
+            else -> {
+                isZeroPadding = false
+                dateFormat = attr.format
+            }
+        }
+
+        autoIncrements = attr.autoIncrements
+        fillMaxSize = attr.fillMaxSize
+
+        isFixingValue = if(attr.valueType.equals(ColAttribute.VALUE_TYPE_FIXING)) true else false
+        value = attr.value
+        hasMultiByte = attr.hasMultiByte
+    }
+
+    fun <T> createValue(body: () -> T ): T {
+        return body()
     }
 
     /**
      * カラム定義情報を元に、値を生成して取得する。
-     * ここはかなりfat化する可能性が高い
+     * TODO 実装中
      */
     fun createData() : String {
-        // TODO variableの場合は値を生成する。
-        return value
+        // TODO ここはやり方変える。init内で生成関数を一意に決定したほうがいい
+        return createValue( {
+            when (dataType) {
+                ColAttribute.DATA_TYPE_CHAR -> {
+                    createCharVal()
+                }
+                else -> {
+                    createDateVal()
+                }
+            }
+        })
     }
 
-    private fun attributeCheck() : Boolean {
-        // TODO 未実装 ここでチェックするのがいいのか、読み込み時がいいのか・・
-        return true
+    private fun createCharVal() : String {
+        return ""
+    }
+
+    private fun createVarCharVal() : String {
+        return ""
+    }
+
+    private fun createNumberVal() : String {
+        return ""
+    }
+
+    private fun createDateVal() : String {
+        return ""
+    }
+
+    private fun createTimeStampVal() : String {
+        return ""
     }
 }
