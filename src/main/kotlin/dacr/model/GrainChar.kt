@@ -42,7 +42,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
             sequence = try { value.toInt() } catch (e : NumberFormatException) { 1 }
         }
 
-        multiValues = if(attr.value.contains(",")) attr.value.split(",") else null
+        multiValues = if(value.contains(",")) value.split(",") else null
     }
 
     /**
