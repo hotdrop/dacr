@@ -11,18 +11,18 @@ class GrainChar(attr: ColAttribute) : IGrain {
     val name : String
     val primaryKey : Boolean
 
-    val value : String
-    val multiValues : List<String>?
+    private val value : String
+    private val multiValues : List<String>?
 
-    var sequence : Int = 0
+    private var sequence : Int = 1
 
-    val size : Int
+    private val size : Int
 
-    val isFixingValue: Boolean
-    val isZeroPadding : Boolean
-    val fillMaxSize : Boolean
-    val autoIncrement : Boolean
-    val hasMultiByte : Boolean
+    private val isFixingValue: Boolean
+    private val isZeroPadding : Boolean
+    private val fillMaxSize : Boolean
+    private val autoIncrement : Boolean
+    private val hasMultiByte : Boolean
 
     init {
         name = attr.name
@@ -30,17 +30,17 @@ class GrainChar(attr: ColAttribute) : IGrain {
         size = attr.size
 
         isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
-        isZeroPadding = if(attr.format == ColAttribute.FORMAT_ZERO_PADDING) true else false
         fillMaxSize = attr.fillMaxSize
+        isZeroPadding = if(attr.format == ColAttribute.FORMAT_ZERO_PADDING && !fillMaxSize) true else false
         autoIncrement = attr.autoIncrement
         hasMultiByte = attr.hasMultiByte
 
-        value = if(isFixingValue) attr.value else ""
-        multiValues = if(attr.value.contains(",")) attr.value.split(",") else null
-
+        value = attr.value
         if(autoIncrement && value != "") {
-            sequence = try { value.toInt() } catch (e : NumberFormatException) { 0 }
+            sequence = try { value.toInt() } catch (e : NumberFormatException) { 1 }
         }
+
+        multiValues = if(attr.value.contains(",")) attr.value.split(",") else null
     }
 
     /**
@@ -54,16 +54,16 @@ class GrainChar(attr: ColAttribute) : IGrain {
             return value
         }
 
-        var retVal = value
+        var retVal : String
 
         if(autoIncrement) {
-            sequence++
             retVal = sequence.toString()
-        } else if(retVal == "") {
-            retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
+            sequence++
         } else if(multiValues != null) {
             val rand =Random()
             retVal = multiValues[rand.nextInt(multiValues.size)]
+        } else {
+            retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
         }
 
         if(isZeroPadding) {
@@ -73,7 +73,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
         return retVal
     }
 
-    fun makeSingleByteString() : String {
+    private fun makeSingleByteString() : String {
 
         val rand =Random()
         val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
@@ -85,7 +85,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
         return buff
     }
 
-    fun makeMultiByteString() :String {
+    private fun makeMultiByteString() :String {
 
         val rand =Random()
         val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
