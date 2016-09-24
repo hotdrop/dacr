@@ -41,6 +41,8 @@ data class ColAttribute(
         /**
          * サイズの限界まで値を入れるか。
          * 次の型で有効「char varchar」
+         * CharsetがUTF8の場合、ものによっては１文字３バイトになる可能性があるのでこの
+         * 指定をする場合は注意すること。なお、これをfalseにするとsizeの1/3の長さで文字を生成する
          **/
         val fillMaxSize : Boolean,
 
@@ -61,6 +63,7 @@ data class ColAttribute(
          * マルチバイト文字でデータ作成するか。
          * 次の型で有効「char varchar」
          * かつvalueTypeが可変のみ有効。
+         *
          **/
         val hasMultiByte : Boolean
 ) {

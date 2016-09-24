@@ -1,6 +1,7 @@
 package dacr.model
 
 import dacr.indata.ColAttribute
+import java.util.*
 
 /**
  * char型カラムのGrainクラス
@@ -12,6 +13,8 @@ class GrainChar(attr: ColAttribute) : IGrain {
 
     val value : String
     val multiValues : List<String>?
+
+    var sequence : Int = 0
 
     val size : Int
 
@@ -34,6 +37,10 @@ class GrainChar(attr: ColAttribute) : IGrain {
 
         value = if(isFixingValue) attr.value else ""
         multiValues = if(attr.value.contains(",")) attr.value.split(",") else null
+
+        if(autoIncrement && value != "") {
+            sequence = try { value.toInt() } catch (e : NumberFormatException) { 0 }
+        }
     }
 
     /**
@@ -42,7 +49,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
      * 値が可変＋autoIncrement：1からの連番
      */
     override fun create() : String {
-        
+
         if(isFixingValue) {
             return value
         }
@@ -50,11 +57,13 @@ class GrainChar(attr: ColAttribute) : IGrain {
         var retVal = value
 
         if(autoIncrement) {
-            retVal = Sequence.increment()
+            sequence++
+            retVal = sequence.toString()
         } else if(retVal == "") {
-            // 自動生成（PK判定、maxまで入れるか、マルチバイトありか）
+            retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
         } else if(multiValues != null) {
-            // リストからランダムに選択
+            val rand =Random()
+            retVal = multiValues[rand.nextInt(multiValues.size)]
         }
 
         if(isZeroPadding) {
@@ -64,11 +73,32 @@ class GrainChar(attr: ColAttribute) : IGrain {
         return retVal
     }
 
-    private companion object Sequence {
-        private var numVal = 0
-        fun increment() : String {
-            numVal++
-            return numVal.toString()
+    fun makeSingleByteString() : String {
+
+        val rand =Random()
+        val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
+        var buff = ""
+
+        for(idx in 1..makeSize) {
+            buff += WORDS[rand.nextInt(WORDS.size)]
         }
+        return buff
+    }
+
+    fun makeMultiByteString() :String {
+
+        val rand =Random()
+        val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
+        var buff = ""
+
+        for(idx in 1..makeSize) {
+            buff += MULTI_BYTE_WORDS[rand.nextInt(MULTI_BYTE_WORDS.size)]
+        }
+        return buff
+    }
+
+    private companion object {
+        private val MULTI_BYTE_WORDS = arrayOf("あ","い","う","え","お")
+        private val WORDS = arrayOf("A","B","C","D","E","1","2","3","4","5")
     }
 }
