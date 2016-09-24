@@ -37,7 +37,7 @@ data class ColAttribute(
          * 自動発番するか。
          * 次の型で有効「char varchar number」
          **/
-        val autoIncrements : Boolean,
+        val autoIncrement : Boolean,
         /**
          * サイズの限界まで値を入れるか。
          * 次の型で有効「char varchar」
@@ -49,8 +49,11 @@ data class ColAttribute(
          **/
         val valueType : String,
         /**
-         * 値の指定。
-         * valueTypeが固定のみ有効
+         * 値の指定。複数指定する場合はカンマ区切りにする
+         *
+         * 空を指定：プログラム内で値を生成する。
+         * 空でない＋valueTypeがfixing：指定の値を全列に入れる
+         * 空でない＋valueTypeがvariable：複数指定のどれかを設定する。
          * 全ての型で有効だが、PK指定している場合は無効にする
          **/
         val value : String,
@@ -59,14 +62,7 @@ data class ColAttribute(
          * 次の型で有効「char varchar」
          * かつvalueTypeが可変のみ有効。
          **/
-        val hasMultiByte : Boolean,
-
-        /**
-         * 他のコード体系か。valueTypeが可変のみ有効
-         * TODO 実現方式未検討
-         **/
-        val otherCodeSystem : String
-
+        val hasMultiByte : Boolean
 ) {
     companion object {
         const val DATA_TYPE_CHAR = "char"

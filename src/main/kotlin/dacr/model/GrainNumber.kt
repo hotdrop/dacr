@@ -13,7 +13,7 @@ class GrainNumber(attr: ColAttribute) : IGrain {
     val size : Int
 
     val isFixingValue: Boolean
-    val autoIncrements : Boolean
+    val autoIncrement : Boolean
 
     init {
         name = attr.name
@@ -22,7 +22,7 @@ class GrainNumber(attr: ColAttribute) : IGrain {
         size = attr.size
 
         isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
-        autoIncrements = attr.autoIncrements
+        autoIncrement = attr.autoIncrement
     }
 
     override fun create() : String {

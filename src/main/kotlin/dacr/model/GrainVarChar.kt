@@ -14,10 +14,9 @@ class GrainVarChar(attr: ColAttribute) : IGrain {
 
     val isFixingValue: Boolean
     val isZeroPadding : Boolean
-    val autoIncrements : Boolean
+    val fillMaxSize : Boolean
+    val autoIncrement : Boolean
     val hasMultiByte : Boolean
-
-    val otherCodeSystem : String
 
     init {
         name = attr.name
@@ -27,10 +26,10 @@ class GrainVarChar(attr: ColAttribute) : IGrain {
 
         isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
         isZeroPadding = if(attr.format == ColAttribute.FORMAT_ZERO_PADDING) true else false
-        autoIncrements = attr.autoIncrements
+        fillMaxSize = attr.fillMaxSize
+        autoIncrement = attr.autoIncrement
         hasMultiByte = attr.hasMultiByte
 
-        otherCodeSystem = attr.otherCodeSystem
     }
 
     override fun create() : String {

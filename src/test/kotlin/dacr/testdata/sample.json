@@ -5,12 +5,11 @@
     "dataType": "char",
     "size": 10,
     "format": "",
-    "autoIncrements": false,
+    "autoIncrement": false,
     "fillMaxSize": false,
     "valueType": "fixing",
     "value": "firstValue",
-    "hasMultiByte": false,
-    "otherCodeSystem": ""
+    "hasMultiByte": false
   },
   {
     "name": "second",
@@ -18,12 +17,11 @@
     "dataType": "char",
     "size": 11,
     "format": "none",
-    "autoIncrements": false,
+    "autoIncrement": false,
     "fillMaxSize": false,
     "valueType": "fixing",
     "value": "secondValue",
-    "hasMultiByte": false,
-    "otherCodeSystem": ""
+    "hasMultiByte": false
   },
   {
     "name": "third",
@@ -31,11 +29,10 @@
     "dataType": "char",
     "size": 10,
     "format": "none",
-    "autoIncrements": false,
+    "autoIncrement": false,
     "fillMaxSize": false,
     "valueType": "fixing",
     "value": "thirdValue",
-    "hasMultiByte": false,
-    "otherCodeSystem": ""
+    "hasMultiByte": false
   }
 ]
