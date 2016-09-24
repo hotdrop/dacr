@@ -19,7 +19,7 @@ class GrainTimestamp(attr: ColAttribute) : IGrain {
         primaryKey = attr.primaryKey
         value = attr.value
 
-        isFixingValue = if(attr.valueType.equals(ColAttribute.VALUE_TYPE_FIXING)) true else false
+        isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
         format = attr.format
     }
 

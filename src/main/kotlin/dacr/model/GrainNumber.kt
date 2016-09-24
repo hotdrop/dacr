@@ -21,7 +21,7 @@ class GrainNumber(attr: ColAttribute) : IGrain {
         value = attr.value
         size = attr.size
 
-        isFixingValue = if(attr.valueType.equals(ColAttribute.VALUE_TYPE_FIXING)) true else false
+        isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
         autoIncrements = attr.autoIncrements
     }
 

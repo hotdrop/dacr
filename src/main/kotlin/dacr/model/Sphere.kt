@@ -13,9 +13,9 @@ class Sphere(colList: List<ColAttribute>) {
 
     var grainList: MutableList<IGrain> = mutableListOf()
 
+
     init {
         for(column in colList) {
-            //val grain = Grain(column)
             when (column.dataType) {
                 ColAttribute.DATA_TYPE_CHAR -> {
                     grainList.add(GrainChar(column))
@@ -40,6 +40,6 @@ class Sphere(colList: List<ColAttribute>) {
     }
 
     fun create() : List<String> {
-        return grainList.map { v -> v.create() }
+        return grainList.map(IGrain::create)
     }
 }

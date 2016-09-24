@@ -25,8 +25,8 @@ class GrainVarChar(attr: ColAttribute) : IGrain {
         value = attr.value
         size = attr.size
 
-        isFixingValue = if(attr.valueType.equals(ColAttribute.VALUE_TYPE_FIXING)) true else false
-        isZeroPadding = if(attr.format.equals(ColAttribute.FORMAT_ZERO_PADDING)) true else false
+        isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
+        isZeroPadding = if(attr.format == ColAttribute.FORMAT_ZERO_PADDING) true else false
         autoIncrements = attr.autoIncrements
         hasMultiByte = attr.hasMultiByte
 
