@@ -29,6 +29,7 @@ data class ColAttribute(
          * フォーマット
          * 次の型で有効「char varchar date timestamp」
          * ただしcharとvarcharはzero paddingするか否かのみの指定となりそれ以外は無視する。
+         * zero paddingは単品（valueがカンマ区切りの複数要素でない）かautoIncrementでのみ有効
          * たまにchar型に日付を設定しているが、そのvariable指定対応はしない。
          **/
         val format : String,

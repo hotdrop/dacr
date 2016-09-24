@@ -12,16 +12,13 @@ import dacr.indata.ColAttribute
 class Sphere(colList: List<ColAttribute>) {
 
     var grainList: MutableList<IGrain> = mutableListOf()
-
+    // TODO PKはここで判定する
 
     init {
         for(column in colList) {
             when (column.dataType) {
-                ColAttribute.DATA_TYPE_CHAR -> {
+                ColAttribute.DATA_TYPE_CHAR, ColAttribute.DATA_TYPE_VARCHAR -> {
                     grainList.add(GrainChar(column))
-                }
-                ColAttribute.DATA_TYPE_VARCHAR -> {
-                    grainList.add(GrainVarChar(column))
                 }
                 ColAttribute.DATA_TYPE_NUMBER -> {
                     grainList.add(GrainNumber(column))

@@ -4,7 +4,9 @@ import dacr.indata.ColAttribute
 import java.util.*
 
 /**
- * char型カラムのGrainクラス
+ * char型とvarchar型カラムのGrainクラス
+ * 最初はcharとvarchar分けていたが、データ生成は同じロジックで良さそう
+ * なので一旦まとめる。後で不都合が出てきたら分割する
  */
 class GrainChar(attr: ColAttribute) : IGrain {
 
@@ -54,14 +56,16 @@ class GrainChar(attr: ColAttribute) : IGrain {
             return value
         }
 
+        if(multiValues != null) {
+            val rand =Random()
+            return multiValues[rand.nextInt(multiValues.size)]
+        }
+
         var retVal : String
 
         if(autoIncrement) {
             retVal = sequence.toString()
             sequence++
-        } else if(multiValues != null) {
-            val rand =Random()
-            retVal = multiValues[rand.nextInt(multiValues.size)]
         } else {
             retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
         }

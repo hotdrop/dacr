@@ -10,7 +10,7 @@ class GrainCharTest {
     fun fixingTest() {
 
         val grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 5, format = "none", autoIncrement = false, fillMaxSize = false,
+                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "fixing", value = "test", hasMultiByte = false))
 
         val retStr = grainChar.create()
@@ -23,7 +23,7 @@ class GrainCharTest {
     fun variableNormalTest() {
 
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 5, format = "none", autoIncrement = false, fillMaxSize = false,
+                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "test", hasMultiByte = false))
 
         val retStr = grainChar.create()
@@ -35,12 +35,12 @@ class GrainCharTest {
         Assert.assertEquals(retStr2.length, 1)
 
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 6, format = "none", autoIncrement = false, fillMaxSize = false,
+                size = 6, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = false))
         Assert.assertEquals(grainChar.create().length, 2)
 
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 60, format = "none", autoIncrement = false, fillMaxSize = false,
+                size = 60, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = false))
         println("normalTest singleByteStr20=" + grainChar.create())
         Assert.assertEquals(grainChar.create().length, 20)
@@ -48,7 +48,7 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create().length, 20)
 
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 60, format = "none", autoIncrement = false, fillMaxSize = false,
+                size = 60, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = true))
         println("normalTest multiByteStr20=" + grainChar.create())
         Assert.assertEquals(grainChar.create().length, 20)
@@ -61,7 +61,7 @@ class GrainCharTest {
 
         // empty in value field
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 5, format = "none", autoIncrement = true, fillMaxSize = false,
+                size = 5, format = "", autoIncrement = true, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = false))
 
         Assert.assertEquals(grainChar.create(), "1")
@@ -69,7 +69,7 @@ class GrainCharTest {
 
         // string(not number) in value field
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 5, format = "none", autoIncrement = true, fillMaxSize = false,
+                size = 5, format = "", autoIncrement = true, fillMaxSize = false,
                 valueType = "variable", value = "test", hasMultiByte = false))
 
         Assert.assertEquals(grainChar.create(), "1")
@@ -77,7 +77,7 @@ class GrainCharTest {
 
         // number in value field
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 5, format = "none", autoIncrement = true, fillMaxSize = false,
+                size = 5, format = "", autoIncrement = true, fillMaxSize = false,
                 valueType = "variable", value = "10000", hasMultiByte = false))
 
         Assert.assertEquals(grainChar.create(), "10000")
@@ -129,7 +129,7 @@ class GrainCharTest {
     @org.junit.Test
     fun fillMaxSizeTest() {
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 5, format = "none", autoIncrement = false, fillMaxSize = true,
+                size = 5, format = "", autoIncrement = false, fillMaxSize = true,
                 valueType = "variable", value = "", hasMultiByte = false))
 
         val retStr = grainChar.create()
@@ -164,5 +164,22 @@ class GrainCharTest {
 
         Assert.assertEquals(grainChar.create(), "1")
         Assert.assertEquals(grainChar.create(), "2")
+    }
+
+    @org.junit.Test
+    fun multiValueTest() {
+        val retList = arrayListOf("A01", "A02", "B03", "B04", "C05")
+
+        var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
+                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
+                valueType = "variable", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
+
+        println("multiValueTest value=" + grainChar.create())
+        println("multiValueTest value=" + grainChar.create())
+        println("multiValueTest value=" + grainChar.create())
+        Assert.assertTrue(retList.contains(grainChar.create()))
+        Assert.assertTrue(retList.contains(grainChar.create()))
+        Assert.assertTrue(retList.contains(grainChar.create()))
+        Assert.assertTrue(retList.contains(grainChar.create()))
     }
 }
