@@ -3,10 +3,11 @@ package dacr
 import dacr.indata.ColAttribute
 import dacr.model.GrainChar
 import org.junit.Assert
+import org.junit.Test
 
 class GrainCharTest {
 
-    @org.junit.Test
+    @Test
     fun fixingTest() {
 
         val grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
@@ -19,7 +20,7 @@ class GrainCharTest {
         Assert.assertEquals(retStr, retStr2)
     }
 
-    @org.junit.Test
+    @Test
     fun variableNormalTest() {
 
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
@@ -56,7 +57,7 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create().length, 20)
     }
 
-    @org.junit.Test
+    @Test
     fun autoIncrementTest() {
 
         // empty in value field
@@ -85,7 +86,7 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "10002")
     }
 
-    @org.junit.Test
+    @Test
     fun zeroPaddingTest() {
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
                 size = 4, format = "zeroPadding", autoIncrement = false, fillMaxSize = false,
@@ -126,7 +127,7 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "10001")
     }
 
-    @org.junit.Test
+    @Test
     fun fillMaxSizeTest() {
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
                 size = 5, format = "", autoIncrement = false, fillMaxSize = true,
@@ -166,7 +167,7 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "2")
     }
 
-    @org.junit.Test
+    @Test
     fun multiValueTest() {
         val retList = arrayListOf("A01", "A02", "B03", "B04", "C05")
 

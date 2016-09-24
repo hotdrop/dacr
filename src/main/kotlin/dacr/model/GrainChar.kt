@@ -38,6 +38,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
         hasMultiByte = attr.hasMultiByte
 
         value = attr.value
+        // 空の場合は初期値0を設定するため除外している。
         if(autoIncrement && value != "") {
             sequence = try { value.toInt() } catch (e : NumberFormatException) { 1 }
         }
