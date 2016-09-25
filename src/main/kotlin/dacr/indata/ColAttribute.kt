@@ -57,7 +57,7 @@ data class ColAttribute(
          * 空を指定：プログラム内で値を生成する。
          * 空でない＋valueTypeがfixing：指定の値を全列に入れる
          * 空でない＋valueTypeがvariable：複数指定のどれかを設定する。
-         * 全ての型で有効だが、PK指定している場合は無効にする
+         * 全ての型で有効。
          **/
         val value : String,
         /**
