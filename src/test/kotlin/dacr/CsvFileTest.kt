@@ -70,7 +70,7 @@ class CsvFileTest {
         val outPath = parentPath + "outComplexTest.csv"
 
         val dataSphere = Sphere(colAttrList)
-        val csvFile = CsvFile(dataSphere, outPath, 100)
+        val csvFile = CsvFile(dataSphere, outPath, 100000)
         csvFile.output()
 
         // 出力ファイルを目視する目的なので、Assertでのテストもファイル削除もしない。
