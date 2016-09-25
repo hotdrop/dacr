@@ -12,7 +12,7 @@ class GrainDateTest {
     @Test
     fun fixingDateTest() {
 
-        val grainDate = GrainDate(ColAttribute(name = "normal", dataType = "number", primaryKey = false,
+        val grainDate = GrainDate(ColAttribute(name = "normal", dataType = "date", primaryKey = false,
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "fixing", value = "2016/09/25", hasMultiByte = false))
 
@@ -75,6 +75,39 @@ class GrainDateTest {
         println("variableDateTest date=" + grainDate.create())
         println("variableDateTest date=" + grainDate.create())
         println("variableDateTest date=" + grainDate.create())
+        Assert.assertTrue(true)
+    }
+
+    @Test
+    fun dateInTimeTest() {
+        var grainDate = GrainDate(ColAttribute(name = "normal", dataType = "date", primaryKey = false,
+                size = 5, format = "YYYY/MM/dd hh:mm:ss", autoIncrement = false, fillMaxSize = false,
+                valueType = "variable", value = "now", hasMultiByte = false))
+
+        var sdf = SimpleDateFormat("YYYY/MM/dd hh:mm:ss")
+        var retStr = sdf.format(Date())
+        println("dateInTimeTest retStr=" + retStr)
+        println("dateInTimeTest createDate=" + grainDate.create())
+        Assert.assertEquals(grainDate.create(), retStr)
+
+        // dataType is date. fixing hour, minute and second if hh:mm:ss in format
+        grainDate = GrainDate(ColAttribute(name = "normal", dataType = "date", primaryKey = false,
+                size = 5, format = "YYYY/MM/dd hh:mm:ss", autoIncrement = false, fillMaxSize = false,
+                valueType = "variable", value = "", hasMultiByte = false))
+
+        println("variableDateTest date=" + grainDate.create())
+        println("variableDateTest date=" + grainDate.create())
+        println("variableDateTest date=" + grainDate.create())
+        Assert.assertTrue(true)
+
+        // dateTime is date. variable hour, minute and second
+        grainDate = GrainDate(ColAttribute(name = "normal", dataType = "datetime", primaryKey = false,
+                size = 5, format = "YYYY/MM/dd hh:mm:ss", autoIncrement = false, fillMaxSize = false,
+                valueType = "variable", value = "", hasMultiByte = false))
+
+        println("variableDateTest dateTime=" + grainDate.create())
+        println("variableDateTest dateTime=" + grainDate.create())
+        println("variableDateTest dateTime=" + grainDate.create())
         Assert.assertTrue(true)
     }
 }

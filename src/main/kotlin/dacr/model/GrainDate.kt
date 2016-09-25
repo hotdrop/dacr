@@ -11,6 +11,7 @@ class GrainDate(attr: ColAttribute) : IGrain {
 
     val name : String
     val primaryKey : Boolean
+    val dataType : String
 
     private val value : String
     private val multiValues : List<String>?
@@ -23,6 +24,7 @@ class GrainDate(attr: ColAttribute) : IGrain {
     init {
         name = attr.name
         primaryKey = attr.primaryKey
+        dataType = attr.dataType
 
         isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
 
@@ -53,21 +55,30 @@ class GrainDate(attr: ColAttribute) : IGrain {
         }
 
         // フォーマットに従ってランダムに値を生成する
-        return makeRandomDate()
+        return makeValue()
     }
 
-    private fun makeRandomDate() : String {
-        // TODO valueに"2001/1/1 to 2016/12/31"など指定できるようにする。今は2000/1/1
+    private fun makeValue() : String {
+        // TODO valueに"2001/1/1 to 2016/12/31"など指定できるようにしたい。今は2000/1/1
         val cal = Calendar.getInstance()
         val endDateEpoch = cal.timeInMillis
 
-        cal.set(2000,1,1)
+        cal.set(2000,1,1,0,0,0)
         val startDateEpoch = cal.timeInMillis
 
-        val dateRange = ((endDateEpoch - startDateEpoch)/(60 * 60 * 1000 * 24 )).toInt()
-        val randDate = Random().nextInt(dateRange)
+        val dateRange = ((endDateEpoch - startDateEpoch)/(60 * 60 * 1000 * 24)).toInt()
 
-        cal.add(Calendar.DAY_OF_MONTH, randDate)
+        val randObj = Random()
+        cal.add(Calendar.DAY_OF_MONTH, randObj.nextInt(dateRange))
+
+        // DateTime型の場合は時分秒もランダム値にする
+        if(dataType == ColAttribute.DATA_TYPE_DATETIME) {
+            cal.add(Calendar.HOUR_OF_DAY, randObj.nextInt(24))
+            cal.add(Calendar.MINUTE, randObj.nextInt(60))
+            cal.add(Calendar.SECOND, randObj.nextInt(60))
+        }
+
         return dateFormat.format(cal.time)
     }
+
 }
