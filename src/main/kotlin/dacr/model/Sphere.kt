@@ -23,7 +23,7 @@ class Sphere(colList: List<ColAttribute>) {
                 ColAttribute.DATA_TYPE_NUMBER -> {
                     grainList.add(GrainNumber(column))
                 }
-                ColAttribute.DATA_TYPE_DATE -> {
+                ColAttribute.DATA_TYPE_DATE, ColAttribute.DATA_TYPE_DATETIME -> {
                     grainList.add(GrainDate(column))
                 }
                 ColAttribute.DATA_TYPE_TIMESTAMP -> {
