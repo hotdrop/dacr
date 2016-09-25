@@ -79,6 +79,8 @@ data class ColAttribute(
         const val VALUE_TYPE_FIXING = "fixing"
         const val VALUE_TYPE_VARIABLE = "variable"
 
+        const val VALUE_NOW = "now"
+
         const val FORMAT_ZERO_PADDING = "zeroPadding"
     }
 }
