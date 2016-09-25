@@ -78,7 +78,7 @@ data class ColAttribute(
         const val DATA_TYPE_VARCHAR = "varchar"
         const val DATA_TYPE_NUMBER = "number"
         const val DATA_TYPE_DATE = "date"
-        const val DATA_TYPE_DATETIME = "datetime"
+        const val DATA_TYPE_DATETIME = "dateTime"
         const val DATA_TYPE_TIMESTAMP = "timestamp"
 
         const val VALUE_TYPE_FIXING = "fixing"
