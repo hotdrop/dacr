@@ -21,7 +21,7 @@ class GrainCharTest {
     }
 
     @Test
-    fun fixingMultiValueTest() {
+    fun fixingMultipleValueTest() {
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "fixing", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
@@ -73,7 +73,7 @@ class GrainCharTest {
     }
 
     @Test
-    fun variableMultiValueTest() {
+    fun variableMultipleValueTest() {
         val retList = arrayListOf("A01", "A02", "B03", "B04", "C05")
 
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
