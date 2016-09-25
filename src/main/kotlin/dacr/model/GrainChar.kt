@@ -15,6 +15,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
 
     private val value : String
     private val multiValues : List<String>?
+    private var multiValueIdx = 0
 
     private var sequence : Int = 1
 
@@ -32,67 +33,88 @@ class GrainChar(attr: ColAttribute) : IGrain {
         size = attr.size
 
         isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
-        fillMaxSize = attr.fillMaxSize
-        isZeroPadding = if(attr.format == ColAttribute.FORMAT_ZERO_PADDING && !fillMaxSize) true else false
         autoIncrement = attr.autoIncrement
-        hasMultiByte = attr.hasMultiByte
 
         value = attr.value
-        // 空の場合は初期値0を設定するため除外している。
+        // valueが空の場合を除外している理由はsequenceを初期値のままにするため。
         if(autoIncrement && value != "") {
             sequence = try { value.toInt() } catch (e : NumberFormatException) { 1 }
         }
-
         multiValues = if(value.contains(",")) value.split(",") else null
+
+        fillMaxSize = attr.fillMaxSize
+        isZeroPadding = if(attr.format == ColAttribute.FORMAT_ZERO_PADDING && !fillMaxSize) true else false
+        hasMultiByte = attr.hasMultiByte
     }
 
     /**
      * charの値を生成する
-     * 値が固定の場合：無条件にvalueを返す
-     * 値が可変＋autoIncrement：1からの連番
      */
     override fun create() : String {
 
         if(isFixingValue) {
+            return makeFixingValue()
+        }
+
+        if(autoIncrement) {
+            return makeAutoIncrement()
+        }
+
+        return makeVariableValue()
+    }
+
+    /**
+     * 固定値作成
+     * 表明:isFixingValue=True
+     */
+    private fun makeFixingValue() : String {
+
+        if(multiValues == null) {
             return value
         }
 
-        if(multiValues != null) {
-            val rand =Random()
-            return multiValues[rand.nextInt(multiValues.size)]
+        val retVal = multiValues[multiValueIdx]
+        multiValueIdx++
+
+        if(multiValueIdx >= multiValues.size) {
+            multiValueIdx = 0
         }
-
-        var retVal : String
-
-        if(autoIncrement) {
-            retVal = sequence.toString()
-            sequence++
-        } else {
-            retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
-        }
-
-        if(isZeroPadding) {
-            retVal = retVal.padStart(size, '0')
-        }
-
         return retVal
     }
 
-    private fun makeSingleByteString() : String {
-
-        val rand =Random()
-        val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
-        var buff = ""
-
-        for(idx in 1..makeSize) {
-            buff += WORDS[rand.nextInt(WORDS.size)]
-        }
-        return buff
+    /**
+     * 自動連番値作成
+     * 表明:isFixingValue=false
+     */
+    private fun makeAutoIncrement() : String {
+        var retVal = sequence.toString()
+        sequence++
+        return if(isZeroPadding) retVal.padStart(size, '0') else retVal
     }
 
+    /**
+     * 可変値作成
+     * 表明:isFixingValue=false
+     *     makeAutoIncrement=false
+     */
+    private fun makeVariableValue() : String {
+
+        if(multiValues != null) {
+            return multiValues[Random().nextInt(multiValues.size)]
+        }
+
+        var retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
+        return if(isZeroPadding) retVal.padStart(size, '0') else retVal
+    }
+
+    /**
+     * MultiByteという名の実態は日本語ひらがなで構成された文字列を作成する関数。
+     */
     private fun makeMultiByteString() :String {
 
         val rand =Random()
+        // 日本語文字はUTF8だと1文字3バイトになるため、例えばデータ長をバイトで計算するOracleとかでも
+        // 入れられるよう1/3とした。fillMaxSizeを指定してしまった場合は仕方ないのでinsertエラーになってもらう。
         val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
         var buff = ""
 
@@ -102,7 +124,25 @@ class GrainChar(attr: ColAttribute) : IGrain {
         return buff
     }
 
+    /**
+     * バリエーションのないアルファベットと数値で構成された文字列を作成する関数。
+     */
+    private fun makeSingleByteString() : String {
+
+        val rand =Random()
+        // Multibyteに合わせて1/3にした。半分でもよかったがそんないらねーから生成スピードあげてくれという
+        // 天の声に従う。
+        val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
+        var buff = ""
+
+        for(idx in 1..makeSize) {
+            buff += WORDS[rand.nextInt(WORDS.size)]
+        }
+        return buff
+    }
+
     private companion object {
+        // もっと増やしてもいいかもしれないが、ランダム生成のコストが大きくなることを恐れて一旦この数にした
         private val MULTI_BYTE_WORDS = arrayOf("あ","い","う","え","お")
         private val WORDS = arrayOf("A","B","C","D","E","1","2","3","4","5")
     }

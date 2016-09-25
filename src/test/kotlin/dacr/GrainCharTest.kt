@@ -21,7 +21,22 @@ class GrainCharTest {
     }
 
     @Test
-    fun variableNormalTest() {
+    fun fixingMultiValueTest() {
+        var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
+                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
+                valueType = "fixing", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
+
+        Assert.assertEquals(grainChar.create(), "A01")
+        Assert.assertEquals(grainChar.create(), "A02")
+        Assert.assertEquals(grainChar.create(), "B03")
+        Assert.assertEquals(grainChar.create(), "B04")
+        Assert.assertEquals(grainChar.create(), "C05")
+        Assert.assertEquals(grainChar.create(), "A01")
+        Assert.assertEquals(grainChar.create(), "A02")
+    }
+
+    @Test
+    fun variableTest() {
 
         var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
@@ -29,7 +44,6 @@ class GrainCharTest {
 
         val retStr = grainChar.create()
         val retStr2 = grainChar.create()
-
         Assert.assertNotEquals(retStr, "test")
         Assert.assertNotEquals(retStr2, "test")
         Assert.assertEquals(retStr.length, 1)
@@ -48,6 +62,7 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create().length, 20)
         Assert.assertEquals(grainChar.create().length, 20)
 
+        // hasMultiByte is true
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
                 size = 60, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = true))
@@ -55,6 +70,23 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create().length, 20)
         Assert.assertEquals(grainChar.create().length, 20)
         Assert.assertEquals(grainChar.create().length, 20)
+    }
+
+    @Test
+    fun variableMultiValueTest() {
+        val retList = arrayListOf("A01", "A02", "B03", "B04", "C05")
+
+        var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
+                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
+                valueType = "variable", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
+
+        println("variableMultiValueTest randomVal=" + grainChar.create())
+        println("variableMultiValueTest randomVal=" + grainChar.create())
+        println("variableMultiValueTest randomVal=" + grainChar.create())
+        println("variableMultiValueTest randomVal=" + grainChar.create())
+        println("variableMultiValueTest randomVal=" + grainChar.create())
+        Assert.assertTrue(retList.contains(grainChar.create()))
+        Assert.assertTrue(retList.contains(grainChar.create()))
     }
 
     @Test
@@ -84,6 +116,15 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "10000")
         Assert.assertEquals(grainChar.create(), "10001")
         Assert.assertEquals(grainChar.create(), "10002")
+
+        // specify more than one value. These are ignored
+        grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
+                size = 5, format = "", autoIncrement = true, fillMaxSize = false,
+                valueType = "variable", value = "50,20,70", hasMultiByte = false))
+
+        Assert.assertEquals(grainChar.create(), "1")
+        Assert.assertEquals(grainChar.create(), "2")
+        Assert.assertEquals(grainChar.create(), "3")
     }
 
     @Test
@@ -167,20 +208,5 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "2")
     }
 
-    @Test
-    fun multiValueTest() {
-        val retList = arrayListOf("A01", "A02", "B03", "B04", "C05")
 
-        var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
-
-        println("multiValueTest value=" + grainChar.create())
-        println("multiValueTest value=" + grainChar.create())
-        println("multiValueTest value=" + grainChar.create())
-        Assert.assertTrue(retList.contains(grainChar.create()))
-        Assert.assertTrue(retList.contains(grainChar.create()))
-        Assert.assertTrue(retList.contains(grainChar.create()))
-        Assert.assertTrue(retList.contains(grainChar.create()))
-    }
 }
