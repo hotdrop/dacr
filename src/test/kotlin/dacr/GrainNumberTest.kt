@@ -74,9 +74,9 @@ class GrainNumberTest {
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = false))
 
-        println("variableNumberTest digits5 val=" + grainNumber.create())
-        println("variableNumberTest digits5 val=" + grainNumber.create())
-        println("variableNumberTest digits5 val=" + grainNumber.create())
+        println("variableTest digits5 val=" + grainNumber.create())
+        println("variableTest digits5 val=" + grainNumber.create())
+        println("variableTest digits5 val=" + grainNumber.create())
         Assert.assertTrue(grainNumber.create().toInt() < 100000)
         Assert.assertTrue(grainNumber.create().toInt() < 100000)
         Assert.assertTrue(grainNumber.create().toInt() < 100000)
@@ -87,9 +87,9 @@ class GrainNumberTest {
                 size = 3, format = "zeroPadding", autoIncrement = false, fillMaxSize = true,
                 valueType = "variable", value = "7", hasMultiByte = true))
 
-        println("variableNumberTest digits3 val=" + grainNumber.create())
-        println("variableNumberTest digits3 val=" + grainNumber.create())
-        println("variableNumberTest digits3 val=" + grainNumber.create())
+        println("variableTest digits3 val=" + grainNumber.create())
+        println("variableTest digits3 val=" + grainNumber.create())
+        println("variableTest digits3 val=" + grainNumber.create())
         Assert.assertTrue(grainNumber.create().toInt() < 1000)
         Assert.assertTrue(grainNumber.create().toInt() < 1000)
         Assert.assertTrue(grainNumber.create().toInt() < 1000)
@@ -114,9 +114,9 @@ class GrainNumberTest {
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "35,53,26,692,0,1", hasMultiByte = false))
 
-        println("multiValueTest value=" + grainNumber.create())
-        println("multiValueTest value=" + grainNumber.create())
-        println("multiValueTest value=" + grainNumber.create())
+        println("variableMultipleValueTest value=" + grainNumber.create())
+        println("variableMultipleValueTest value=" + grainNumber.create())
+        println("variableMultipleValueTest value=" + grainNumber.create())
         Assert.assertTrue(retList.contains(grainNumber.create().toInt()))
         Assert.assertTrue(retList.contains(grainNumber.create().toInt()))
         Assert.assertTrue(retList.contains(grainNumber.create().toInt()))
