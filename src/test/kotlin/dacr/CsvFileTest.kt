@@ -4,12 +4,13 @@ import dacr.indata.RecordAttributeJson
 import dacr.model.Sphere
 import dacr.outdata.CsvFile
 import org.junit.Assert
+import org.junit.Test
 import java.io.File
 
 class CsvFileTest {
 
-    @org.junit.Test
-    fun makeCsvFile() {
+    @Test
+    fun makeSimpleCsvFile() {
         val parentPath = System.getProperty("user.dir") + "/src/test/kotlin/dacr/testdata/"
 
         val inPath = parentPath + "sample.json"

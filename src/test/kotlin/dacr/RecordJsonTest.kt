@@ -2,10 +2,11 @@ package dacr
 
 import dacr.indata.RecordAttributeJson
 import org.junit.Assert
+import org.junit.Test
 
 class RecordJsonTest {
 
-    @org.junit.Test
+    @Test
     fun readJson() {
         val path = System.getProperty("user.dir") + "/src/test/kotlin/dacr/testdata/sample.json"
         val colAttributeList = RecordAttributeJson(path).parse()
