@@ -12,7 +12,8 @@ class GrainNumber(attr: ColAttribute) : IGrain {
     val primaryKey : Boolean
 
     private val value : String
-    private val multiValues : List<String>?
+    private val values: List<String>?
+    private var valueIdx = 0
 
     private var sequence : Int = 1
     private val size : Int
@@ -37,49 +38,82 @@ class GrainNumber(attr: ColAttribute) : IGrain {
         value = attr.value
 
         try {
-            // 空の場合は初期値0を設定するため除外している。
+            // valueが空の場合を除外している理由はsequenceを初期値のままにするため。
             if (autoIncrement && value != "") {
                 // Number型でtoIntに失敗した場合は例外
                 sequence = value.toInt()
             }
 
             if (value.contains(",")) {
-                multiValues = value.split(",")
-                for (v: String in multiValues) {
+                values = value.split(",")
+                for (v: String in values) {
                     // 数値でない値が含まれていた場合は例外
                     v.toInt()
                 }
             } else if(value != ""){
                 value.toInt()
-                multiValues = null
+                values = null
             } else {
-                multiValues = null
+                values = null
             }
         } catch(e : NumberFormatException) {
             throw NumberFormatException("数値でない値が含まれています。空白もダメで数値とカンマだけにしてください。 value=" + value)
         }
     }
 
+    /**
+     * numberの値を生成する
+     */
     override fun create() : String {
 
         if(isFixingValue) {
+            return makeFixingValue()
+        }
+
+        if(autoIncrement) {
+            return makeAutoIncrement()
+        }
+
+        return makeVariableValue()
+    }
+
+    /**
+     * 固定値作成
+     * 表明:isFixingValue=True
+     */
+    private fun makeFixingValue() : String {
+        if(values == null) {
             return value
         }
 
-        if(multiValues != null) {
-            val rand = Random()
-            return multiValues[rand.nextInt(multiValues.size)]
-        }
+        val retVal = values[valueIdx]
+        valueIdx++
 
-        val retVal : String
-        if(autoIncrement) {
-            retVal = sequence.toString()
-            sequence++
-        } else {
-            val rand = Random()
-            retVal = rand.nextInt(maxvalue).toString()
+        if(valueIdx >= values.size) {
+            valueIdx = 0
         }
-
         return retVal
+    }
+
+    /**
+     * 自動連番値作成
+     * 表明:isFixingValue=false
+     */
+    private fun makeAutoIncrement() : String {
+        var retVal = sequence.toString()
+        sequence++
+        return retVal
+    }
+
+    /**
+     * 可変値作成
+     * 表明:isFixingValue=false
+     *     makeAutoIncrement=false
+     */
+    private fun makeVariableValue() : String {
+        if (values != null) {
+            return values[Random().nextInt(values.size)]
+        }
+        return Random().nextInt(maxvalue).toString()
     }
 }
