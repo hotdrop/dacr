@@ -61,6 +61,7 @@ data class ColAttribute(
          * variableの場合:値を指定しても無視してランダム値を出力する。
          *               値をカンマ区切りで複数指定すると、それらの値をランダムに出力する。
          *               Number型かつautoIncrement指定した場合、指定した値から順にインクリメントする。
+         * DateまたはTimestampの場合:nowと指定すると現在日時を出力する。
          **/
         val value : String,
 

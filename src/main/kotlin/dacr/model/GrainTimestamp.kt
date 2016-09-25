@@ -16,7 +16,8 @@ class GrainTimestamp(attr: ColAttribute) : IGrain {
     val primaryKey : Boolean
 
     private val value : String
-    private val multiValues : List<String>?
+    private val values: List<String>?
+    private var valueIdx = 0
 
     private val isFixingValue: Boolean
 
@@ -37,29 +38,55 @@ class GrainTimestamp(attr: ColAttribute) : IGrain {
 
         value = attr.value
         isCurrentDate = if(value == ColAttribute.VALUE_NOW) true else false
-        multiValues = if(value.contains(",")) value.split(",") else null
+        values = if(value.contains(",")) value.split(",") else null
     }
 
+    /**
+     * timestampの値を生成する
+     */
     override fun create() : String {
 
-        if(isFixingValue && !isCurrentDate) {
-            return value
-        }
-
+        // valueに「now」指定がされていた場合はそれを最優先とする
         if(isCurrentDate) {
             return dateFormat.format(Date())
         }
 
-        if(multiValues != null) {
-            val rand = Random()
-            return multiValues[rand.nextInt(multiValues.size)]
+        if(isFixingValue) {
+            return makeFixingValue()
         }
 
-        // フォーマットに従ってランダムに値を生成する
-        return makeValue()
+        return makeVariableValue()
+    }
+    /**
+     * 固定値作成
+     * 表明:isFixingValue=True
+     */
+    private fun makeFixingValue() : String {
+
+        if(values == null) {
+            return value
+        }
+
+        val retVal = values[valueIdx]
+        valueIdx++
+
+        if(valueIdx >= values.size) {
+            valueIdx = 0
+        }
+        return retVal
     }
 
-    private fun makeValue() : String {
+    /**
+     * 可変値作成
+     * 表明:isFixingValue=false
+     *     makeAutoIncrement=false
+     */
+    private fun makeVariableValue() : String {
+
+        if(values != null) {
+            return values[Random().nextInt(values.size)]
+        }
+
         // TODO valueに"2001/1/1 to 2016/12/31"など指定できるようにしたい。今は2000/1/1
         val cal = Calendar.getInstance()
         val endDateEpoch = cal.timeInMillis
