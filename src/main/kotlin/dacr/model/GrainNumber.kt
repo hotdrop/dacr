@@ -8,8 +8,10 @@ import java.util.*
  */
 class GrainNumber(attr: ColAttribute) : IGrain {
 
-    val name : String
-    val primaryKey : Boolean
+    override val name : String
+    override val primaryKey : Boolean
+    override val autoIncrement : Boolean
+    override val isFixingValue: Boolean
 
     private val value : String
     private val values: List<String>?
@@ -18,9 +20,6 @@ class GrainNumber(attr: ColAttribute) : IGrain {
     private var sequence : Int = 1
     private val size : Int
     private val maxvalue : Int
-
-    private val isFixingValue: Boolean
-    private val autoIncrement : Boolean
 
     init {
         name = attr.name

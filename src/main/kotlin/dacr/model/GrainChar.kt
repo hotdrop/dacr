@@ -10,21 +10,19 @@ import java.util.*
  */
 class GrainChar(attr: ColAttribute) : IGrain {
 
-    val name : String
-    val primaryKey : Boolean
+    override val name : String
+    override val primaryKey : Boolean
+    override val autoIncrement : Boolean
+    override val isFixingValue: Boolean
 
     private val value : String
     private val values: List<String>?
     private var valueIdx = 0
 
     private var sequence : Int = 1
-
     private val size : Int
-
-    private val isFixingValue: Boolean
     private val isZeroPadding : Boolean
     private val fillMaxSize : Boolean
-    private val autoIncrement : Boolean
     private val hasMultiByte : Boolean
 
     init {
@@ -40,6 +38,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
         if(autoIncrement && value != "") {
             sequence = try { value.toInt() } catch (e : NumberFormatException) { 1 }
         }
+
         values = if(value.contains(",")) value.split(",") else null
 
         fillMaxSize = attr.fillMaxSize

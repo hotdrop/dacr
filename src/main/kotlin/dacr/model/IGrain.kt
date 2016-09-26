@@ -10,5 +10,10 @@ package dacr.model
  */
 interface IGrain {
 
+    val name : String
+    val primaryKey : Boolean
+    val autoIncrement : Boolean
+    val isFixingValue: Boolean
+
     fun create() : String
 }

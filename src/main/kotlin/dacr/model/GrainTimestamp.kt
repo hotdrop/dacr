@@ -12,14 +12,14 @@ import java.util.*
  */
 class GrainTimestamp(attr: ColAttribute) : IGrain {
 
-    val name : String
-    val primaryKey : Boolean
+    override val name : String
+    override val primaryKey : Boolean
+    override val autoIncrement : Boolean = false
+    override val isFixingValue: Boolean
 
     private val value : String
     private val values: List<String>?
     private var valueIdx = 0
-
-    private val isFixingValue: Boolean
 
     private val dateFormat : SimpleDateFormat
     private val isCurrentDate : Boolean
@@ -38,6 +38,7 @@ class GrainTimestamp(attr: ColAttribute) : IGrain {
 
         value = attr.value
         isCurrentDate = if(value == ColAttribute.VALUE_NOW) true else false
+
         values = if(value.contains(",")) value.split(",") else null
     }
 

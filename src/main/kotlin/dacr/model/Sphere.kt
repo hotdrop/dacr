@@ -12,31 +12,73 @@ import dacr.indata.ColAttribute
 class Sphere(colList: List<ColAttribute>) {
 
     var grainList: MutableList<IGrain> = mutableListOf()
-    // TODO PKはここで判定する
+    /**
+     * PK判定について
+     * Mapを使用してPKが一意になるようにする。
+     *
+     * PK判定をするのは以下のパターンのみとする。
+     * valueType = variable and autoIncrement=false
+     *
+     * valueで複数指定した場合でもvariable指定ならランダムに値を選択するのでPK判定対象とする。
+     * ただし、同じ値でループする恐れがあるので実装時は注意する・・
+     */
+    var pkMap = mutableMapOf<String, Boolean>()
+
+    var unnecessaryPK = false
+    var primaryKeyCount = 0
 
     init {
+        var grain : IGrain
         for(column in colList) {
             when (column.dataType) {
                 ColAttribute.DATA_TYPE_CHAR, ColAttribute.DATA_TYPE_VARCHAR -> {
-                    grainList.add(GrainChar(column))
+                    grain = GrainChar(column)
+                    grainList.add(grain)
                 }
                 ColAttribute.DATA_TYPE_NUMBER -> {
-                    grainList.add(GrainNumber(column))
+                    grain = GrainNumber(column)
+                    grainList.add(grain)
                 }
                 ColAttribute.DATA_TYPE_DATE, ColAttribute.DATA_TYPE_DATETIME -> {
-                    grainList.add(GrainDate(column))
+                    grain = GrainDate(column)
+                    grainList.add(grain)
                 }
                 ColAttribute.DATA_TYPE_TIMESTAMP -> {
-                    grainList.add(GrainTimestamp(column))
+                    grain = GrainTimestamp(column)
+                    grainList.add(grain)
                 }
                 else -> {
                     throw IllegalStateException("DataTypeが不正です。指定されたType=" + column.dataType)
                 }
             }
+
+            if(grain.primaryKey) {
+                setPKInformation(grain)
+            }
         }
     }
 
     fun create() : List<String> {
+        if(decisionPK()) {
+            // TODO PKを考慮してcreateする。かなり面倒臭い
+        }
         return grainList.map(IGrain::create)
+    }
+
+    private fun setPKInformation(grain : IGrain) {
+
+        if(grain.isFixingValue) {
+            return
+        }
+
+        if(grain.autoIncrement) {
+            unnecessaryPK = true
+        }
+
+        primaryKeyCount++
+    }
+
+    private fun decisionPK() : Boolean {
+        return if(!unnecessaryPK && primaryKeyCount > 0) true else false
     }
 }
