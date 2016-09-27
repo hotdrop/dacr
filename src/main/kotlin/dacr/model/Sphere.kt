@@ -9,9 +9,9 @@ import dacr.indata.ColAttribute
  * Grainで生成した値をリスト形式で取得する。
  * また、一度に1つのrowを生成する。
  */
-class Sphere(colList: List<ColAttribute>) {
+class Sphere(colList : List<ColAttribute>) {
 
-    var grainList: MutableList<IGrain> = mutableListOf()
+    var grainList : MutableList<IGrain> = mutableListOf()
     /**
      * PK判定について
      * Mapを使用してPKが一意になるようにする。
@@ -58,11 +58,18 @@ class Sphere(colList: List<ColAttribute>) {
         }
     }
 
-    fun create() : List<String> {
+    fun create(): List<String> {
+
+        fun decisionPK(): Boolean {
+             return if(!unnecessaryPK && primaryKeyCount > 0) true else false
+        }
+
         if(decisionPK()) {
-            // TODO PKを考慮してcreateする。かなり面倒臭い
+            return createWithPK()
         }
         return grainList.map(IGrain::create)
+
+
     }
 
     private fun setPKInformation(grain : IGrain) {
@@ -78,7 +85,33 @@ class Sphere(colList: List<ColAttribute>) {
         primaryKeyCount++
     }
 
-    private fun decisionPK() : Boolean {
-        return if(!unnecessaryPK && primaryKeyCount > 0) true else false
+    private fun createWithPK(): List<String> {
+
+        var valueList = mutableListOf<String>()
+
+        PKisDuplicate@ while(true) {
+
+            valueList.clear()
+            var pkCnt = primaryKeyCount
+            var pkConcatStr = ""
+
+            for(grain in grainList) {
+                val value = grain.create()
+                if(grain.primaryKey) {
+                    pkConcatStr += value
+                    pkCnt--
+                    if(pkCnt == 0) {
+                        if(pkMap.containsKey(pkConcatStr)) {
+                            break@PKisDuplicate
+                        } else {
+                            pkMap.put(pkConcatStr, true)
+                        }
+                    }
+                }
+                valueList.add(value)
+            }
+        }
+
+        return valueList
     }
 }
