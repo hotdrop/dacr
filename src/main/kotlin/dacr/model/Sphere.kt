@@ -23,7 +23,6 @@ class Sphere(colList : List<ColAttribute>) {
      * ただし、同じ値でループする恐れがあるので実装時は注意する・・
      */
     var pkMap = mutableMapOf<String, Boolean>()
-
     var unnecessaryPK = false
     var primaryKeyCount = 0
 
@@ -58,20 +57,6 @@ class Sphere(colList : List<ColAttribute>) {
         }
     }
 
-    fun create(): List<String> {
-
-        fun decisionPK(): Boolean {
-             return if(!unnecessaryPK && primaryKeyCount > 0) true else false
-        }
-
-        if(decisionPK()) {
-            return createWithPK()
-        }
-        return grainList.map(IGrain::create)
-
-
-    }
-
     private fun setPKInformation(grain : IGrain) {
 
         if(grain.isFixingValue) {
@@ -85,11 +70,25 @@ class Sphere(colList : List<ColAttribute>) {
         primaryKeyCount++
     }
 
+    fun create(): List<String> {
+        if(!unnecessaryPK && primaryKeyCount > 0) {
+            return createWithPK()
+        }
+        return grainList.map(IGrain::create)
+    }
+
     private fun createWithPK(): List<String> {
 
+        // TODO このクラス全般的に微妙な作りなのでなんとかする。特にこの関数
         var valueList = mutableListOf<String>()
+        var duplicateCount = 0
+        var maxDuplicateCount = 10
 
         PKisDuplicate@ while(true) {
+
+            if(duplicateCount > maxDuplicateCount) {
+                throw IllegalStateException("PKに指定したカラムの生成試行回数が上限値に達したため、これ以上は無限ループの可能性があったため中断しました。")
+            }
 
             valueList.clear()
             var pkCnt = primaryKeyCount
@@ -97,12 +96,13 @@ class Sphere(colList : List<ColAttribute>) {
 
             for(grain in grainList) {
                 val value = grain.create()
-                if(grain.primaryKey) {
+                if(grain.primaryKey && !grain.isFixingValue && !grain.autoIncrement) {
                     pkConcatStr += value
                     pkCnt--
                     if(pkCnt == 0) {
                         if(pkMap.containsKey(pkConcatStr)) {
-                            break@PKisDuplicate
+                            duplicateCount++
+                            continue@PKisDuplicate
                         } else {
                             pkMap.put(pkConcatStr, true)
                         }
@@ -110,6 +110,7 @@ class Sphere(colList : List<ColAttribute>) {
                 }
                 valueList.add(value)
             }
+            break
         }
 
         return valueList
