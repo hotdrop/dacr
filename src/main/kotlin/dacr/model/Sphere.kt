@@ -59,7 +59,7 @@ class Sphere(colList: List<ColAttribute>) {
 
         var valueList = mutableListOf<String>()
         var duplicateCount = 0
-        var maxDuplicateCount = 10
+        var maxDuplicateCount = 100 // この値は本当は生成数によって変動すべき
 
         PKisDuplicate@ while(true) {
 
