@@ -74,18 +74,18 @@ data class ColAttribute(
         val hasMultiByte : Boolean
 ) {
     companion object {
-        const val DATA_TYPE_CHAR = "char"
-        const val DATA_TYPE_VARCHAR = "varchar"
-        const val DATA_TYPE_NUMBER = "number"
-        const val DATA_TYPE_DATE = "date"
-        const val DATA_TYPE_DATETIME = "dateTime"
-        const val DATA_TYPE_TIMESTAMP = "timestamp"
+        const val DATA_TYPE_CHAR = "CHAR"
+        const val DATA_TYPE_VARCHAR = "VARCHAR"
+        const val DATA_TYPE_NUMBER = "NUMBER"
+        const val DATA_TYPE_DATE = "DATE"
+        const val DATA_TYPE_DATETIME = "DATETIME"
+        const val DATA_TYPE_TIMESTAMP = "TIMESTAMP"
 
-        const val VALUE_TYPE_FIXING = "fixing"
-        const val VALUE_TYPE_VARIABLE = "variable"
+        const val VALUE_TYPE_FIXING = "FIXING"
+        const val VALUE_TYPE_VARIABLE = "VARIABLE"
 
-        const val VALUE_NOW = "now"
+        const val VALUE_NOW = "NOW"
 
-        const val FORMAT_ZERO_PADDING = "zeroPadding"
+        const val FORMAT_ZERO_PADDING = "ZEROPADDING"
     }
 }

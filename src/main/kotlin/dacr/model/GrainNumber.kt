@@ -31,7 +31,7 @@ class GrainNumber(attr: ColAttribute) : IGrain {
         }
         maxvalue = tmp - 1
 
-        isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
+        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
         autoIncrement = attr.autoIncrement
 
         value = attr.value

@@ -26,9 +26,9 @@ class GrainDate(attr: ColAttribute) : IGrain {
     init {
         name = attr.name
         primaryKey = attr.primaryKey
-        dataType = attr.dataType
+        dataType = attr.dataType.toUpperCase()
 
-        isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
+        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
 
         try {
             dateFormat = SimpleDateFormat(attr.format)
@@ -37,7 +37,7 @@ class GrainDate(attr: ColAttribute) : IGrain {
         }
 
         value = attr.value
-        isCurrentDate = if(value == ColAttribute.VALUE_NOW) true else false
+        isCurrentDate = if(value.toUpperCase() == ColAttribute.VALUE_NOW) true else false
 
         values = if(value.contains(",")) value.split(",") else null
     }

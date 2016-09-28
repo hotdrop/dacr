@@ -37,7 +37,7 @@ class Sphere(colList: List<ColAttribute>) {
 
         var grain: IGrain
         for(column in colList) {
-            when (column.dataType) {
+            when (column.dataType.toUpperCase()) {
                 ColAttribute.DATA_TYPE_CHAR      -> grain = GrainChar(column)
                 ColAttribute.DATA_TYPE_VARCHAR   -> grain = GrainChar(column)
                 ColAttribute.DATA_TYPE_NUMBER    -> grain = GrainNumber(column)

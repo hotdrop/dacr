@@ -30,7 +30,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
         primaryKey = attr.primaryKey
         size = attr.size
 
-        isFixingValue = if(attr.valueType == ColAttribute.VALUE_TYPE_FIXING) true else false
+        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
         autoIncrement = attr.autoIncrement
 
         value = attr.value
@@ -42,7 +42,7 @@ class GrainChar(attr: ColAttribute) : IGrain {
         values = if(value.contains(",")) value.split(",") else null
 
         fillMaxSize = attr.fillMaxSize
-        isZeroPadding = if(attr.format == ColAttribute.FORMAT_ZERO_PADDING && !fillMaxSize) true else false
+        isZeroPadding = if(attr.format.toUpperCase() == ColAttribute.FORMAT_ZERO_PADDING && !fillMaxSize) true else false
         hasMultiByte = attr.hasMultiByte
     }
 
