@@ -10,7 +10,7 @@ class GrainCharTest {
     @Test
     fun fixingTest() {
 
-        val grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
+        var grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "fixing", value = "test", hasMultiByte = false))
 
@@ -18,6 +18,13 @@ class GrainCharTest {
         val retStr2 = grainChar.create()
 
         Assert.assertEquals(retStr, retStr2)
+
+        grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
+                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
+                valueType = "fixing", value = "", hasMultiByte = false))
+
+        val retStr3 = grainChar.create()
+        Assert.assertEquals(retStr3, "")
     }
 
     @Test
