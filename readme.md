@@ -3,33 +3,25 @@
 json形式の列定義ファイルを読み込んで、指定した行数のCSVデータを生成します。  
 列によって固定値を出力したり、プログラムでランダムな値を自動生成することができます。
 
-## 詳細
+## Description
 ダミーデータを生成したいテーブルの全カラム情報をjson形式で定義します。  
 定義された情報に従って、カンマ区切りのCSVファイルを生成します。
-負荷試験等で大量のダミーデータをDBのテーブルにinsertすることを目的に作成ました。  
+負荷試験等で大量のダミーデータをDBのテーブルにinsertすることを目的に作成しました。
 
-## 開発環境
+## Requirement
 * Kotlin 1.0.4
 * Gradle 2.1.3
+* kotson 2.3.0
 
-## Gradleの依存関係
-```
-dependencies {  
-    compile fileTree(include: ['*.jar'], dir: 'libs')  
-    compile 'com.github.salomonbrys.kotson:kotson:2.3.0'  
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"  
-    testCompile 'junit:junit:4.12'
-}
-```
-## 使い方
+## Usage
 jarにするかまたはmainを直接実行します。引数は3つ指定してください。  
 ```
 java -jar dacr.jar [json file path] [output csv file path] [create record number]
 (create record number: 生成するレコード数)
 ```
 
-以下、3列5行のダミーデータを作成する例を示します。
-1. 入力ファイル
+## Example
+1. input json file
 ```
 [
   {"name": "name1", "primaryKey": true, "dataType": "char",
@@ -51,10 +43,10 @@ java -jar dacr.jar [json file path] [output csv file path] [create record number
   }
 ]
 ```
-2. 実行
+2. execute
 java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 
-3. 結果
+3. result
 ```
 0000B,A01,4
 00002,A02,C
@@ -63,30 +55,215 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 0000E,C05,1
 ```
 
-## 入力ファイルの各定義値について（概要）
+## More Description
 1. name : カラム名。特に使用しません。
 2. primaryKey : 主キーであればtrue、そうでなければfalse
 3. dataType : 次のいずれかを指定[char varchar number date datetime timestamp]
 4. size : カラムのサイズを指定
 5. format : カラムのフォーマットを指定
-6. autoIncrement : 自動的に連番をふる場合はtrue、ふらない場合はfalse
-7. fillMaxSize : サイズの限界まで値を生成する場合はtrue、しない場合はfalse
-8. valueType : 値のタイプを指定。すべての行を固定値にする場合はfixing、可変値を生成したいならvariable
-9. value : 値を指定。固定値を入れる場合はその値、プログラムで生成する場合は空を指定。
+6. valueType : 値のタイプを指定。すべての行を固定値にする場合はfixing、可変値を生成したいならvariable
+7. value : 値を指定。固定値を入れる場合はその値、プログラムで生成する場合は空を指定。
+8. autoIncrement : 自動的に連番をふる場合はtrue、ふらない場合はfalse
+9. fillMaxSize : サイズの限界まで値を生成する場合はtrue、しない場合はfalse
 10. hasMultiByte : 生成する値をマルチバイト文字（日本語）にする場合はtrue、しない場合はfalse
 
-## 入力ファイルの各定義値について（詳細）
-
 ### name
-指定値：任意の文字列  
+指定値:任意の文字列  
 カラム名を設定します。この定義値は今のところ使用していません。
 
 ### primaryKey
-指定値：true/false
-このカラムがプライマリキーに指定されている場合はtrueを指定します。
-以下の条件を満たした場合、この値がtrueに指定されていると重複しない値を生成します。
-1. valueType="variable"の場合（fixingの場合はprimariKeyの指定を完全無視します）
-  * この条件がある理由は、固定値がある場合は使用者の意図がある可能性を考慮したためです。  
-  例えば、PrimaryKeyを01,02,03の順で生成したい場合はその指定（valueType="Fixing" value="01,02,03")をするのみで、プライマリキーの判定は邪魔なだけなので除外しました。
-  従って、上記の指定をして出力行数を4以上にした場合、出力されたCSVファイルのprimaryKeyは必ず重複しますのでinsert時に一意制約違反となります。
-2. 1つのjson定義ファイルの中で、primaryKey="true"かつautoIncrement="true"が1つもない・・
+指定値:true/false  
+* primaryKey=false value="variable" value=""  
+```
+A13
+BA1
+   :
+A13 <- duplicate first line
+```
+* primaryKey=**true** value="variable" value=""
+```
+A11
+C14
+B23
+A15
+   :  <- not duplicate
+```
+*注意点 値の生成試行回数を増やして重複を除去していますので、無限ループを防ぐため試行回数が一定数に達した時点で例外を投げています。*
+
+### dataType
+指定値:char/varchar/number/date/datetime/timestamp  
+*注意点 大文字小文字は区別しない*  
+* dataType="char" or dataType="varchar"
+```
+A03
+BE5
+BC3
+   :
+```
+* dataType="number"
+```
+3819
+7958
+4116
+   :
+```
+* dataType="date" format="YYYY/MM/dd"
+```
+2016/11/21
+2013/02/17
+    :
+```
+* dataType="datetime" format="YYYY/MM/dd hh:mm:ss"
+```
+2014/06/04 21:37:45
+2001/12/16 16:24:38
+          :
+```
+* dataType="timestamp" format="YYYY/MM/dd hh:mm:ss.SSS"
+```
+2006/06/04 02:29:28.504
+2004/02/16 04:42:45.061
+          :
+```
+
+### size
+指定値:任意の数値  
+* dataType="char" size=6 valueType="variable"
+*特に指定のない場合、生成する値はsize/3の文字を入れます。*
+```
+A1 <- create to 6/3=2 byte character
+B5
+4A
+   :
+```
+* dataType="char" size=12 valueType="variable"
+```
+BC1C <- create to 12/3=4 byte character
+A2C5
+ED43
+   :
+```
+### format
+指定値: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc)/zeroPadding
+* dataType="date" format="YYYY-MM-dd"
+```
+2005-06-25
+2001-09-12
+      :
+```
+* dataType="char" format="zeroPadding" size=6 valueType="variable"
+```
+0000A1
+0000B5
+00004A
+   :
+```
+* dataType="number" autoIncrement=true format="zeroPadding" size=4
+```
+0001
+0002
+0003
+   :
+```
+
+### valueType
+指定値: fixing/variable
+* dataType="char" valueType="fixing" value="hoge"
+```
+hoge
+hoge
+hoge
+   :
+```
+* dataType="char" valueType="variable" value="hoge"
+```
+A1 <- ignore "value" key. to create a random value
+B5
+4A
+   :
+```
+
+### value
+指定値: 任意の値/複数の値
+* dataType="char" valueType="fixing" value="hoge"
+```
+hoge
+hoge
+hoge
+   :
+```
+* dataType="char" valueType="fixing" value="A01,B02,C03,D04"
+```
+A01 <- in case of "fixing", output in order
+B02
+C03
+D04
+A01
+   :
+```
+* dataType="char" valueType="variable" value="A01,B02,C03,D04"
+```
+C03 <- in case of "variable", output in random
+D04
+C03
+A01
+B02
+   :
+```
+* dataType="date" valueType="variable" value="2016/09/23,2016/09/24,2016/09/25"  
+*dataType can be anything*
+```
+2016/09/24
+2016/09/25
+2016/09/23
+2016/09/23
+```
+
+### autoIncrement
+指定値: true/false
+* dataType="char" autoIncrement="true"
+```
+1
+2
+3
+:
+```
+* dataType="number" autoIncrement="true" value="10055"
+```
+10055 <- start from the specified number in the value
+10056
+10057
+    :
+```
+### fillMaxSize
+指定値: true/false
+* dataType="char" size=6 valueType="variable" fillMaxSize=false
+```
+A1
+B5
+4A
+   :
+```
+* dataType="char" size=6 valueType="variable" fillMaxSize=**true**
+```
+3D3A2 <- fill up to a maximum of size
+C25CB
+CBEBC
+   :
+```
+### hasMultiByte
+指定値: true/false
+* dataType="char" hasMultiByte=false
+```
+ABC
+B2C
+35A
+   :
+```
+* dataType="char" hasMultiByte=**true**
+```
+あいあ
+えいあ
+うあお
+  :
+```
