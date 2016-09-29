@@ -28,4 +28,14 @@ class CsvFile(sphere: Sphere, outPath : String, lineNumber : Int) {
             }
         }
     }
+
+    fun outputWithDoubleQuote() {
+        File(outputPath).bufferedWriter().use { out ->
+            for (i in 1..outLineNum) {
+                out.write(""""""")
+                out.write(dataSphere.create().joinToString("""",""""))
+                out.writeLine(""""""")
+            }
+        }
+    }
 }
