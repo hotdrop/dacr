@@ -62,12 +62,12 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create().length, 2)
 
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
-                size = 60, format = "", autoIncrement = false, fillMaxSize = false,
+                size = 12, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = false))
-        println("normalTest singleByteStr20=" + grainChar.create())
-        Assert.assertEquals(grainChar.create().length, 20)
-        Assert.assertEquals(grainChar.create().length, 20)
-        Assert.assertEquals(grainChar.create().length, 20)
+        println("normalTest singleByteStr4=" + grainChar.create())
+        Assert.assertEquals(grainChar.create().length, 4)
+        Assert.assertEquals(grainChar.create().length, 4)
+        Assert.assertEquals(grainChar.create().length, 4)
 
         // hasMultiByte is true
         grainChar = GrainChar(ColAttribute(name = "normal", dataType = "char", primaryKey = false,
@@ -214,6 +214,4 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "1")
         Assert.assertEquals(grainChar.create(), "2")
     }
-
-
 }

@@ -11,7 +11,8 @@ import dacr.indata.ColAttribute
  */
 class Sphere(colList: List<ColAttribute>) {
 
-    var grainList: MutableList<IGrain> = mutableListOf()
+    private var grainList: MutableList<IGrain> = mutableListOf()
+
     /**
      * PK判定をするカラムのカウントとPrimaryKeyのMapを用意する
      *
@@ -21,8 +22,8 @@ class Sphere(colList: List<ColAttribute>) {
      *
      * なお、カウントに−1を設定した場合、以後カウントは行わない
      */
-    var pkMap = mutableMapOf<String, Boolean>()
-    var judgePKCnt = 0
+    private var pkMap = mutableMapOf<String, Boolean>()
+    private var judgePKCnt = 0
 
     init {
         fun setPKInformation(grain: IGrain) {
