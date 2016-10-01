@@ -14,7 +14,7 @@ class Sphere(colList: List<ColAttribute>) {
     private var grainList: MutableList<IGrain> = mutableListOf()
 
     /**
-     * PK判定をするカラムのカウントとPrimaryKeyのMapを用意する
+     * PK判定をするカラムのカウントとPrimaryKeyのMap
      *
      * PK判定は以下の場合に行う。
      * 1. PK指定カラムがvariableの場合（fixingの場合はPK指定されていても無視する）

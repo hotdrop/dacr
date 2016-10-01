@@ -10,7 +10,7 @@ import java.io.File
  */
 class RecordAttributeJson(filePath : String) : IRecord {
 
-    val filePath = filePath
+    private val filePath = filePath
 
     inline fun <reified T> genericType() = object: TypeToken<T>() {}.type!!
 
