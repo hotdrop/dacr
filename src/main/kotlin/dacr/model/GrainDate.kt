@@ -7,21 +7,19 @@ import java.util.*
 /**
  * date型カラムのGrainクラス
  */
-class GrainDate(attr: ColAttribute) : IGrain {
+class GrainDate(attr: ColAttribute): IGrain {
 
-    override val name : String
-    override val primaryKey : Boolean
-    override val autoIncrement : Boolean = false
+    override val name: String
+    override val primaryKey: Boolean
+    override val autoIncrement: Boolean = false
     override val isFixingValue: Boolean
 
-    private val dataType : String
-
-    private val value : String
+    private val dataType: String
+    private val value: String
     private val values: List<String>?
     private var valueIdx = 0
-
-    private val dateFormat : SimpleDateFormat
-    private val isCurrentDate : Boolean
+    private val dateFormat: SimpleDateFormat
+    private val isCurrentDate: Boolean
 
     init {
         name = attr.name
@@ -32,7 +30,7 @@ class GrainDate(attr: ColAttribute) : IGrain {
 
         try {
             dateFormat = SimpleDateFormat(attr.format)
-        } catch (e : IllegalArgumentException) {
+        } catch (e: IllegalArgumentException) {
             throw IllegalArgumentException("日付フォーマットが誤っています。format=" + attr.format, e)
         }
 
@@ -45,7 +43,7 @@ class GrainDate(attr: ColAttribute) : IGrain {
     /**
      * dateの値を生成する
      */
-    override fun create() : String {
+    override fun create(): String {
 
         // Dateの場合、valueに「now」指定がされていた場合はそれを最優先とする
         if(isCurrentDate) {
@@ -59,31 +57,19 @@ class GrainDate(attr: ColAttribute) : IGrain {
         return makeVariableValue()
     }
 
-    /**
-     * 固定値作成
-     * 表明:isFixingValue=True
-     */
-    private fun makeFixingValue() : String {
+    private fun makeFixingValue(): String {
 
         if(values == null) {
             return value
         }
 
         val retVal = values[valueIdx]
-        valueIdx++
+        valueIdx = if(valueIdx >= values.size - 1) 0 else ++valueIdx
 
-        if(valueIdx >= values.size) {
-            valueIdx = 0
-        }
         return retVal
     }
 
-    /**
-     * 可変値作成
-     * 表明:isFixingValue=false
-     *     makeAutoIncrement=false
-     */
-    private fun makeVariableValue() : String {
+    private fun makeVariableValue(): String {
 
         if(values != null) {
             return values[Random().nextInt(values.size)]
@@ -100,7 +86,6 @@ class GrainDate(attr: ColAttribute) : IGrain {
 
         val randObj = Random()
         cal.add(Calendar.DAY_OF_MONTH, randObj.nextInt(dateRange))
-
         // DateTime型の場合は時分秒もランダム値にする
         if(dataType == ColAttribute.DATA_TYPE_DATETIME) {
             cal.add(Calendar.HOUR_OF_DAY, randObj.nextInt(24))

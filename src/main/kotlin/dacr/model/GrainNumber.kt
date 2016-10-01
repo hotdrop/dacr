@@ -6,29 +6,27 @@ import java.util.*
 /**
  * number型カラムのGrainクラス
  */
-class GrainNumber(attr: ColAttribute) : IGrain {
+class GrainNumber(attr: ColAttribute): IGrain {
 
-    override val name : String
-    override val primaryKey : Boolean
-    override val autoIncrement : Boolean
+    override val name: String
+    override val primaryKey: Boolean
+    override val autoIncrement: Boolean
     override val isFixingValue: Boolean
 
-    private val value : String
+    private val value: String
     private val values: List<String>?
     private var valueIdx = 0
-
-    private var sequence : Int = 1
-    private val size : Int
-    private val maxvalue : Int
+    private var sequence = 1
+    private val size: Int
+    private val maxvalue: Int
 
     init {
         name = attr.name
         primaryKey = attr.primaryKey
         size = attr.size
+
         var tmp = 1
-        for(i in 1..size) {
-            tmp *= 10
-        }
+        listOf(1..size).forEach { tmp *= 10 }
         maxvalue = tmp - 1
 
         isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
@@ -43,19 +41,17 @@ class GrainNumber(attr: ColAttribute) : IGrain {
                 sequence = value.toInt()
             }
 
+            // 数値でない値が含まれているかチェックするためtoIntしている
             if (value.contains(",")) {
                 values = value.split(",")
-                for (v: String in values) {
-                    // 数値でない値が含まれていた場合は例外
-                    v.toInt()
-                }
+                values.forEach { it.toInt() }
             } else if(value != ""){
                 value.toInt()
                 values = null
             } else {
                 values = null
             }
-        } catch(e : NumberFormatException) {
+        } catch(e: NumberFormatException) {
             throw NumberFormatException("数値でない値が含まれています。空白もダメで数値とカンマだけにしてください。 value=" + value)
         }
     }
@@ -63,7 +59,7 @@ class GrainNumber(attr: ColAttribute) : IGrain {
     /**
      * numberの値を生成する
      */
-    override fun create() : String {
+    override fun create(): String {
 
         if(isFixingValue) {
             return makeFixingValue()
@@ -76,40 +72,24 @@ class GrainNumber(attr: ColAttribute) : IGrain {
         return makeVariableValue()
     }
 
-    /**
-     * 固定値作成
-     * 表明:isFixingValue=True
-     */
-    private fun makeFixingValue() : String {
+    private fun makeFixingValue(): String {
+
         if(values == null) {
             return value
         }
 
         val retVal = values[valueIdx]
-        valueIdx++
-
-        if(valueIdx >= values.size) {
-            valueIdx = 0
-        }
+        valueIdx = if(valueIdx >= values.size - 1) 0 else ++valueIdx
         return retVal
     }
 
-    /**
-     * 自動連番値作成
-     * 表明:isFixingValue=false
-     */
-    private fun makeAutoIncrement() : String {
+    private fun makeAutoIncrement(): String {
         var retVal = sequence.toString()
         sequence++
         return retVal
     }
 
-    /**
-     * 可変値作成
-     * 表明:isFixingValue=false
-     *     makeAutoIncrement=false
-     */
-    private fun makeVariableValue() : String {
+    private fun makeVariableValue(): String {
         if (values != null) {
             return values[Random().nextInt(values.size)]
         }

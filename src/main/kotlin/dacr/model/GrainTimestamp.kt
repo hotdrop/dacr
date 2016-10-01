@@ -7,22 +7,20 @@ import java.util.*
 /**
  * timestamp型カラムのGrainクラス
  *
- * 現状、ほぼGrainDateと同じだが、それは今の話で今後変える必要がありそうなので
- * 別クラスにした。
+ * 現状、ほぼGrainDateと同じ
  */
-class GrainTimestamp(attr: ColAttribute) : IGrain {
+class GrainTimestamp(attr: ColAttribute): IGrain {
 
-    override val name : String
-    override val primaryKey : Boolean
-    override val autoIncrement : Boolean = false
+    override val name: String
+    override val primaryKey: Boolean
+    override val autoIncrement: Boolean = false
     override val isFixingValue: Boolean
 
-    private val value : String
+    private val value: String
     private val values: List<String>?
     private var valueIdx = 0
-
-    private val dateFormat : SimpleDateFormat
-    private val isCurrentDate : Boolean
+    private val dateFormat: SimpleDateFormat
+    private val isCurrentDate: Boolean
 
     init {
         name = attr.name
@@ -32,7 +30,7 @@ class GrainTimestamp(attr: ColAttribute) : IGrain {
 
         try {
             dateFormat = SimpleDateFormat(attr.format)
-        } catch (e : IllegalArgumentException) {
+        } catch (e: IllegalArgumentException) {
             throw IllegalArgumentException("日付フォーマットが誤っています。format=" + attr.format, e)
         }
 
@@ -58,30 +56,19 @@ class GrainTimestamp(attr: ColAttribute) : IGrain {
 
         return makeVariableValue()
     }
-    /**
-     * 固定値作成
-     * 表明:isFixingValue=True
-     */
-    private fun makeFixingValue() : String {
+
+    private fun makeFixingValue(): String {
 
         if(values == null) {
             return value
         }
 
         val retVal = values[valueIdx]
-        valueIdx++
+        valueIdx = if(valueIdx >= values.size - 1) 0 else ++valueIdx
 
-        if(valueIdx >= values.size) {
-            valueIdx = 0
-        }
         return retVal
     }
 
-    /**
-     * 可変値作成
-     * 表明:isFixingValue=false
-     *     makeAutoIncrement=false
-     */
     private fun makeVariableValue() : String {
 
         if(values != null) {
