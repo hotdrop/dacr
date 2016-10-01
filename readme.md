@@ -139,14 +139,14 @@ Datatype:char varchar number
 A1 <- create to 6/3=2 byte character
 B5
 4A
-   :
+ :
 ```
 * dataType="char" size=12 valueType="variable"
 ```
 BC1C <- create to 12/3=4 byte character
 A2C5
 ED43
-   :
+ :
 ```
 
 ## format
@@ -155,7 +155,7 @@ ED43
 ```
 2005-06-25
 2001-09-12
-      :
+    :
 ```
 * dataType="char" format="zeroPadding" size=6 valueType="variable"
 ```
@@ -169,7 +169,7 @@ ED43
 0001
 0002
 0003
-   :
+ :
 ```
 
 ## valueType
