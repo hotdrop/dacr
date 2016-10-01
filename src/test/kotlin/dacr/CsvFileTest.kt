@@ -100,28 +100,4 @@ class CsvFileTest {
         // 出力ファイルを目視する目的なので、Assertでのテストもファイル削除もしない。
         Assert.assertTrue(true)
     }
-
-    @Test
-    fun makeCsvFileEncloseDoubleQuoteTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
-        colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true,
-                size = 5, format = "zeroPadding", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "pk2", dataType = "char", primaryKey = true,
-                size = 10, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "fixing", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "create_code", dataType = "char", primaryKey = false,
-                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "", hasMultiByte = false))
-
-        val parentPath = System.getProperty("user.dir") + "/src/test/kotlin/dacr/testdata/"
-        val outPath = parentPath + "outWithPKTest.csv"
-
-        val dataSphere = Sphere(colAttrList)
-        val csvFile = CsvFile(dataSphere, outPath, 5)
-        csvFile.outputWithDoubleQuote()
-
-        // 出力ファイルを目視する目的なので、Assertでのテストもファイル削除もしない。
-        Assert.assertTrue(true)
-    }
 }
