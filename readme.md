@@ -19,8 +19,7 @@ json形式の列定義ファイルを読み込んで、指定した行数のCSV�
 ## Usage
 jarにするかまたはmainを直接実行します。引数は3つ指定してください。  
 ```
-java -jar dacr.jar [json file path] [output csv file path] [create record number]
-(create record number: 生成するレコード数)
+java -jar dacr.jar [json file path] [output file path] [number of row to be created]
 ```
 
 ## Example
@@ -47,7 +46,7 @@ java -jar dacr.jar [json file path] [output csv file path] [create record number
 ]
 ```
 * execute  
-java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
+java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 
 * result
 ```
@@ -58,16 +57,16 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 0000E,C05,1
 ```
 
-## More Description
-1. name : カラム名。特に使用しません。
+## Definition file description
+1. name : カラム名
 2. primaryKey : 主キーであればtrue、そうでなければfalse
 3. dataType : 次のいずれかを指定[char varchar number date datetime timestamp]
-4. size : カラムのサイズを指定
-5. format : カラムのフォーマットを指定
-6. valueType : 値のタイプを指定。すべての行を固定値にする場合はfixing、可変値を生成したいならvariable
-7. value : 値を指定。固定値を入れる場合はその値、プログラムで生成する場合は空を指定。
-8. autoIncrement : 自動的に連番をふる場合はtrue、ふらない場合はfalse
-9. fillMaxSize : サイズの限界まで値を生成する場合はtrue、しない場合はfalse
+4. size : データ長
+5. format : カラムのフォーマット
+6. valueType : 固定の値を出力する場合はfixing、値を可変に生成する場合はvariable
+7. value : 固定の値を出力する場合はその値、プログラムで生成する場合は空
+8. autoIncrement : 自動連番を出力する場合はtrue、しない場合はfalse
+9. fillMaxSize : データ長の限界まで値を生成する場合はtrue、しない場合はfalse
 10. hasMultiByte : 生成する値をマルチバイト文字（日本語）にする場合はtrue、しない場合はfalse
 
 ## name
@@ -75,7 +74,7 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 カラム名を設定します。この定義値は今のところ使用していません。
 
 ## primaryKey
-指定値:true/false  
+指定値:true false  
 Datatype:all  
 * primaryKey=false value="variable" value=""  
 ```
@@ -95,7 +94,7 @@ A15  <-
 *(※値の生成試行回数を増やして重複を除去しています。無限ループを防ぐため試行回数が一定数に達した時点で例外を投げています。)*
 
 ## dataType
-指定値:char/varchar/number/date/datetime/timestamp  
+指定値:char varchar number date datetime timestamp  
 Datatype:all  
 *(※大文字小文字は区別しません)*  
 * dataType="char" or dataType="varchar"
@@ -151,7 +150,7 @@ ED43
 ```
 
 ## format
-指定値: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc)/zeroPadding
+指定値: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc) zeroPadding
 * dataType="date" format="YYYY-MM-dd"
 ```
 2005-06-25
@@ -174,7 +173,7 @@ ED43
 ```
 
 ## valueType
-指定値: fixing/variable  
+指定値: fixing variable  
 Datatype:all  
 * dataType="char" valueType="fixing" value="hoge"
 ```
@@ -236,7 +235,7 @@ B02  <-
 ```
 
 ## autoIncrement
-指定値: true/false  
+指定値: true false  
 Datatype:char varchar number  
 * dataType="char" autoIncrement="true"
 ```
@@ -254,7 +253,7 @@ Datatype:char varchar number
 ```
 
 ## fillMaxSize
-指定値: true/false  
+指定値: true false  
 Datatype:char varchar  
 * dataType="char" size=6 valueType="variable" fillMaxSize=false
 ```
@@ -271,7 +270,7 @@ CBEBC
   :
 ```
 ## hasMultiByte
-指定値: true/false  
+指定値: true false  
 Datatype:char varchar  
 * dataType="char" hasMultiByte=false
 ```
