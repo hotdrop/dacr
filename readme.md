@@ -10,7 +10,8 @@ json形式の列定義ファイルを読み込んで、指定した行数のCSV�
 
 ## Requirement
 * Kotlin 1.0.4
-* gson 2.7
+* gson 2.7  
+
 > Gson is released under the Apache 2.0 license.
   License: [Apache License Version 2.0](/licenses/ApacheLicense2.0)
 
@@ -45,7 +46,7 @@ java -jar dacr.jar [json file path] [output csv file path] [create record number
   }
 ]
 ```
-* execute
+* execute  
 java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 
 * result
@@ -69,18 +70,18 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 9. fillMaxSize : サイズの限界まで値を生成する場合はtrue、しない場合はfalse
 10. hasMultiByte : 生成する値をマルチバイト文字（日本語）にする場合はtrue、しない場合はfalse
 
-### name
+## name
 指定値:任意の文字列  
 カラム名を設定します。この定義値は今のところ使用していません。
 
-### primaryKey
+## primaryKey
 指定値:true/false  
 Datatype:all  
 * primaryKey=false value="variable" value=""  
 ```
 A13 <-
 BA1
-   :
+ :
 A13 <- duplicate first line
 ```
 * primaryKey=**true** value="variable" value=""
@@ -89,11 +90,11 @@ A11  <-
 C14  <-
 B23  <- not duplicate
 A15  <-
-   : <-
+ :   <-
 ```
 *注意点 値の生成試行回数を増やして重複を除去していますので、無限ループを防ぐため試行回数が一定数に達した時点で例外を投げています。*
 
-### dataType
+## dataType
 指定値:char/varchar/number/date/datetime/timestamp  
 Datatype:all  
 *注意点 大文字小文字は区別しません*  
@@ -102,14 +103,14 @@ Datatype:all
 A03
 BE5
 BC3
-   :
+ :
 ```
 * dataType="number"
 ```
 3819
 7958
 4116
-   :
+ :
 ```
 * dataType="date" format="YYYY/MM/dd"
 ```
@@ -130,7 +131,7 @@ BC3
           :
 ```
 
-### size
+## size
 指定値:任意の数値  
 Datatype:char varchar number  
 * dataType="char" size=6 valueType="variable"
@@ -148,7 +149,8 @@ A2C5
 ED43
    :
 ```
-### format
+
+## format
 指定値: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc)/zeroPadding
 * dataType="date" format="YYYY-MM-dd"
 ```
@@ -171,7 +173,7 @@ ED43
    :
 ```
 
-### valueType
+## valueType
 指定値: fixing/variable  
 Datatype:all  
 * dataType="char" valueType="fixing" value="hoge"
@@ -179,17 +181,17 @@ Datatype:all
 hoge
 hoge
 hoge
-   :
+ :
 ```
 * dataType="char" valueType="variable" value="hoge"
 ```
 A1 <- ignore "value" key. to create a random value
 B5
 4A
-   :
+ :
 ```
 
-### value
+## value
 指定値: single value or plurality of values
 Datatype:all  
 * dataType="char" valueType="fixing" value="hoge"
@@ -197,7 +199,7 @@ Datatype:all
 hoge
 hoge
 hoge
-   :
+ :
 ```
 * dataType="char" valueType="fixing" value="A01,B02,C03,D04"
 ```
@@ -206,7 +208,7 @@ B02 <-
 C03 <-
 D04 <-
 A01 <-
-   :
+ :
 ```
 * dataType="char" valueType="variable" value="A01,B02,C03,D04"
 ```
@@ -215,24 +217,25 @@ D04  <-
 C03  <- in case of "variable", output in random
 A01  <-
 B02  <-
-   :
+ :
 ```
 * dataType="date" valueType="variable" value="2016/09/23,2016/09/24,2016/09/25"  
-*dataType can be anything*
+*(※dataType can be anything)*
 ```
 2016/09/24
 2016/09/25
 2016/09/23
 2016/09/23
+    :
 ```
 * dataType="date" valueType="variable" value="now"  
 ```
 2016/09/30 <- current date
 2016/09/30
-         :
+    :
 ```
 
-### autoIncrement
+## autoIncrement
 指定値: true/false  
 Datatype:char varchar number  
 * dataType="char" autoIncrement="true"
@@ -247,26 +250,27 @@ Datatype:char varchar number
 10055 <- start from the specified number in the value
 10056
 10057
-    :
+  :
 ```
-### fillMaxSize
-指定値: true/false
+
+## fillMaxSize
+指定値: true/false  
 Datatype:char varchar  
 * dataType="char" size=6 valueType="variable" fillMaxSize=false
 ```
 A1 <- create to 6/3=2 byte character
 B5
 4A
-   :
+ :
 ```
 * dataType="char" size=6 valueType="variable" fillMaxSize=**true**
 ```
 3D3A2 <- fill up to a maximum of size
 C25CB
 CBEBC
-   :
+  :
 ```
-### hasMultiByte
+## hasMultiByte
 指定値: true/false  
 Datatype:char varchar  
 * dataType="char" hasMultiByte=false
@@ -274,7 +278,7 @@ Datatype:char varchar
 ABC
 B2C
 35A
-   :
+ :
 ```
 * dataType="char" hasMultiByte=**true**
 ```
@@ -284,5 +288,5 @@ B2C
   :
 ```
 
-## License  
+# License  
 * [The MIT License(MIT)](/licenses/LICENSE)
