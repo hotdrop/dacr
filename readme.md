@@ -92,12 +92,12 @@ B23  <- not duplicate
 A15  <-
  :   <-
 ```
-*注意点 値の生成試行回数を増やして重複を除去していますので、無限ループを防ぐため試行回数が一定数に達した時点で例外を投げています。*
+*(※値の生成試行回数を増やして重複を除去しています。無限ループを防ぐため試行回数が一定数に達した時点で例外を投げています。)*
 
 ## dataType
 指定値:char/varchar/number/date/datetime/timestamp  
 Datatype:all  
-*注意点 大文字小文字は区別しません*  
+*(※大文字小文字は区別しません)*  
 * dataType="char" or dataType="varchar"
 ```
 A03
@@ -134,8 +134,8 @@ BC3
 ## size
 指定値:任意の数値  
 Datatype:char varchar number  
-* dataType="char" size=6 valueType="variable"
-*特に指定のない場合、生成する値はsize/3の文字を入れます。*
+* dataType="char" size=6 valueType="variable"  
+*(※生成する値のlength=size/3)*
 ```
 A1 <- create to 6/3=2 byte character
 B5
