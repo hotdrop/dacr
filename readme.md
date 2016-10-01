@@ -10,8 +10,10 @@ json形式の列定義ファイルを読み込んで、指定した行数のCSV�
 
 ## Requirement
 * Kotlin 1.0.4
-* Gradle 2.1.3
-* kotson 2.3.0
+* gson 2.7
+> Gson is released under the Apache 2.0 license.
+  License: [Apache License Version 2.0](/licenses/ApacheLicense2.0)
+
 
 ## Usage
 jarにするかまたはmainを直接実行します。引数は3つ指定してください。  
@@ -21,7 +23,7 @@ java -jar dacr.jar [json file path] [output csv file path] [create record number
 ```
 
 ## Example
-1. input json file
+* input json file
 ```
 [
   {"name": "name1", "primaryKey": true, "dataType": "char",
@@ -43,10 +45,10 @@ java -jar dacr.jar [json file path] [output csv file path] [create record number
   }
 ]
 ```
-2. execute
+* execute
 java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 
-3. result
+* result
 ```
 0000B,A01,4
 00002,A02,C
@@ -188,7 +190,7 @@ B5
 ```
 
 ### value
-指定値: 任意の値/複数の値  
+指定値: single value or plurality of values
 Datatype:all  
 * dataType="char" valueType="fixing" value="hoge"
 ```
@@ -281,3 +283,6 @@ B2C
 うあお
   :
 ```
+
+## License  
+* [The MIT License(MIT)](/licenses/LICENSE)

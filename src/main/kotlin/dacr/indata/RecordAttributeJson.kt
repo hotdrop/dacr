@@ -7,6 +7,9 @@ import java.io.File
 /**
  * Json形式のファイルからレコード定義情報を取得する。
  * レコード情報はカラム単位で分割する
+ *
+ * @using google-gson Copyright 2008 Google Inc.
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  */
 class RecordAttributeJson(filePath : String) : IRecord {
 
