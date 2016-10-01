@@ -73,26 +73,28 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp 5
 
 ### primaryKey
 指定値:true/false  
+Datatype:all  
 * primaryKey=false value="variable" value=""  
 ```
-A13
+A13 <-
 BA1
    :
 A13 <- duplicate first line
 ```
 * primaryKey=**true** value="variable" value=""
 ```
-A11
-C14
-B23
-A15
-   :  <- not duplicate
+A11  <-
+C14  <-
+B23  <- not duplicate
+A15  <-
+   : <-
 ```
 *注意点 値の生成試行回数を増やして重複を除去していますので、無限ループを防ぐため試行回数が一定数に達した時点で例外を投げています。*
 
 ### dataType
 指定値:char/varchar/number/date/datetime/timestamp  
-*注意点 大文字小文字は区別しない*  
+Datatype:all  
+*注意点 大文字小文字は区別しません*  
 * dataType="char" or dataType="varchar"
 ```
 A03
@@ -128,6 +130,7 @@ BC3
 
 ### size
 指定値:任意の数値  
+Datatype:char varchar number  
 * dataType="char" size=6 valueType="variable"
 *特に指定のない場合、生成する値はsize/3の文字を入れます。*
 ```
@@ -167,7 +170,8 @@ ED43
 ```
 
 ### valueType
-指定値: fixing/variable
+指定値: fixing/variable  
+Datatype:all  
 * dataType="char" valueType="fixing" value="hoge"
 ```
 hoge
@@ -184,7 +188,8 @@ B5
 ```
 
 ### value
-指定値: 任意の値/複数の値
+指定値: 任意の値/複数の値  
+Datatype:all  
 * dataType="char" valueType="fixing" value="hoge"
 ```
 hoge
@@ -195,19 +200,19 @@ hoge
 * dataType="char" valueType="fixing" value="A01,B02,C03,D04"
 ```
 A01 <- in case of "fixing", output in order
-B02
-C03
-D04
-A01
+B02 <-
+C03 <-
+D04 <-
+A01 <-
    :
 ```
 * dataType="char" valueType="variable" value="A01,B02,C03,D04"
 ```
-C03 <- in case of "variable", output in random
-D04
-C03
-A01
-B02
+C03  <-
+D04  <-
+C03  <- in case of "variable", output in random
+A01  <-
+B02  <-
    :
 ```
 * dataType="date" valueType="variable" value="2016/09/23,2016/09/24,2016/09/25"  
@@ -218,9 +223,16 @@ B02
 2016/09/23
 2016/09/23
 ```
+* dataType="date" valueType="variable" value="now"  
+```
+2016/09/30 <- current date
+2016/09/30
+         :
+```
 
 ### autoIncrement
-指定値: true/false
+指定値: true/false  
+Datatype:char varchar number  
 * dataType="char" autoIncrement="true"
 ```
 1
@@ -237,9 +249,10 @@ B02
 ```
 ### fillMaxSize
 指定値: true/false
+Datatype:char varchar  
 * dataType="char" size=6 valueType="variable" fillMaxSize=false
 ```
-A1
+A1 <- create to 6/3=2 byte character
 B5
 4A
    :
@@ -252,7 +265,8 @@ CBEBC
    :
 ```
 ### hasMultiByte
-指定値: true/false
+指定値: true/false  
+Datatype:char varchar  
 * dataType="char" hasMultiByte=false
 ```
 ABC
