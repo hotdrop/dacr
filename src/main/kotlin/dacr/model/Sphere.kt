@@ -75,7 +75,7 @@ class Sphere(colList: List<ColAttribute>) {
 
             for(grain in grainList) {
                 val value = grain.create()
-                if(grain.primaryKey && !grain.isFixingValue && !grain.autoIncrement) {
+                if(grain.primaryKey && !grain.isFixingValue) {
                     pkConcatStr += value
                     pkCnt--
                     if(pkCnt == 0) {
