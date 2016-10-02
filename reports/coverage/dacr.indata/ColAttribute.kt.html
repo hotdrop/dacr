@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ColAttribute.kt</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">dacr.indata</a> &gt; <span class="el_source">ColAttribute.kt</span></div><h1>ColAttribute.kt</h1><pre class="source lang-java linenums">package dacr.indata
+
+/**
+ * レコード情報のうち、1つのカラム属性情報を保持するデータクラス
+ */
+<span class="fc" id="L6">data class ColAttribute(</span>
+
+<span class="fc" id="L8">        val name : String,</span>
+<span class="fc" id="L9">        val primaryKey : Boolean,</span>
+<span class="fc" id="L10">        val dataType : String,</span>
+        /** 次の型で有効:char varchar number */
+<span class="fc" id="L12">        val size : Int,</span>
+        /** 次の型で有効:char varchar date timestamp */
+<span class="fc" id="L14">        val format : String,</span>
+<span class="fc" id="L15">        val valueType : String,</span>
+        /**
+         * fixingの場合:値を1つ指定するとその値固定で出力する。空の場合は空を入れる。
+         *             値をカンマ区切りで複数指定すると、その値を順番に出力する。
+         * variableの場合:値を指定しても無視してランダム値を出力する。
+         *               値をカンマ区切りで複数指定すると、それらの値をランダムに出力する。
+         *               Number型かつautoIncrement指定した場合、指定した値から順にインクリメントする。
+         * DateまたはTimestampの場合:nowと指定すると現在日時を出力する。
+         **/
+<span class="fc" id="L24">        val value : String,</span>
+        /** 次の型で有効:char varchar number */
+<span class="fc" id="L26">        val autoIncrement : Boolean,</span>
+        /** 次の型で有効:char varchar */
+<span class="fc" id="L28">        val fillMaxSize : Boolean,</span>
+        /** 次の型で有効:char varchar */
+<span class="fc" id="L30">        val hasMultiByte : Boolean</span>
+) {
+<span class="fc" id="L32">    companion object {</span>
+        const val DATA_TYPE_CHAR = &quot;CHAR&quot;
+        const val DATA_TYPE_VARCHAR = &quot;VARCHAR&quot;
+        const val DATA_TYPE_NUMBER = &quot;NUMBER&quot;
+        const val DATA_TYPE_DATE = &quot;DATE&quot;
+        const val DATA_TYPE_DATETIME = &quot;DATETIME&quot;
+        const val DATA_TYPE_TIMESTAMP = &quot;TIMESTAMP&quot;
+        const val VALUE_TYPE_FIXING = &quot;FIXING&quot;
+        const val VALUE_TYPE_VARIABLE = &quot;VARIABLE&quot;
+        const val VALUE_NOW = &quot;NOW&quot;
+        const val FORMAT_ZERO_PADDING = &quot;ZEROPADDING&quot;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

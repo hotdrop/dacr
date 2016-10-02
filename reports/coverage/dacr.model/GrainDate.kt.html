@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GrainDate.kt</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">dacr.model</a> &gt; <span class="el_source">GrainDate.kt</span></div><h1>GrainDate.kt</h1><pre class="source lang-java linenums">package dacr.model
+
+import dacr.indata.ColAttribute
+import java.text.SimpleDateFormat
+import java.util.*
+
+/**
+ * date型カラムのGrainクラス
+ */
+<span class="fc" id="L10">class GrainDate(attr: ColAttribute): IGrain {</span>
+
+<span class="nc" id="L12">    override val name: String</span>
+<span class="fc" id="L13">    override val primaryKey: Boolean</span>
+<span class="fc" id="L14">    override val autoIncrement: Boolean = false</span>
+<span class="fc" id="L15">    override val isFixingValue: Boolean</span>
+
+    private val dataType: String
+    private val value: String
+    private val values: List&lt;String&gt;?
+    private var valueIdx = 0
+    private val dateFormat: SimpleDateFormat
+    private val isCurrentDate: Boolean
+
+    init {
+<span class="fc" id="L25">        name = attr.name</span>
+<span class="fc" id="L26">        primaryKey = attr.primaryKey</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        dataType = attr.dataType.toUpperCase()</span>
+
+<span class="pc bpc" id="L29" title="1 of 4 branches missed.">        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false</span>
+
+<span class="fc" id="L31">        try {</span>
+<span class="fc" id="L32">            dateFormat = SimpleDateFormat(attr.format)</span>
+<span class="fc" id="L33">        } catch (e: IllegalArgumentException) {</span>
+<span class="fc" id="L34">            throw IllegalArgumentException(&quot;日付フォーマットが誤っています。format=&quot; + attr.format, e)</span>
+        }
+
+<span class="fc" id="L37">        value = attr.value</span>
+<span class="pc bpc" id="L38" title="1 of 4 branches missed.">        isCurrentDate = if(value.toUpperCase() == ColAttribute.VALUE_NOW) true else false</span>
+
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        values = if(value.contains(&quot;,&quot;)) value.split(&quot;,&quot;) else null</span>
+    }
+
+    /**
+     * dateの値を生成する
+     */
+    override fun create(): String {
+
+        // Dateの場合、valueに「now」指定がされていた場合はそれを最優先とする
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if(isCurrentDate) {</span>
+<span class="fc" id="L50">            return dateFormat.format(Date())</span>
+        }
+
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if(isFixingValue) {</span>
+<span class="fc" id="L54">            return makeFixingValue()</span>
+        }
+
+<span class="fc" id="L57">        return makeVariableValue()</span>
+    }
+
+    private fun makeFixingValue(): String {
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if(values == null) {</span>
+<span class="fc" id="L63">            return value</span>
+        }
+
+<span class="fc" id="L66">        val retVal = values[valueIdx]</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        valueIdx = if(valueIdx &gt;= values.size - 1) 0 else ++valueIdx</span>
+
+<span class="fc" id="L69">        return retVal</span>
+    }
+
+    private fun makeVariableValue(): String {
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if(values != null) {</span>
+<span class="fc" id="L75">            return values[Random().nextInt(values.size)]</span>
+        }
+
+        // TODO valueに&quot;2001/1/1 to 2016/12/31&quot;など指定できるようにしたい。今は2000/1/1
+<span class="fc" id="L79">        val cal = Calendar.getInstance()</span>
+<span class="fc" id="L80">        val endDateEpoch = cal.timeInMillis</span>
+
+<span class="fc" id="L82">        cal.set(2000,1,1,0,0,0)</span>
+<span class="fc" id="L83">        val startDateEpoch = cal.timeInMillis</span>
+
+<span class="fc" id="L85">        val dateRange = ((endDateEpoch - startDateEpoch)/(60 * 60 * 1000 * 24)).toInt()</span>
+
+<span class="fc" id="L87">        val randObj = Random()</span>
+<span class="fc" id="L88">        cal.add(Calendar.DAY_OF_MONTH, randObj.nextInt(dateRange))</span>
+        // DateTime型の場合は時分秒もランダム値にする
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if(dataType == ColAttribute.DATA_TYPE_DATETIME) {</span>
+<span class="fc" id="L91">            cal.add(Calendar.HOUR_OF_DAY, randObj.nextInt(24))</span>
+<span class="fc" id="L92">            cal.add(Calendar.MINUTE, randObj.nextInt(60))</span>
+<span class="fc" id="L93">            cal.add(Calendar.SECOND, randObj.nextInt(60))</span>
+        }
+
+<span class="fc" id="L96">        return dateFormat.format(cal.time)</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Sphere.kt</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">dacr.model</a> &gt; <span class="el_source">Sphere.kt</span></div><h1>Sphere.kt</h1><pre class="source lang-java linenums">package dacr.model
+
+import dacr.indata.ColAttribute
+
+/**
+ * Sphere
+ *
+ * Grainの集合体を表すモデルクラス。
+ * Grainで生成した値をリスト形式で取得する。
+ * また、一度に1つのrowを生成する。
+ */
+<span class="fc" id="L12">class Sphere(colList: List&lt;ColAttribute&gt;) {</span>
+
+<span class="fc" id="L14">    private var grainList: MutableList&lt;IGrain&gt; = mutableListOf()</span>
+
+    /**
+     * PK判定をするカラムのカウントとPrimaryKeyのMap
+     *
+     * PK判定は以下の場合に行う。
+     * 1. PK指定カラムがvariableの場合（fixingの場合はPK指定されていても無視する）
+     * 2. PK指定カラムにautoIncrementが1つも含まれていない
+     *
+     * なお、カウントに−1を設定した場合、以後カウントは行わない
+     */
+<span class="fc" id="L25">    private var pkMap = mutableMapOf&lt;String, Boolean&gt;()</span>
+    private var judgePKCnt = 0
+
+    init {
+<span class="fc" id="L29">        fun setPKInformation(grain: IGrain) {</span>
+<span class="fc bfc" id="L30" title="All 6 branches covered.">            if(!grain.primaryKey || grain.isFixingValue || judgePKCnt == -1) {</span>
+<span class="fc" id="L31">                return</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            } else if(grain.autoIncrement) {</span>
+<span class="fc" id="L33">                judgePKCnt = -1</span>
+            } else {
+<span class="fc" id="L35">                judgePKCnt++</span>
+            }
+<span class="fc" id="L37">        }</span>
+
+        var grain: IGrain
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for(column in colList) {</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">            when (column.dataType.toUpperCase()) {</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                ColAttribute.DATA_TYPE_CHAR      -&gt; grain = GrainChar(column)</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">                ColAttribute.DATA_TYPE_VARCHAR   -&gt; grain = GrainChar(column)</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                ColAttribute.DATA_TYPE_NUMBER    -&gt; grain = GrainNumber(column)</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                ColAttribute.DATA_TYPE_DATE      -&gt; grain = GrainDate(column)</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">                ColAttribute.DATA_TYPE_DATETIME  -&gt; grain = GrainDate(column)</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                ColAttribute.DATA_TYPE_TIMESTAMP -&gt; grain = GrainTimestamp(column)</span>
+<span class="fc" id="L48">                else -&gt;  throw IllegalStateException(&quot;DataTypeが不正です。指定されたType=&quot; + column.dataType)</span>
+            }
+
+<span class="fc" id="L51">            setPKInformation(grain)</span>
+<span class="fc" id="L52">            grainList.add(grain)</span>
+        }
+    }
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">    fun create(): List&lt;String&gt; = if(judgePKCnt &gt; 0) createWithPK()</span>
+<span class="fc" id="L57">                                 else grainList.map(IGrain::create)</span>
+
+    private fun createWithPK(): List&lt;String&gt; {
+
+<span class="fc" id="L61">        var valueList = mutableListOf&lt;String&gt;()</span>
+<span class="fc" id="L62">        var duplicateCount = 0</span>
+<span class="fc" id="L63">        var maxDuplicateCount = 100 // この値は本当は生成数によって変動すべき</span>
+
+        PKisDuplicate@ while(true) {
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if(duplicateCount &gt; maxDuplicateCount) {</span>
+<span class="fc" id="L68">                throw IllegalStateException(&quot;PKに指定したカラムの生成試行回数が上限値に達しました。&quot; +</span>
+                        &quot;これ以上は無限ループの可能性があったため中断しました。&quot;)
+            }
+
+<span class="fc" id="L72">            valueList.clear()</span>
+<span class="fc" id="L73">            var pkCnt = judgePKCnt</span>
+<span class="fc" id="L74">            var pkConcatStr = &quot;&quot;</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            for(grain in grainList) {</span>
+<span class="fc" id="L77">                val value = grain.create()</span>
+<span class="fc bfc" id="L78" title="All 4 branches covered.">                if(grain.primaryKey &amp;&amp; !grain.isFixingValue) {</span>
+<span class="fc" id="L79">                    pkConcatStr += value</span>
+<span class="fc" id="L80">                    pkCnt--</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">                    if(pkCnt == 0) {</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                        if(pkMap.containsKey(pkConcatStr)) {</span>
+<span class="fc" id="L83">                            duplicateCount++</span>
+<span class="fc" id="L84">                            continue@PKisDuplicate</span>
+                        } else {
+<span class="fc" id="L86">                            pkMap.put(pkConcatStr, true)</span>
+                        }
+                    }
+                }
+<span class="fc" id="L90">                valueList.add(value)</span>
+            }
+            break
+        }
+<span class="fc" id="L94">        return valueList</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
