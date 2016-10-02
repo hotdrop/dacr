@@ -87,24 +87,24 @@ class GrainChar(attr: ColAttribute): IGrain {
             // 日本語文字はUTF8だと1文字3バイトになるため、例えばデータ長をバイトで計算するOracleとかでも
             // 入れられるよう1/3とした。fillMaxSizeを指定してしまった場合は仕方ないのでinsertエラーになってもらう。
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
-            var buff = ""
-
-            for(idx in 1..makeSize) {
-                buff += MULTI_BYTE_WORDS[rand.nextInt(MULTI_BYTE_WORDS.size)]
+            val sb = buildString {
+                for(idx in 1..makeSize) {
+                    append(MULTI_BYTE_WORDS[rand.nextInt(MULTI_BYTE_WORDS.size)])
+                }
             }
-            return buff
+            return sb
         }
 
         fun makeSingleByteString(): String {
 
             val rand =Random()
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
-            var buff = ""
-
-            for(idx in 1..makeSize) {
-                buff += WORDS[rand.nextInt(WORDS.size)]
+            val sb = buildString {
+                for(idx in 1..makeSize) {
+                    append(WORDS[rand.nextInt(WORDS.size)])
+                }
             }
-            return buff
+            return sb
         }
         
         if(values != null) {
@@ -118,6 +118,8 @@ class GrainChar(attr: ColAttribute): IGrain {
     private companion object {
         // もっと増やしてもいいかもしれないが、ランダム生成のコストが大きくなることを恐れて一旦この数にした
         private val MULTI_BYTE_WORDS = arrayOf("あ","い","う","え","お")
-        private val WORDS = arrayOf("A","B","C","D","E","1","2","3","4","5")
+        private val WORDS = arrayOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N"
+                ,"O","P","Q","R","S","T","U","V","W","X","Y","Z"
+                ,"1","2","3","4","5","6","7","8","9")
     }
 }
