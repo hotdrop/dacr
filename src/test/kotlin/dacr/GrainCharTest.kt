@@ -214,4 +214,14 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "1")
         Assert.assertEquals(grainChar.create(), "2")
     }
+
+    @Test
+    fun upperCastTest() {
+        var grainChar = GrainChar(ColAttribute(name = "test", dataType = "CHAR", primaryKey = false,
+                size = 5, format = "ZEROPADDING", autoIncrement = false, fillMaxSize = true,
+                valueType = "FIXING", value = "0", hasMultiByte = false))
+
+        val retStr = grainChar.create()
+        Assert.assertEquals(retStr.length, 1)
+    }
 }

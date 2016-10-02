@@ -51,6 +51,12 @@ class GrainDateTest {
         println("nowTest retStr=" + retStr)
         println("nowTest createDate=" + grainDate.create())
         Assert.assertEquals(grainDate.create(), retStr)
+
+        // upper cast
+        grainDate = GrainDate(ColAttribute(name = "normal", dataType = "DATE", primaryKey = false,
+                size = 5, format = "YYYY-MM-dd", autoIncrement = false, fillMaxSize = false,
+                valueType = "variable", value = "NOW", hasMultiByte = false))
+        Assert.assertEquals(grainDate.create(), retStr)
     }
 
     @Test(expected = IllegalArgumentException::class)
