@@ -5,14 +5,14 @@ package dacr.indata
  */
 data class ColAttribute(
 
-        val name : String,
-        val primaryKey : Boolean,
-        val dataType : String,
+        val name : String = "",
+        val primaryKey : Boolean = false,
+        val dataType : String = "",
         /** 次の型で有効:char varchar number */
-        val size : Int,
+        val size : Int = 0,
         /** 次の型で有効:char varchar date timestamp */
-        val format : String,
-        val valueType : String,
+        val format : String = "",
+        val valueType : String = "",
         /**
          * fixingの場合:値を1つ指定するとその値固定で出力する。空の場合は空を入れる。
          *             値をカンマ区切りで複数指定すると、その値を順番に出力する。
@@ -21,13 +21,15 @@ data class ColAttribute(
          *               Number型かつautoIncrement指定した場合、指定した値から順にインクリメントする。
          * DateまたはTimestampの場合:nowと指定すると現在日時を出力する。
          **/
-        val value : String,
+        val value : String = "",
         /** 次の型で有効:char varchar number */
-        val autoIncrement : Boolean,
+        val autoIncrement : Boolean = false,
         /** 次の型で有効:char varchar */
-        val fillMaxSize : Boolean,
+        val fillMaxSize : Boolean = false,
         /** 次の型で有効:char varchar */
-        val hasMultiByte : Boolean
+        val hasMultiByte : Boolean = false,
+        /** 次の型で有効:char varchar */
+        val encloseChar : String = ""
 ) {
     companion object {
         const val DATA_TYPE_CHAR = "CHAR"
@@ -40,5 +42,7 @@ data class ColAttribute(
         const val VALUE_TYPE_VARIABLE = "VARIABLE"
         const val VALUE_NOW = "NOW"
         const val FORMAT_ZERO_PADDING = "ZEROPADDING"
+        const val ENCLOSE_CHAR_SINGLE_QUOTATION = "SINGLEQUOTAION"
+        const val ENCLOSE_CHAR_DOUBLE_QUOTATION = "DOUBLEQUOTAION"
     }
 }
