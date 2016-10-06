@@ -134,7 +134,7 @@ BC3
 ```
 
 ## size
-The following parameter defined: any number
+The following parameter defined: any number  
 DataType: char/varchar/number  
 * dataType="char" size=6 valueType="variable"  
 *(attention! The length of the creating value is size/3)*
@@ -153,8 +153,8 @@ ED43
 ```
 
 ## format
-The following parameter defined: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc) zeroPadding
-DataType: all
+The following parameter defined: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc) zeroPadding  
+DataType: all  
 *(attention! "zeroPadding" parameter is case insensitive)*
 * dataType="date" format="YYYY-MM-dd"
 ```
@@ -197,7 +197,7 @@ B5
 ```
 
 ## value
-The following parameter defined: single value/plurality of values
+The following parameter defined: single value/plurality of values  
 DataType: all  
 * dataType="char" valueType="fixing" value="hoge"
 ```
@@ -294,7 +294,7 @@ B2C
 ```
 
 ## encloseChar
-The following parameter defined: SingleQuotation DoubleQuotation
+The following parameter defined: SingleQuotation DoubleQuotation  
 DataType: char/varchar  
 *(attention! This parameter is case insensitive)*
 * dataType="char" encloseChar="SingleQuotation"
