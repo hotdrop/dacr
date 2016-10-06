@@ -10,30 +10,27 @@ class SphereTest {
     @Test
     fun createTest() {
         var colAttrList = mutableListOf<ColAttribute>()
-        colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = false,
-                size = 5, format = "zeroPadding", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "pk2", dataType = "char", primaryKey = false,
-                size = 10, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "fixing", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "create_code", dataType = "char", primaryKey = false,
-                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "", hasMultiByte = false))
+        colAttrList.add(ColAttribute(name = "col1", dataType = "char", size = 5, format = "zeroPadding",
+                valueType = "variable", value = ""))
+        colAttrList.add(ColAttribute(name = "col2", dataType = "char", size = 10, format = "",
+                valueType = "fixing", value = "A01,A02,B03,B04,C05"))
+        colAttrList.add(ColAttribute(name = "col3", dataType = "char", size = 5, format = "",
+                valueType = "variable", value = ""))
 
         val dataSphere = Sphere(colAttrList)
-        for(i in 0..5) {
+        var mutableList = mutableListOf<String>()
+        for(i in 1..5) {
             // 適当なデータが5レコードできれば良い
-            println(dataSphere.create())
+            mutableList.add(dataSphere.create().joinToString(","))
         }
-        Assert.assertTrue(true)
+        Assert.assertEquals(mutableList.size, 5)
     }
 
     @Test
     fun createWithPKTest() {
         var colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true,
-                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "", hasMultiByte = false))
+                size = 5, valueType = "variable", value = ""))
 
         val dataSphere = Sphere(colAttrList)
         var duplicateMap = mutableMapOf<String, Boolean>()
@@ -53,14 +50,11 @@ class SphereTest {
     fun createWithMultipleValuePKTest() {
         var colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true,
-                size = 20, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "", hasMultiByte = false))
+                size = 20, valueType = "variable", value = ""))
         colAttrList.add(ColAttribute(name = "pk2", dataType = "char", primaryKey = true,
-                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "A01,A02", hasMultiByte = false))
+                size = 5, valueType = "variable", value = "A01,A02"))
         colAttrList.add(ColAttribute(name = "pk3", dataType = "char", primaryKey = true,
-                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "fixing", value = "test", hasMultiByte = false))
+                size = 5, valueType = "fixing", value = "test"))
 
         val dataSphere = Sphere(colAttrList)
         var duplicateMap = mutableMapOf<String, Boolean>()
@@ -79,12 +73,12 @@ class SphereTest {
     @Test(expected = IllegalStateException::class)
     fun illegalDataTypeTest() {
         var colAttrList = mutableListOf<ColAttribute>()
-        colAttrList.add(ColAttribute(name = "col1", dataType = "CHAR", primaryKey = true, size = 5, format = "", autoIncrement = false, fillMaxSize = false, valueType = "variable", value = "", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "col2", dataType = "VARCHAR", primaryKey = true, size = 5, format = "", autoIncrement = false, fillMaxSize = false, valueType = "variable", value = "", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "col3", dataType = "DATE", primaryKey = true, size = 5, format = "", autoIncrement = false, fillMaxSize = false, valueType = "variable", value = "", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "col4", dataType = "DATETIME", primaryKey = true, size = 5, format = "", autoIncrement = false, fillMaxSize = false, valueType = "variable", value = "", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "col5", dataType = "TIMESTAMP", primaryKey = true, size = 5, format = "", autoIncrement = false, fillMaxSize = false, valueType = "variable", value = "", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "col6", dataType = "UNKNOWN", primaryKey = true, size = 5, format = "", autoIncrement = false, fillMaxSize = false, valueType = "variable", value = "", hasMultiByte = false))
+        colAttrList.add(ColAttribute(dataType = "CHAR", valueType = "variable"))
+        colAttrList.add(ColAttribute(dataType = "VARCHAR", valueType = "variable"))
+        colAttrList.add(ColAttribute(dataType = "DATE", valueType = "variable"))
+        colAttrList.add(ColAttribute(dataType = "DATETIME", valueType = "variable"))
+        colAttrList.add(ColAttribute(dataType = "TIMESTAMP", valueType = "variable"))
+        colAttrList.add(ColAttribute(dataType = "UNKNOWN", valueType = "variable"))
 
         Sphere(colAttrList)
         Assert.assertTrue(false)
@@ -93,16 +87,11 @@ class SphereTest {
     @Test(expected = IllegalStateException::class)
     fun numberOfTrialErrorTest() {
         var colAttrList = mutableListOf<ColAttribute>()
-        colAttrList.add(ColAttribute(name = "duplicate", dataType = "char", primaryKey = true,
-                size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "A01,A02", hasMultiByte = false))
-
+        colAttrList.add(ColAttribute(dataType = "char", primaryKey = true, valueType = "variable", value = "A01,A02"))
         val dataSphere = Sphere(colAttrList)
-        for(i in 1..1000) {
+        for(i in 1..10) {
             dataSphere.create()
         }
         Assert.assertTrue(false)
     }
-
-
 }
