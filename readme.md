@@ -29,19 +29,19 @@ java -jar dacr.jar [json file path] [output file path] [number of row to be crea
   {"name": "name1", "primaryKey": true, "dataType": "char",
     "size": 5, "format": "zeroPadding", "autoIncrement": false,
     "fillMaxSize": false, "valueType": "variable",
-    "value": "", "hasMultiByte": false
+    "value": "", "hasMultiByte": false, "encloseChar": ""
   },
   {
     "name": "name2", "primaryKey": false, "dataType": "char",
       "size": 10, "format": "", "autoIncrement": false,
       "fillMaxSize": false, "valueType": "fixing",
-      "value": "A01,A02,B03,B04,C05", "hasMultiByte": false
+      "value": "A01,A02,B03,B04,C05", "hasMultiByte": false, "encloseChar": ""
   },
   {
     "name": "name3", "primaryKey": false, "dataType": "char",
       "size": 5, "format": "", "autoIncrement": false,
       "fillMaxSize": false, "valueType": "variable",
-      "value": "", "hasMultiByte": false
+      "value": "", "hasMultiByte": false, "encloseChar": "SingleQuotation"
   }
 ]
 ```
@@ -50,11 +50,11 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 
 * result
 ```
-0000B,A01,4
-00002,A02,C
-00004,B03,A
-00001,B04,D
-0000E,C05,1
+0000B,A01,'4'
+00002,A02,'C'
+00004,B03,'A'
+00001,B04,'D'
+0000E,C05,'1'
 ```
 
 ## Definition file description
@@ -68,6 +68,7 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 8. autoIncrement : 自動連番を出力する場合はtrue、しない場合はfalse
 9. fillMaxSize : データ長の限界まで値を生成する場合はtrue、しない場合はfalse
 10. hasMultiByte : 生成する値をマルチバイト文字（日本語）にする場合はtrue、しない場合はfalse
+11. encloseChar : 文字をシングルクォーテーションで囲う場合はSingleQuotation、ダブルの場合はDoubleQuotation
 
 ## name
 指定値:任意の文字列  
@@ -285,6 +286,24 @@ B2C
 えいあ
 うあお
   :
+```
+
+## encloseChar
+指定値: SingleQuotation DoubleQuotation
+Datatype:char varchar  
+* dataType="char" encloseChar="SingleQuotation"
+```
+'ABC'
+'B2C'
+'35A'
+ :
+```
+* dataType="char" encloseChar="DoubleQuotation"
+```
+"ABC"
+"B2C"
+"35A"
+ :
 ```
 
 # License  

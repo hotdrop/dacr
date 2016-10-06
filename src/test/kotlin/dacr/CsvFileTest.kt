@@ -88,7 +88,7 @@ class CsvFileTest {
                 valueType = "fixing", value = "A01,A02,B03,B04,C05", hasMultiByte = false))
         colAttrList.add(ColAttribute(name = "create_code", dataType = "char", primaryKey = false,
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
-                valueType = "variable", value = "", hasMultiByte = false))
+                valueType = "variable", value = "", hasMultiByte = false, encloseChar = "DoubleQuotation"))
 
         val parentPath = System.getProperty("user.dir") + "/src/test/kotlin/dacr/testdata/"
         val outPath = parentPath + "outWithPKTest.csv"
