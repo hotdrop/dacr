@@ -4,5 +4,6 @@
 /build
 /src/main/res
 /src/main/*.xml
+/src/test/kotlin/dacr/testdata/*.csv
 /reports
 
