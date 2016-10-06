@@ -1,12 +1,11 @@
 [![Kotlin 1.0.4](https://img.shields.io/badge/Kotlin-1.0.4-blue.svg)](http://kotlinlang.org)
 # DACR
-json形式の列定義ファイルを読み込んで、指定した行数のCSVデータを生成します。  
-列によって固定値を出力したり、プログラムでランダムな値を自動生成することができます。
+json形式の列定義ファイルを読み込み、指定した行数のCSVデータを生成します。  
 
 ## Description
+負荷試験で大量のダミーデータをDBにinsertしたかったため、このツールを作成しました。  
 ダミーデータを生成したいテーブルの全カラム情報をjson形式で定義します。  
-定義された情報に従って、カンマ区切りのCSVファイルを生成します。
-負荷試験等で大量のダミーデータをDBのテーブルにinsertすることを目的に作成しました。
+そのjsonファイルと生成行数を指定すると、CSVファイル（カンマ区切り）を生成します。  
 
 ## Requirement
 * Kotlin 1.0.4
@@ -14,7 +13,6 @@ json形式の列定義ファイルを読み込んで、指定した行数のCSV�
 
 > Gson is released under the Apache 2.0 license.
   License: [Apache License Version 2.0](/licenses/ApacheLicense2.0)
-
 
 ## Usage
 jarにするかまたはmainを直接実行します。引数は3つ指定してください。  
@@ -71,12 +69,17 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 11. encloseChar : 文字をシングルクォーテーションで囲う場合はSingleQuotation、ダブルの場合はDoubleQuotation
 
 ## name
-指定値:任意の文字列  
-カラム名を設定します。この定義値は今のところ使用していません。
+The following parameter defined: any value
+DataType: all  
+To specify the column name. not use in the program.
 
 ## primaryKey
-指定値:true false  
-Datatype:all  
+The following parameter defined: true/false  
+DataType: all  
+*(attention! If this parameter is true, the value does not duplicate.  
+  To increase the generation number of trials, remove the duplication.  
+  This fact, there is a risk of an infinite loop.  
+  Therefore, if the generation number of trials has become to a certain number will throw an IllegalStateException.)*
 * primaryKey=false value="variable" value=""  
 ```
 A13 <-
@@ -92,12 +95,11 @@ B23  <- not duplicate
 A15  <-
  :   <-
 ```
-*(※値の生成試行回数を増やして重複を除去しています。無限ループを防ぐため試行回数が一定数に達した時点で例外を投げています。)*
 
 ## dataType
-指定値:char varchar number date datetime timestamp  
-Datatype:all  
-*(※大文字小文字は区別しません)*  
+The following parameter defined: char/varchar/number/date/datetime/timestamp  
+DataType: all  
+*(attention! This parameter is case insensitive)*  
 * dataType="char" or dataType="varchar"
 ```
 A03
@@ -132,10 +134,10 @@ BC3
 ```
 
 ## size
-指定値:任意の数値  
-Datatype:char varchar number  
+The following parameter defined: any number
+DataType: char/varchar/number  
 * dataType="char" size=6 valueType="variable"  
-*(※生成する値のlength=size/3)*
+*(attention! The length of the creating value is size/3)*
 ```
 A1 <- create to 6/3=2 byte character
 B5
@@ -151,7 +153,9 @@ ED43
 ```
 
 ## format
-指定値: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc) zeroPadding
+The following parameter defined: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc) zeroPadding
+DataType: all
+*(attention! "zeroPadding" parameter is case insensitive)*
 * dataType="date" format="YYYY-MM-dd"
 ```
 2005-06-25
@@ -174,8 +178,9 @@ ED43
 ```
 
 ## valueType
-指定値: fixing variable  
-Datatype:all  
+The following parameter defined: fixing/variable  
+DataType: all  
+*(attention! This parameter is case insensitive)*
 * dataType="char" valueType="fixing" value="hoge"
 ```
 hoge
@@ -192,8 +197,8 @@ B5
 ```
 
 ## value
-指定値: single value or plurality of values
-Datatype:all  
+The following parameter defined: single value/plurality of values
+DataType: all  
 * dataType="char" valueType="fixing" value="hoge"
 ```
 hoge
@@ -220,15 +225,15 @@ B02  <-
  :
 ```
 * dataType="date" valueType="variable" value="2016/09/23,2016/09/24,2016/09/25"  
-*(※dataType can be anything)*
 ```
-2016/09/24
-2016/09/25
-2016/09/23
-2016/09/23
+2016/09/24  <-
+2016/09/25  <-
+2016/09/23  <- in case of "variable", output in random
+2016/09/23  <-
     :
 ```
 * dataType="date" valueType="variable" value="now"  
+*(attention! "now" parameter is case insensitive)*
 ```
 2016/09/30 <- current date
 2016/09/30
@@ -236,8 +241,8 @@ B02  <-
 ```
 
 ## autoIncrement
-指定値: true false  
-Datatype:char varchar number  
+The following parameter defined: true/false  
+DataType: char/varchar/number  
 * dataType="char" autoIncrement="true"
 ```
 1
@@ -254,8 +259,8 @@ Datatype:char varchar number
 ```
 
 ## fillMaxSize
-指定値: true false  
-Datatype:char varchar  
+The following parameter defined: true/false  
+DataType: char/varchar  
 * dataType="char" size=6 valueType="variable" fillMaxSize=false
 ```
 A1 <- create to 6/3=2 byte character
@@ -271,8 +276,8 @@ CBEBC
   :
 ```
 ## hasMultiByte
-指定値: true false  
-Datatype:char varchar  
+The following parameter defined: true/false  
+DataType: char/varchar  
 * dataType="char" hasMultiByte=false
 ```
 ABC
@@ -289,8 +294,9 @@ B2C
 ```
 
 ## encloseChar
-指定値: SingleQuotation DoubleQuotation
-Datatype:char varchar  
+The following parameter defined: SingleQuotation DoubleQuotation
+DataType: char/varchar  
+*(attention! This parameter is case insensitive)*
 * dataType="char" encloseChar="SingleQuotation"
 ```
 'ABC'
