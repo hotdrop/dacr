@@ -77,24 +77,20 @@ class GrainDateTest {
                 valueType = "variable", value = "now"))
         var sdf = SimpleDateFormat("YYYY/MM/dd hh:mm:ss")
         var retStr = sdf.format(Date())
-        println("dateInTimeTest retStr=" + retStr)
-        println("dateInTimeTest createDate=" + grainDate.create())
         Assert.assertEquals(grainDate.create(), retStr)
 
         // dataType is date. fixing hour, minute and second if hh:mm:ss in format
         grainDate = GrainDate(ColAttribute(dataType = "date", format = "YYYY/MM/dd hh:mm:ss",
                 valueType = "variable", value = ""))
-        println("variableDateTest date=" + grainDate.create())
-        println("variableDateTest date=" + grainDate.create())
-        println("variableDateTest date=" + grainDate.create())
+        println("dateInTimeTest variable date=" + grainDate.create())
+        println("dateInTimeTest variable date=" + grainDate.create())
         Assert.assertTrue(true)
 
         // dateTime is date. variable hour, minute and second
         grainDate = GrainDate(ColAttribute(dataType = "datetime", format = "YYYY/MM/dd hh:mm:ss",
                 valueType = "variable", value = ""))
-        println("variableDateTest dateTime=" + grainDate.create())
-        println("variableDateTest dateTime=" + grainDate.create())
-        println("variableDateTest dateTime=" + grainDate.create())
+        println("dateInTimeTest variable dateTime=" + grainDate.create())
+        println("dateInTimeTest variable dateTime=" + grainDate.create())
         Assert.assertTrue(true)
     }
 }
