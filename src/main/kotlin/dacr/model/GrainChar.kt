@@ -23,6 +23,7 @@ class GrainChar(attr: ColAttribute): IGrain {
     private val isZeroPadding: Boolean
     private val fillMaxSize: Boolean
     private val hasMultiByte: Boolean
+    private val encloseMark : String
 
     init {
         name = attr.name
@@ -43,6 +44,11 @@ class GrainChar(attr: ColAttribute): IGrain {
         fillMaxSize = attr.fillMaxSize
         isZeroPadding = if(attr.format.toUpperCase() == ColAttribute.FORMAT_ZERO_PADDING && !fillMaxSize) true else false
         hasMultiByte = attr.hasMultiByte
+        when(attr.encloseChar.toUpperCase()) {
+            ColAttribute.ENCLOSE_CHAR_SINGLE_QUOTATION -> encloseMark = "'"
+            ColAttribute.ENCLOSE_CHAR_DOUBLE_QUOTATION -> encloseMark = """""""
+            else -> encloseMark = ""
+        }
     }
 
     /**
@@ -50,24 +56,30 @@ class GrainChar(attr: ColAttribute): IGrain {
      */
     override fun create(): String {
 
+        fun encloseStr(ret: String): String {
+            return if(encloseMark == "") ret else encloseMark + ret + encloseMark
+        }
+
+        var retVal: String
+
         if(isFixingValue) {
-            return makeFixingValue()
+            retVal = makeFixingValue()
+        } else if(autoIncrement) {
+            retVal = makeAutoIncrement()
+        } else {
+            retVal = makeVariableValue()
         }
 
-        if(autoIncrement) {
-            return makeAutoIncrement()
-        }
-
-        return makeVariableValue()
+        return encloseStr(retVal)
     }
 
-    private fun makeFixingValue() : String {
+    private fun makeFixingValue(): String {
 
         if(values == null) {
             return value
         }
 
-        val retVal = values[valueIdx]
+        var retVal = values[valueIdx]
         valueIdx = if(valueIdx >= values.size - 1) 0 else ++valueIdx
 
         return retVal
@@ -111,7 +123,7 @@ class GrainChar(attr: ColAttribute): IGrain {
             return values[Random().nextInt(values.size)]
         }
 
-        var retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
+        val retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
         return if(isZeroPadding) retVal.padStart(size, '0') else retVal
     }
 

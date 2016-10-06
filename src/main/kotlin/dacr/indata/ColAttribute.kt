@@ -42,7 +42,7 @@ data class ColAttribute(
         const val VALUE_TYPE_VARIABLE = "VARIABLE"
         const val VALUE_NOW = "NOW"
         const val FORMAT_ZERO_PADDING = "ZEROPADDING"
-        const val ENCLOSE_CHAR_SINGLE_QUOTATION = "SINGLEQUOTAION"
-        const val ENCLOSE_CHAR_DOUBLE_QUOTATION = "DOUBLEQUOTAION"
+        const val ENCLOSE_CHAR_SINGLE_QUOTATION = "SINGLEQUOTATION"
+        const val ENCLOSE_CHAR_DOUBLE_QUOTATION = "DOUBLEQUOTATION"
     }
 }

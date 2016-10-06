@@ -169,10 +169,57 @@ class GrainCharTest {
 
     @Test
     fun upperCastTest() {
-
         var grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 5, format = "ZEROPADDING",
-                fillMaxSize = true, valueType = "FIXING", value = "0"))
+                fillMaxSize = true, valueType = "VARIABLE", value = "0"))
         val retStr = grainChar.create()
-        Assert.assertEquals(retStr.length, 1)
+        Assert.assertEquals(retStr.length, 5)
+    }
+
+    @Test
+    fun encloseCharTest() {
+        // single quotation mark
+        var grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
+                valueType = "FIXING", value = "test", encloseChar = "SingleQuotation"))
+        var correctStr = "'test'"
+        Assert.assertEquals(grainChar.create(), correctStr)
+
+        grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10, format = "ZeroPadding",
+                valueType = "Variable", value = "test", encloseChar = "SingleQuotation"))
+        Assert.assertEquals(grainChar.create().length, 12)
+
+        grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
+                valueType = "variable", value = "", encloseChar = "SingleQuotation"))
+        Assert.assertEquals(grainChar.create().length, 5)
+
+        val retList = arrayListOf("'A01'", "'A02'", "'B03'")
+        grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "variable",
+                value = "A01,A02,B03", encloseChar = "SingleQuotation"))
+
+        Assert.assertTrue(retList.contains(grainChar.create()))
+        Assert.assertTrue(retList.contains(grainChar.create()))
+        Assert.assertTrue(retList.contains(grainChar.create()))
+
+        // double quotation mark
+        grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
+                valueType = "fixing", value = "test", encloseChar = "DoubleQuotation"))
+        correctStr = """"test""""
+        Assert.assertEquals(grainChar.create(), correctStr)
+
+        grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10, format = "ZeroPadding",
+                valueType = "variable", value = "", encloseChar = "DoubleQuotation"))
+        Assert.assertEquals(grainChar.create().length, 12)
+
+        grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
+                valueType = "variable", value = "", encloseChar = "DoubleQuotation"))
+        Assert.assertEquals(grainChar.create().length, 5)
+
+        val retList2 = arrayListOf(""""A01"""", """"A02"""", """"B03"""")
+        grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "variable",
+                value = "A01,A02,B03", encloseChar = "DoubleQuotation"))
+        Assert.assertTrue(retList2.contains(grainChar.create()))
+        Assert.assertTrue(retList2.contains(grainChar.create()))
+        Assert.assertTrue(retList2.contains(grainChar.create()))
+
+
     }
 }
