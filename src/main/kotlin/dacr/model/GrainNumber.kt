@@ -26,7 +26,7 @@ class GrainNumber(attr: ColAttribute): IGrain {
         size = attr.size
 
         var tmp = 1
-        listOf(1..size).forEach { tmp *= 10 }
+        for(i in 1..size) { tmp *= 10 }
         maxvalue = tmp - 1
 
         isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
