@@ -11,9 +11,9 @@ import java.io.File
  */
 class CsvFile(sphere: Sphere, outPath: String, lineNumber: Int) {
 
-    val dataSphere = sphere
-    val outputPath = outPath
-    val outLineNum = lineNumber
+    private val dataSphere = sphere
+    private val outputPath = outPath
+    private val outLineNum = lineNumber
 
     fun BufferedWriter.writeLine(line : String) {
         this.write(line)

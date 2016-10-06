@@ -9,7 +9,8 @@
     "fillMaxSize": false,
     "valueType": "fixing",
     "value": "firstValue",
-    "hasMultiByte": false
+    "hasMultiByte": false,
+    "encloseChar": ""
   },
   {
     "name": "second",
@@ -21,7 +22,8 @@
     "fillMaxSize": false,
     "valueType": "fixing",
     "value": "secondValue",
-    "hasMultiByte": false
+    "hasMultiByte": false,
+    "encloseChar": ""
   },
   {
     "name": "third",
@@ -33,6 +35,7 @@
     "fillMaxSize": false,
     "valueType": "fixing",
     "value": "thirdValue",
-    "hasMultiByte": false
+    "hasMultiByte": false,
+    "encloseChar": "SingleQuotation"
   }
 ]
