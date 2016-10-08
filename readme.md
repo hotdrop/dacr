@@ -15,9 +15,13 @@ json形式の列定義ファイルを読み込み、指定した行数のCSVデ�
   License: [Apache License Version 2.0](/licenses/ApacheLicense2.0)
 
 ## Usage
-jarにするかまたはmainを直接実行します。引数は3つ指定してください。  
 ```
 java -jar dacr.jar [json file path] [output file path] [number of row to be created]
+```
+or run from the current directory  
+```
+./gradlew build
+java -jar build/libs/dacr.jar [json file path] [output file path] [number of row to be created]
 ```
 
 ## Example
