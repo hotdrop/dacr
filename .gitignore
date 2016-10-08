@@ -1,9 +1,6 @@
-*.iml
-*.gradle
-*.pro
-/build
-/src/main/res
-/src/main/*.xml
-/src/test/kotlin/dacr/testdata/*.csv
-/reports
+.gradle
+.idea
+build
+src/test/kotlin/dacr/testdata/*.csv
+reports
 
