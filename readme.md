@@ -60,17 +60,17 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 ```
 
 ## Definition file description
-1. name : カラム名
-2. primaryKey : 主キーであればtrue、そうでなければfalse
-3. dataType : 次のいずれかを指定[char varchar number date datetime timestamp]
-4. size : データ長
-5. format : カラムのフォーマット
-6. valueType : 固定の値を出力する場合はfixing、値を可変に生成する場合はvariable
-7. value : 固定の値を出力する場合はその値、プログラムで生成する場合は空
-8. autoIncrement : 自動連番を出力する場合はtrue、しない場合はfalse
-9. fillMaxSize : データ長の限界まで値を生成する場合はtrue、しない場合はfalse
-10. hasMultiByte : 生成する値をマルチバイト文字（日本語）にする場合はtrue、しない場合はfalse
-11. encloseChar : 文字をシングルクォーテーションで囲う場合はSingleQuotation、ダブルの場合はDoubleQuotation
+1. name : column name.
+2. primaryKey : true / false
+3. dataType : char / varchar / number / date / datetime / timestamp
+4. size : data size(length)
+5. format : format(ex. YYYY/MM/DD)
+6. valueType : fixing / variable
+7. value : Specific value if you want to output the value of the fixed. Empty if you want to auto-generate
+8. autoIncrement : True if you want to auto-generate a sequential number.
+9. fillMaxSize : True if you want to generate value to the limit of the data size.
+10. hasMultiByte : True if you want to generate a Japanese.
+11. encloseChar : SingleQuotation / DoubleQuotation
 
 ## name
 The following parameter defined: any value
