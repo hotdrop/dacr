@@ -236,7 +236,7 @@ B02  <-
 2016/09/23  <-
     :
 ```
-* dataType="date" valueType="variable" value="now"  
+* dataType="date" format="YYYY/MM/dd" valueType="variable" value="now"  
 *(attention! "now" parameter is case insensitive)*
 ```
 2016/09/30 <- current date
