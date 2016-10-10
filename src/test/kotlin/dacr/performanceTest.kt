@@ -39,19 +39,19 @@ class performanceTest {
         //  CPU: Intel Core i5 2.7GHx
         //  Memory: 8GB 1867 MHz DDR3
         val fixingTimeAvg = benchMark(fixingList)
-        println("fixing time avg:" + fixingTimeAvg)
+        println("CharTest fixing   time:" + fixingTimeAvg)
         Assert.assertTrue(fixingTimeAvg < 100)
 
         val variableTimeAvg = benchMark(varList)
-        println("variable time avg:" + variableTimeAvg)
+        println("CharTest variable time:" + variableTimeAvg)
         Assert.assertTrue(fixingTimeAvg < 1500)
 
         val charEncloseTimeAvg = benchMark(varEncloseMarkList)
-        println("char enclose time avg:" + charEncloseTimeAvg)
+        println("CharTest enclose  time:" + charEncloseTimeAvg)
         Assert.assertTrue(fixingTimeAvg < 1500)
 
         val fillMaxTimeAvg = benchMark(varFillList)
-        println("fill max time avg:" + fillMaxTimeAvg)
+        println("CharTest fillMax  time:" + fillMaxTimeAvg)
         Assert.assertTrue(fixingTimeAvg < 4000)
     }
 
@@ -73,15 +73,13 @@ class performanceTest {
         }
 
         val fixingTimeAvg = benchMark(fixingList)
-        println("fixing time avg:" + fixingTimeAvg)
+        println("DateTest fixing   time:" + fixingTimeAvg)
 
         val nowTimeAvg = benchMark(nowList)
-        println("now time avg:" + nowTimeAvg)
+        println("DateTest now      time:" + nowTimeAvg)
 
         val variableTimeAvg = benchMark(varList)
-        println("variable time avg:" + variableTimeAvg)
-
-        Assert.assertTrue(true)
+        println("DateTest variable time:" + variableTimeAvg)
     }
 
     @Test
@@ -99,9 +97,16 @@ class performanceTest {
             correctList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
 
-        println("fixing time avg:" + benchMark(yyyySlashList))
-        println("now time avg:" + benchMark(yyyyISOLocalList))
-        println("variable time avg:" + benchMark(correctList))
+        val yyyyTimeAvg = benchMark(yyyySlashList)
+        println("DateFormatTest yyyy/MM/dd time:" + yyyyTimeAvg)
+        val isoLocalTimeAvg = benchMark(yyyyISOLocalList)
+        println("DateFormatTest YYYY-MM-dd time:" + isoLocalTimeAvg)
+        val correctTImeAvg = benchMark(correctList)
+        println("DateFormatTest uuuu-MM-dd time:" + correctTImeAvg)
+
+        val indication = correctTImeAvg + 500 //ms
+        Assert.assertTrue(yyyyTimeAvg < indication)
+        Assert.assertTrue(isoLocalTimeAvg < indication)
     }
 
     @Test
@@ -122,13 +127,13 @@ class performanceTest {
         }
 
         val fixingTimeAvg = benchMark(fixingList)
-        println("fixing timestamp avg:" + fixingTimeAvg)
+        println("TimestampTest fixing   time:" + fixingTimeAvg)
 
         val nowTimeAvg = benchMark(nowList)
-        println("now timestamp avg:" + nowTimeAvg)
+        println("TimestampTest now      time:" + nowTimeAvg)
 
         val variableTimeAvg = benchMark(varList)
-        println("variable timestamp avg:" + variableTimeAvg)
+        println("TimestampTest variable time:" + variableTimeAvg)
 
         Assert.assertTrue(true)
     }
@@ -136,18 +141,20 @@ class performanceTest {
     @Test
     fun sdfVsDtfTest() {
 
+        println("SimpleDateFormat vs DateTimeFormatter round 1!")
         // SimpleDateFormat
         val sdf = SimpleDateFormat("YYYY/MM/dd hh:mm:ss")
         val sdfTimeAvg = measureTimeMillis { for(i in 1..1000000) {sdf.format(Date())} }
-        println("simple normal:" + sdfTimeAvg)
+        println("      SimpleDateFormat  nowDate time:" + sdfTimeAvg)
 
         // DateTimeFormatter
         val dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd hh:mm:ss")
         val dtfTimeAvg = measureTimeMillis { for(i in 1..1000000) {dtf.format(LocalDateTime.now())} }
-        println("formatter normal:" + dtfTimeAvg)
+        println("      DateTimeFormatter nowDate time:" + dtfTimeAvg)
 
         Assert.assertTrue(dtfTimeAvg < sdfTimeAvg)
 
+        println("SimpleDateFormat vs DateTimeFormatter round 2!")
         // calculate SimpleDateFormat
         val sdfCalcTimeAvg = measureTimeMillis {
             for(i in 1..1000000) {
@@ -166,7 +173,7 @@ class performanceTest {
                 sdf.format(cal.time)
             }
         }
-        println("simple calc:" + sdfCalcTimeAvg)
+        println("      SimpleDateFormat  date calculate time:" + sdfCalcTimeAvg)
 
         // calculate DateTimeFormatter
         val dtfCalcTimeAvg = measureTimeMillis {
@@ -183,7 +190,7 @@ class performanceTest {
                         .plusSeconds(randObj.nextInt(59).toLong()))
             }
         }
-        println("formatter calc:" + dtfCalcTimeAvg)
+        println("      DateTimeFormatter date calculate time:" + dtfCalcTimeAvg)
 
         Assert.assertTrue(dtfTimeAvg < sdfTimeAvg)
     }

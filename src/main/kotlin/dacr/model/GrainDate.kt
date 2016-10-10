@@ -31,9 +31,13 @@ class GrainDate(attr: ColAttribute): IGrain {
         isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
 
         try {
-            // TODO Yをuに置換する
-            // 定義されたformatが誤っていた場合、早めに検知したいのでここでofPatternに入れてチェックしている
-            dtf = DateTimeFormatter.ofPattern(attr.format)
+            // DateTimeFormatter
+            var format = if(attr.format.contains("y")) attr.format.replace("y", "u")
+                            else if(attr.format.contains("Y")) attr.format.replace("Y", "u")
+                            else attr.format
+            // formatが誤っていた場合、早めに検知したいのでこのタイミングでofPatternに入れてチェックする
+            // 本当はチェック関数を別に作って最初に全部チェックしたほうがいい。
+            dtf = DateTimeFormatter.ofPattern(format)
         } catch (e: IllegalArgumentException) {
             throw IllegalArgumentException("日付フォーマットが誤っています。format=" + attr.format, e)
         }
