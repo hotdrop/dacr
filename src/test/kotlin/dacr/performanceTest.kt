@@ -12,7 +12,7 @@ import kotlin.system.measureTimeMillis
 
 class performanceTest {
 
-    @Test
+    //@Test
     fun charTest() {
         var fixingList = mutableListOf<ColAttribute>()
         for(i in 1..10) {
@@ -55,7 +55,6 @@ class performanceTest {
         Assert.assertTrue(fixingTimeAvg < 4000)
     }
 
-    @Test
     fun dateTimeTest() {
         var fixingList = mutableListOf<ColAttribute>()
         for(i in 1..100) {
@@ -82,7 +81,6 @@ class performanceTest {
         println("DateTest variable time:" + variableTimeAvg)
     }
 
-    @Test
     fun dateFormatPatternTest() {
         var yyyySlashList = mutableListOf<ColAttribute>()
         for(i in 1..100) {
@@ -109,7 +107,6 @@ class performanceTest {
         Assert.assertTrue(isoLocalTimeAvg < indication)
     }
 
-    @Test
     fun timestampTest() {
         var fixingList = mutableListOf<ColAttribute>()
         for(i in 1..100) {
@@ -138,7 +135,6 @@ class performanceTest {
         Assert.assertTrue(true)
     }
 
-    @Test
     fun sdfVsDtfTest() {
 
         println("SimpleDateFormat vs DateTimeFormatter round 1!")
