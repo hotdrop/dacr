@@ -12,25 +12,28 @@ import kotlin.system.measureTimeMillis
 
 class performanceTest {
 
-    //@Test
+    val benchMarkLoopCnt = 10
+    val testListSize = 10
+
+    @Test
     fun charTest() {
         var fixingList = mutableListOf<ColAttribute>()
-        for(i in 1..10) {
+        for(i in 1..testListSize) {
             fixingList.add(ColAttribute(dataType = "char", size = 20, valueType = "fixing", value = "12345678901234567890"))
         }
 
         var varList = mutableListOf<ColAttribute>()
-        for(i in 1..10) {
+        for(i in 1..testListSize) {
             varList.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = ""))
         }
 
         var varFillList = mutableListOf<ColAttribute>()
-        for(i in 1..10) {
+        for(i in 1..testListSize) {
             varFillList.add(ColAttribute(dataType = "char", size = 200, fillMaxSize = true, valueType = "variable", value = ""))
         }
 
         var varEncloseMarkList = mutableListOf<ColAttribute>()
-        for(i in 1..10) {
+        for(i in 1..testListSize) {
             varEncloseMarkList.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = "", encloseChar = ColAttribute.ENCLOSE_CHAR_DOUBLE_QUOTATION))
         }
 
@@ -55,19 +58,20 @@ class performanceTest {
         Assert.assertTrue(fixingTimeAvg < 4000)
     }
 
+    @Test
     fun dateTimeTest() {
         var fixingList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             fixingList.add(ColAttribute(dataType = "dateTime", valueType = "fixing", value = "2016/09/30 12:50:25"))
         }
 
         var nowList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             nowList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
 
         var varList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             varList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = ""))
         }
 
@@ -81,17 +85,18 @@ class performanceTest {
         println("DateTest variable time:" + variableTimeAvg)
     }
 
+    @Test
     fun dateFormatPatternTest() {
         var yyyySlashList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             yyyySlashList.add(ColAttribute(dataType = "dateTime", format="YYYY/MM/dd HH:mm:ss", valueType = "variable", value = "now"))
         }
         var yyyyISOLocalList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             yyyyISOLocalList.add(ColAttribute(dataType = "dateTime", format="YYYY-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
         var correctList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             correctList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
 
@@ -107,19 +112,20 @@ class performanceTest {
         Assert.assertTrue(isoLocalTimeAvg < indication)
     }
 
+    @Test
     fun timestampTest() {
         var fixingList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             fixingList.add(ColAttribute(dataType = "Timestamp", valueType = "fixing", value = "2016/09/30 12:50:25.382124"))
         }
 
         var nowList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             nowList.add(ColAttribute(dataType = "Timestamp", format="yyyy/MM/dd hh:mm:ss.SSSSSS", valueType = "variable", value = "now"))
         }
 
         var varList = mutableListOf<ColAttribute>()
-        for(i in 1..100) {
+        for(i in 1..testListSize) {
             varList.add(ColAttribute(dataType = "Timestamp", format="yyyy-MM-dd HH:mm:ss.SSSSSS", valueType = "variable", value = ""))
         }
 
@@ -135,17 +141,28 @@ class performanceTest {
         Assert.assertTrue(true)
     }
 
+    private fun benchMark(list: List<ColAttribute>): Long {
+        val dataSphere = Sphere(list)
+        return measureTimeMillis {
+            for(i in 1..benchMarkLoopCnt) {
+                dataSphere.create()
+            }
+        }
+    }
+
+    // おまけテスト
+    //@Test
     fun sdfVsDtfTest() {
 
         println("SimpleDateFormat vs DateTimeFormatter round 1!")
         // SimpleDateFormat
         val sdf = SimpleDateFormat("YYYY/MM/dd hh:mm:ss")
-        val sdfTimeAvg = measureTimeMillis { for(i in 1..1000000) {sdf.format(Date())} }
+        val sdfTimeAvg = measureTimeMillis { for(i in 1..10000000) {sdf.format(Date())} }
         println("      SimpleDateFormat  nowDate time:" + sdfTimeAvg)
 
         // DateTimeFormatter
         val dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd hh:mm:ss")
-        val dtfTimeAvg = measureTimeMillis { for(i in 1..1000000) {dtf.format(LocalDateTime.now())} }
+        val dtfTimeAvg = measureTimeMillis { for(i in 1..10000000) {dtf.format(LocalDateTime.now())} }
         println("      DateTimeFormatter nowDate time:" + dtfTimeAvg)
 
         Assert.assertTrue(dtfTimeAvg < sdfTimeAvg)
@@ -153,7 +170,7 @@ class performanceTest {
         println("SimpleDateFormat vs DateTimeFormatter round 2!")
         // calculate SimpleDateFormat
         val sdfCalcTimeAvg = measureTimeMillis {
-            for(i in 1..1000000) {
+            for(i in 1..10000000) {
                 val cal = Calendar.getInstance()
                 val endDateEpoch = cal.timeInMillis
                 cal.set(1900,1,1,0,0,0)
@@ -173,7 +190,7 @@ class performanceTest {
 
         // calculate DateTimeFormatter
         val dtfCalcTimeAvg = measureTimeMillis {
-            for(i in 1..1000000) {
+            for(i in 1..10000000) {
                 val randObj = Random()
                 // LocalDateTime.parse is slower than sdf.
                 //dtf.format(LocalDateTime.parse("1900-01-01T00:00:00")
@@ -189,14 +206,5 @@ class performanceTest {
         println("      DateTimeFormatter date calculate time:" + dtfCalcTimeAvg)
 
         Assert.assertTrue(dtfTimeAvg < sdfTimeAvg)
-    }
-
-    private fun benchMark(list: List<ColAttribute>): Long {
-        val dataSphere = Sphere(list)
-        return measureTimeMillis {
-            for(i in 1..100000) {
-                dataSphere.create()
-            }
-        }
     }
 }
