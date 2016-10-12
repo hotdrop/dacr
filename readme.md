@@ -1,4 +1,5 @@
 [![Kotlin 1.0.4](https://img.shields.io/badge/Kotlin-1.0.4-blue.svg)](http://kotlinlang.org)
+[![Build Status](https://travis-ci.org/hotdrop/dacr.svg?branch=master)](https://travis-ci.org/hotdrop/dacr)
 # DACR
 json形式の列定義ファイルを読み込み、指定した行数のCSVデータを生成します。  
 
