@@ -1,12 +1,13 @@
 [![Kotlin 1.0.4](https://img.shields.io/badge/Kotlin-1.0.4-blue.svg)](http://kotlinlang.org)
 [![Build Status](https://travis-ci.org/hotdrop/dacr.svg?branch=master)](https://travis-ci.org/hotdrop/dacr)
 # DACR
-json形式の列定義ファイルを読み込み、指定した行数のCSVデータを生成します。  
+Read the column definition file of json format, to generate the random data of csv format.
+Please use in generating the dummy data, such as a performance test.
 
-## Description
+## Japanese
 負荷試験で大量のダミーデータをDBにinsertしたかったため、このツールを作成しました。  
 ダミーデータを生成したいテーブルの全カラム情報をjson形式で定義します。  
-そのjsonファイルと生成行数を指定すると、CSVファイル（カンマ区切り）を生成します。  
+そのjsonファイルに定義された列情報に従って、指定した行数のダミーデータをCSV形式で出力します。
 
 ## Requirement
 * Kotlin 1.0.4
@@ -29,29 +30,51 @@ java -jar build/libs/dacr.jar [json file path] [output file path] [number of row
 * input json file
 ```
 [
-  {"name": "name1", "primaryKey": true, "dataType": "char",
-    "size": 5, "format": "zeroPadding", "autoIncrement": false,
-    "fillMaxSize": false, "valueType": "variable",
-    "value": "", "hasMultiByte": false, "encloseChar": ""
+  {
+    "name": "name1",
+    "primaryKey": true,
+    "dataType": "char",
+    "size": 5,
+    "format": "zeroPadding",
+    "autoIncrement": false,
+    "fillMaxSize": false,
+    "valueType": "variable",
+    "value": "",
+    "hasMultiByte": false,
+    "encloseChar": ""
   },
   {
-    "name": "name2", "primaryKey": false, "dataType": "char",
-      "size": 10, "format": "", "autoIncrement": false,
-      "fillMaxSize": false, "valueType": "fixing",
-      "value": "A01,A02,B03,B04,C05", "hasMultiByte": false, "encloseChar": ""
+    "name": "name2",
+    "primaryKey": false,
+    "dataType": "char",
+    "size": 10,
+    "format": "",
+    "autoIncrement": false,
+    "fillMaxSize": false,
+    "valueType": "fixing",
+    "value": "A01,A02,B03,B04,C05",
+    "hasMultiByte": false,
+    "encloseChar": ""
   },
   {
-    "name": "name3", "primaryKey": false, "dataType": "char",
-      "size": 5, "format": "", "autoIncrement": false,
-      "fillMaxSize": false, "valueType": "variable",
-      "value": "", "hasMultiByte": false, "encloseChar": "SingleQuotation"
+    "name": "name3",
+    "primaryKey": false,
+    "dataType": "char",
+    "size": 5,
+    "format": "",
+    "autoIncrement": false,
+    "fillMaxSize": false,
+    "valueType": "variable",
+    "value": "",
+    "hasMultiByte": false,
+    "encloseChar": "SingleQuotation"
   }
 ]
 ```
 * execute  
 java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 
-* result
+* result(/var/tmp/result.csv)
 ```
 0000B,A01,'4'
 00002,A02,'C'
@@ -61,19 +84,22 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 ```
 
 ## Definition file description
-1. name : column name.
-2. primaryKey : true / false
-3. dataType : char / varchar / number / date / datetime / timestamp
-4. size : data size(length)
-5. format : format(ex. YYYY/MM/DD)
-6. valueType : fixing / variable
-7. value : Specific value if you want to output the value of the fixed. Empty if you want to auto-generate
-8. autoIncrement : True if you want to auto-generate a sequential number.
-9. fillMaxSize : True if you want to generate value to the limit of the data size.
-10. hasMultiByte : True if you want to generate a Japanese.
-11. encloseChar : SingleQuotation / DoubleQuotation
+|no|definition Name|decription|
+|--|---------------|----------|
+|1 |name           |column name|
+|2 |primaryKey     |true / false|
+|3 |dataType       |char / varchar / number / date / datetime / timestamp|
+|4 |size           |data size(length)|
+|5 |format         |format(ex. YYYY/MM/DD)|
+|6 |valueType      |fixing / variable|
+|7 |value          |Specific value if you want to output the value of the fixed. Empty if you want to auto-generate|
+|8 |autoIncrement  |True if you want to auto-generate a sequential number.|
+|9 |fillMaxSize    |True if you want to generate value to the limit of the data size.|
+|10|hasMultiByte   |True if you want to generate a Japanese.|
+|11|encloseChar    |SingleQuotation / DoubleQuotation|
 
 ## name
+---
 The following parameter defined: any value
 DataType: all  
 To specify the column name. not use in the program.
