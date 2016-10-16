@@ -84,22 +84,21 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 ```
 
 ## Definition file description
-|no|definition Name|decription|
-|--|---------------|----------|
-|1 |name           |column name|
-|2 |primaryKey     |true / false|
-|3 |dataType       |char / varchar / number / date / datetime / timestamp|
-|4 |size           |data size(length)|
-|5 |format         |format(ex. YYYY/MM/DD)|
-|6 |valueType      |fixing / variable|
-|7 |value          |Specific value if you want to output the value of the fixed. Empty if you want to auto-generate|
-|8 |autoIncrement  |True if you want to auto-generate a sequential number.|
-|9 |fillMaxSize    |True if you want to generate value to the limit of the data size.|
-|10|hasMultiByte   |True if you want to generate a Japanese.|
-|11|encloseChar    |SingleQuotation / DoubleQuotation|
+|no |definition Name|decription|
+|---|---------------|----------|
+| 1 |name           |column name|
+| 2 |primaryKey     |true / false|
+| 3 |dataType       |char / varchar / number / date / datetime / timestamp|
+| 4 |size           |data size(length)|
+| 5 |format         |format(ex. YYYY/MM/DD)|
+| 6 |valueType      |fixing / variable|
+| 7 |value          |Specific value if you want to output the value of the fixed. Empty if you want to auto-generate|
+| 8 |autoIncrement  |True if you want to auto-generate a sequential number.|
+| 9 |fillMaxSize    |True if you want to generate value to the limit of the data size.|
+| 10|hasMultiByte   |True if you want to generate a Japanese.|
+| 11|encloseChar    |SingleQuotation / DoubleQuotation|
 
-## name
----
+### name
 The following parameter defined: any value
 DataType: all  
 To specify the column name. not use in the program.
