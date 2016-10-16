@@ -103,4 +103,70 @@ class GrainIntegerTest {
         grainInteger.create()
         Assert.assertTrue(false)
     }
+
+    @Test
+    fun allowBlankTest() {
+        var grainInteger = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
+                size = 5, valueType = "variable", value = " 35 "))
+        Assert.assertEquals(grainInteger.create(), "35")
+        Assert.assertEquals(grainInteger.create(), "36")
+
+        val retList = intArrayOf(35, 53, 26, 692, 0, 1)
+        grainInteger = GrainInteger(ColAttribute(dataType = "integer",
+                size = 5, valueType = "variable", value = "35, 53, 26"))
+
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+    }
+
+    @Test
+    fun rangeVariableTest() {
+        // from positive number to positive number
+        var gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "0 to 5"))
+        for(i in 1..10) {
+            Assert.assertTrue((gInt.create().toInt() in 0..5))
+        }
+
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "250 to 300"))
+        for(i in 1..100) {
+            Assert.assertTrue((gInt.create().toInt() in 250..300))
+        }
+
+        // TINYINT
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "0 to 255"))
+        for(i in 1..100) {
+            Assert.assertTrue((gInt.create().toInt() in 0..65535))
+        }
+
+        // SMALLINT
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "0 to 65535"))
+        for(i in 1..100) {
+            Assert.assertTrue((gInt.create().toInt() in 0..65535))
+        }
+
+        // MEDIUMINT
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "0 to 16777215"))
+        for(i in 1..100) {
+            Assert.assertTrue((gInt.create().toInt() in 0..16777215))
+        }
+
+        // from negative number to positive number
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "-10 to 20"))
+        for(i in 1..100) {
+            val creVal = gInt.create().toInt()
+            Assert.assertTrue(creVal >= -10 && creVal <= 20)
+        }
+
+        // TINYINT with signed
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "-128 to 127"))
+        for(i in 1..100) {
+            val creVal = gInt.create().toInt()
+            Assert.assertTrue(creVal >= -128 && creVal <= 127)
+        }
+
+        // TODO SMALLINT with singed
+    }
 }

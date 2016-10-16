@@ -36,7 +36,7 @@ class GrainInteger(attr: ColAttribute): IGrain {
                 values = value.split(",").map(String::trim)
                 // 単なる数値型チェック
                 values.forEach { it.toInt() }
-                // valuesがある場合rangeは使用しない
+                // valuesが指定されている場合、rangeは使用しないので0s
                 rangeMin = 0
                 rangeMax = 0
             } else if(attr.value.contains("to")) {
@@ -121,9 +121,9 @@ class GrainInteger(attr: ColAttribute): IGrain {
         }
 
         if(rangeMin <= 0) {
-            return (Random().nextInt(rangeMax) - rangeMin).toString()
+            return (Random().nextInt(rangeMax) + rangeMin).toString()
         }
 
-        return (Random().nextInt(rangeMax) + rangeMin).toString()
+        return (Random().nextInt(rangeMax - rangeMin) + rangeMin).toString()
     }
 }
