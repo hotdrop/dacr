@@ -10,76 +10,76 @@ class GrainIntegerTest {
     @Test
     fun fixingTest() {
 
-        var grainNumber = GrainInteger(ColAttribute(dataType = "number", valueType = "fixing", value = "1"))
-        Assert.assertEquals(grainNumber.create(), "1")
+        var grainInteger = GrainInteger(ColAttribute(dataType = "integer", valueType = "fixing", value = "1"))
+        Assert.assertEquals(grainInteger.create(), "1")
 
-        grainNumber = GrainInteger(ColAttribute(dataType = "number",
+        grainInteger = GrainInteger(ColAttribute(dataType = "integer",
                 size = 5, format = "zeroPadding", autoIncrement = true, fillMaxSize = true,
                 valueType = "fixing", value = "7", hasMultiByte = true))
-        Assert.assertEquals(grainNumber.create(), "7")
+        Assert.assertEquals(grainInteger.create(), "7")
     }
 
     @Test(expected = NumberFormatException::class)
     fun fixingExceptionTest() {
-        val grainNumber = GrainInteger(ColAttribute(dataType = "number", valueType = "fixing", value = "not number"))
-        grainNumber.create()
+        val grainInteger = GrainInteger(ColAttribute(dataType = "integer", valueType = "fixing", value = "not Integer"))
+        grainInteger.create()
         Assert.assertTrue(false)
     }
 
     @Test
     fun fixingMultipleValueTest() {
-        val grainNumber = GrainInteger(ColAttribute(dataType = "number",
+        val grainInteger = GrainInteger(ColAttribute(dataType = "integer",
                 valueType = "fixing", value = "35,53,26,692,0,1"))
-        Assert.assertEquals(grainNumber.create(), "35")
-        Assert.assertEquals(grainNumber.create(), "53")
-        Assert.assertEquals(grainNumber.create(), "26")
-        Assert.assertEquals(grainNumber.create(), "692")
-        Assert.assertEquals(grainNumber.create(), "0")
-        Assert.assertEquals(grainNumber.create(), "1")
-        Assert.assertEquals(grainNumber.create(), "35")
+        Assert.assertEquals(grainInteger.create(), "35")
+        Assert.assertEquals(grainInteger.create(), "53")
+        Assert.assertEquals(grainInteger.create(), "26")
+        Assert.assertEquals(grainInteger.create(), "692")
+        Assert.assertEquals(grainInteger.create(), "0")
+        Assert.assertEquals(grainInteger.create(), "1")
+        Assert.assertEquals(grainInteger.create(), "35")
     }
 
     @Test
     fun autoIncrementTest() {
-        var grainNumber = GrainInteger(ColAttribute(dataType = "number", autoIncrement = true,
+        var grainInteger = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
                 valueType = "variable", value = ""))
 
-        Assert.assertEquals(grainNumber.create(), "1")
-        Assert.assertEquals(grainNumber.create(), "2")
-        Assert.assertEquals(grainNumber.create(), "3")
-        Assert.assertEquals(grainNumber.create(), "4")
-        Assert.assertEquals(grainNumber.create(), "5")
+        Assert.assertEquals(grainInteger.create(), "1")
+        Assert.assertEquals(grainInteger.create(), "2")
+        Assert.assertEquals(grainInteger.create(), "3")
+        Assert.assertEquals(grainInteger.create(), "4")
+        Assert.assertEquals(grainInteger.create(), "5")
 
-        grainNumber = GrainInteger(ColAttribute(dataType = "number", autoIncrement = true,
+        grainInteger = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
                 valueType = "variable", value = "355"))
 
-        Assert.assertEquals(grainNumber.create(), "355")
-        Assert.assertEquals(grainNumber.create(), "356")
-        Assert.assertEquals(grainNumber.create(), "357")
-        Assert.assertEquals(grainNumber.create(), "358")
-        Assert.assertEquals(grainNumber.create(), "359")
+        Assert.assertEquals(grainInteger.create(), "355")
+        Assert.assertEquals(grainInteger.create(), "356")
+        Assert.assertEquals(grainInteger.create(), "357")
+        Assert.assertEquals(grainInteger.create(), "358")
+        Assert.assertEquals(grainInteger.create(), "359")
     }
 
     @Test
     fun variableTest() {
 
-        var grainNumber = GrainInteger(ColAttribute(dataType = "number", size = 5, valueType = "variable", value = ""))
+        var grainInteger = GrainInteger(ColAttribute(dataType = "integer", size = 5, valueType = "variable", value = ""))
         for(i in 1..100) {
-            val test = grainNumber.create().toInt()
+            val test = grainInteger.create().toInt()
             Assert.assertTrue(0 < test && test < 100000)
         }
 
-        grainNumber = GrainInteger(ColAttribute(dataType = "number", size = 5, valueType = "variable", value = "7"))
+        grainInteger = GrainInteger(ColAttribute(dataType = "integer", size = 5, valueType = "variable", value = "7"))
         for(i in 1..100) {
-            val test = grainNumber.create().toInt()
+            val test = grainInteger.create().toInt()
             Assert.assertTrue(0 < test && test < 100000)
         }
     }
 
     @Test(expected = NumberFormatException::class)
     fun variableExceptionTest() {
-        val grainNumber = GrainInteger(ColAttribute(dataType = "number", size = 5, valueType = "variable", value = "te"))
-        grainNumber.create()
+        val grainInteger = GrainInteger(ColAttribute(dataType = "integer", size = 5, valueType = "variable", value = "te"))
+        grainInteger.create()
         Assert.assertTrue(false)
     }
 
@@ -87,20 +87,20 @@ class GrainIntegerTest {
     fun variableMultipleValueTest() {
 
         val retList = intArrayOf(35, 53, 26, 692, 0, 1)
-        val grainNumber = GrainInteger(ColAttribute(dataType = "number",
+        val grainInteger = GrainInteger(ColAttribute(dataType = "integer",
                 size = 5, valueType = "variable", value = "35,53,26,692,0,1"))
 
-        Assert.assertTrue(retList.contains(grainNumber.create().toInt()))
-        Assert.assertTrue(retList.contains(grainNumber.create().toInt()))
-        Assert.assertTrue(retList.contains(grainNumber.create().toInt()))
-        Assert.assertTrue(retList.contains(grainNumber.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
+        Assert.assertTrue(retList.contains(grainInteger.create().toInt()))
     }
 
     @Test(expected = NumberFormatException::class)
     fun multipleValueExceptionTest() {
-        val grainNumber = GrainInteger(ColAttribute(dataType = "number",
+        val grainInteger = GrainInteger(ColAttribute(dataType = "integer",
                 size = 5, valueType = "variable", value = "35,34,26,test,0,1"))
-        grainNumber.create()
+        grainInteger.create()
         Assert.assertTrue(false)
     }
 }

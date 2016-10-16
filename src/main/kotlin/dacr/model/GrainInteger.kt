@@ -35,7 +35,7 @@ class GrainInteger(attr: ColAttribute): IGrain {
                 value = attr.value
                 values = value.split(",").map(String::trim)
                 // 単なる数値型チェック
-                values.forEach {String::toInt}
+                values.forEach { it.toInt() }
                 // valuesがある場合rangeは使用しない
                 rangeMin = 0
                 rangeMax = 0
@@ -65,6 +65,9 @@ class GrainInteger(attr: ColAttribute): IGrain {
     }
 
     private fun rangeMax(): Int {
+        if(size == 0) {
+            return Int.MAX_VALUE
+        }
         var tmp: Long = 1
         for(i in 1..size) { tmp *= 10 }
         val maxvalue: Long = tmp - 1
