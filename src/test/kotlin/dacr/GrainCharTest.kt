@@ -171,8 +171,7 @@ class GrainCharTest {
     fun upperCastTest() {
         var grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 5, format = "ZEROPADDING",
                 fillMaxSize = true, valueType = "VARIABLE", value = "0"))
-        val retStr = grainChar.create()
-        Assert.assertEquals(retStr.length, 5)
+        Assert.assertEquals(grainChar.create().length, 5)
     }
 
     @Test
@@ -219,7 +218,15 @@ class GrainCharTest {
         Assert.assertTrue(retList2.contains(grainChar.create()))
         Assert.assertTrue(retList2.contains(grainChar.create()))
         Assert.assertTrue(retList2.contains(grainChar.create()))
+    }
 
-
+    @Test
+    fun varcharTest() {
+        var grainChar = GrainChar(ColAttribute(dataType = "varchar", size = 10, format = "",
+                fillMaxSize = true, valueType = "VARIABLE", value = ""))
+        Assert.assertEquals(grainChar.create().length, 10)
+        grainChar = GrainChar(ColAttribute(dataType = "varChar2", size = 20, format = "",
+                fillMaxSize = true, valueType = "VARIABLE", value = ""))
+        Assert.assertEquals(grainChar.create().length, 20)
     }
 }

@@ -41,6 +41,7 @@ class Sphere(colList: List<ColAttribute>) {
             when (column.dataType.toUpperCase()) {
                 ColAttribute.DATA_TYPE_CHAR      -> grain = GrainChar(column)
                 ColAttribute.DATA_TYPE_VARCHAR   -> grain = GrainChar(column)
+                ColAttribute.DATA_TYPE_VARCHAR2  -> grain = GrainChar(column)
                 ColAttribute.DATA_TYPE_NUMBER    -> grain = GrainNumber(column)
                 ColAttribute.DATA_TYPE_DATE      -> grain = GrainDate(column)
                 ColAttribute.DATA_TYPE_DATETIME  -> grain = GrainDate(column)

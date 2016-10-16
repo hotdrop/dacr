@@ -1,7 +1,7 @@
 [![Kotlin 1.0.4](https://img.shields.io/badge/Kotlin-1.0.4-blue.svg)](http://kotlinlang.org)
 [![Build Status](https://travis-ci.org/hotdrop/dacr.svg?branch=master)](https://travis-ci.org/hotdrop/dacr)
 # DACR
-Read the column definition file of json format, to generate the random data of csv format.
+Read the column definition file of json format, to generate the random data of csv format.  
 Please use in generating the dummy data, such as a performance test.
 
 ## description in Japanese
@@ -88,7 +88,7 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 |---|---------------|----------|
 | 1 |name           |column name |
 | 2 |primaryKey     |true / false |
-| 3 |dataType       |char / varchar / number / date / dateTime / timestamp |
+| 3 |dataType       |char / varchar / varchar2 / number / date / dateTime / timestamp |
 | 4 |size           |data size(length) |
 | 5 |format         |format(ex. YYYY/MM/dd  YYYY-MM-dd hh:mm:ss  YYYY-MM-dd hh:mm:ss.SSS)|
 | 6 |valueType      |fixing / variable |
@@ -127,7 +127,7 @@ A15  <-
 ```
 
 ## dataType
-The following parameter defined: char/varchar/number/date/datetime/timestamp  
+The following parameter defined: char/varchar/varchar2/number/date/datetime/timestamp  
 DataType: all  
 *(attention! This parameter is case insensitive)*  
 * dataType="char" or dataType="varchar"

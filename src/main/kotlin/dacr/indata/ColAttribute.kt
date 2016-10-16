@@ -34,6 +34,7 @@ data class ColAttribute(
     companion object {
         const val DATA_TYPE_CHAR = "CHAR"
         const val DATA_TYPE_VARCHAR = "VARCHAR"
+        const val DATA_TYPE_VARCHAR2 = "VARCHAR2"
         const val DATA_TYPE_NUMBER = "NUMBER"
         const val DATA_TYPE_DATE = "DATE"
         const val DATA_TYPE_DATETIME = "DATETIME"
