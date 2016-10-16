@@ -88,7 +88,7 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 |---|---------------|----------|
 | 1 |name           |column name |
 | 2 |primaryKey     |true / false |
-| 3 |dataType       |char / varchar / varchar2 / number / date / dateTime / timestamp |
+| 3 |dataType       |char / varchar / varchar2 / int / integer / date / dateTime / timestamp |
 | 4 |size           |data size(length) |
 | 5 |format         |format(ex. YYYY/MM/dd  YYYY-MM-dd hh:mm:ss  YYYY-MM-dd hh:mm:ss.SSS)|
 | 6 |valueType      |fixing / variable |
@@ -127,7 +127,7 @@ A15  <-
 ```
 
 ## dataType
-The following parameter defined: char/varchar/varchar2/number/date/datetime/timestamp  
+The following parameter defined: char/varchar/varchar2/int/integer/date/datetime/timestamp  
 DataType: all  
 *(attention! This parameter is case insensitive)*  
 * dataType="char" or dataType="varchar"
@@ -137,7 +137,7 @@ BE5
 BC3
  :
 ```
-* dataType="number"
+* dataType="integer"
 ```
 3819
 7958
@@ -165,7 +165,7 @@ BC3
 
 ## size
 The following parameter defined: any number  
-DataType: char/varchar/number  
+DataType: char/varchar/varchar2/int/integer  
 * dataType="char" size=6 valueType="variable"  
 *(attention! The length of the creating value is size/3)*
 ```
@@ -199,7 +199,7 @@ DataType: all
 00004A
    :
 ```
-* dataType="number" autoIncrement=true format="zeroPadding" size=4
+* dataType="integer" autoIncrement=true format="zeroPadding" size=4
 ```
 0001
 0002
@@ -272,7 +272,7 @@ B02  <-
 
 ## autoIncrement
 The following parameter defined: true/false  
-DataType: char/varchar/number  
+DataType: char/varchar/varchar2/int/integer
 * dataType="char" autoIncrement="true"
 ```
 1
@@ -280,9 +280,9 @@ DataType: char/varchar/number
 3
 :
 ```
-* dataType="number" autoIncrement="true" value="10055"
+* dataType="integer" autoIncrement="true" value="10055"
 ```
-10055 <- start from the specified number in the value
+10055 <- start from the specified integer in the value
 10056
 10057
   :
