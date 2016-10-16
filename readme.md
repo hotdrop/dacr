@@ -4,7 +4,7 @@
 Read the column definition file of json format, to generate the random data of csv format.
 Please use in generating the dummy data, such as a performance test.
 
-## Japanese
+## description in Japanese
 負荷試験で大量のダミーデータをDBにinsertしたかったため、このツールを作成しました。  
 ダミーデータを生成したいテーブルの全カラム情報をjson形式で定義します。  
 そのjsonファイルに定義された列情報に従って、指定した行数のダミーデータをCSV形式で出力します。
@@ -86,19 +86,19 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 ## Definition file description
 |no |definition Name|decription|
 |---|---------------|----------|
-| 1 |name           |column name|
-| 2 |primaryKey     |true / false|
-| 3 |dataType       |char / varchar / number / date / datetime / timestamp|
-| 4 |size           |data size(length)|
-| 5 |format         |format(ex. YYYY/MM/DD)|
-| 6 |valueType      |fixing / variable|
-| 7 |value          |Specific value if you want to output the value of the fixed. Empty if you want to auto-generate|
-| 8 |autoIncrement  |True if you want to auto-generate a sequential number.|
-| 9 |fillMaxSize    |True if you want to generate value to the limit of the data size.|
-| 10|hasMultiByte   |True if you want to generate a Japanese.|
-| 11|encloseChar    |SingleQuotation / DoubleQuotation|
+| 1 |name           |column name |
+| 2 |primaryKey     |true / false |
+| 3 |dataType       |char / varchar / number / date / dateTime / timestamp |
+| 4 |size           |data size(length) |
+| 5 |format         |format(ex. YYYY/MM/dd  YYYY-MM-dd hh:mm:ss  YYYY-MM-dd hh:mm:ss.SSS)|
+| 6 |valueType      |fixing / variable |
+| 7 |value          |specific value if you want to output the value of the fixed. Empty if you want to auto-generate. |
+| 8 |autoIncrement  |true : you want to auto-generate a sequential number. |
+| 9 |fillMaxSize    |true : you want to generate value to the limit of the data size. |
+| 10|hasMultiByte   |true : you want to generate a Japanese.|
+| 11|encloseChar    |singleQuotation / doubleQuotation |
 
-### name
+## name
 The following parameter defined: any value
 DataType: all  
 To specify the column name. not use in the program.
