@@ -46,10 +46,10 @@ class CsvFileTest {
         colAttrList.add(ColAttribute(name = "code_name_japanese", dataType = "varchar", primaryKey = true,
                 size = 30, format = "", autoIncrement = false, fillMaxSize = true,
                 valueType = "variable", value = "", hasMultiByte = true))
-        colAttrList.add(ColAttribute(name = "specific_number", dataType = "number", primaryKey = false,
+        colAttrList.add(ColAttribute(name = "specific_number", dataType = "integer", primaryKey = false,
                 size = 1, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "0,1,2", hasMultiByte = false))
-        colAttrList.add(ColAttribute(name = "price", dataType = "number", primaryKey = false,
+        colAttrList.add(ColAttribute(name = "price", dataType = "integer", primaryKey = false,
                 size = 5, format = "", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = false))
         colAttrList.add(ColAttribute(name = "register_date", dataType = "date", primaryKey = false,
