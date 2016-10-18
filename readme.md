@@ -262,6 +262,13 @@ B02  <-
 2016/09/23  <-
     :
 ```
+* dataType="integer" valueType="variable" value="40000 to 99999"
+```
+43256 <-
+87234 <- value range from "A to B", output in random in the range from A to B
+73629 <-
+  :
+```
 * dataType="date" format="YYYY/MM/dd" valueType="variable" value="now"  
 *(attention! "now" parameter is case insensitive)*
 ```
@@ -285,6 +292,15 @@ DataType: char/varchar/varchar2/int/integer
 10055 <- start from the specified integer in the value
 10056
 10057
+  :
+```
+* dataType="integer" autoIncrement="true" value="128 to 130"
+```
+128 <-
+129 <-
+130 <- increments in the range from 128 to 130
+128 <-
+129 <-
   :
 ```
 
