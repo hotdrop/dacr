@@ -90,7 +90,7 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 | 2 |primaryKey     |true / false |
 | 3 |dataType       |char / varchar / varchar2 / int / integer / date / dateTime / timestamp |
 | 4 |size           |data size(length) |
-| 5 |format         |format(ex. YYYY/MM/dd  YYYY-MM-dd hh:mm:ss  YYYY-MM-dd hh:mm:ss.SSS)|
+| 5 |format         |format(ex. YYYY/MM/dd  YYYY-MM-dd HH:mm:ss  YYYY-MM-dd HH:mm:ss.SSS)|
 | 6 |valueType      |fixing / variable |
 | 7 |value          |specific value if you want to output the value of the fixed. Empty if you want to auto-generate. |
 | 8 |autoIncrement  |true : you want to auto-generate a sequential number. |
@@ -150,13 +150,13 @@ BC3
 2013/02/17
     :
 ```
-* dataType="datetime" format="YYYY/MM/dd hh:mm:ss"
+* dataType="datetime" format="YYYY/MM/dd HH:mm:ss"
 ```
 2014/06/04 21:37:45
 2001/12/16 16:24:38
           :
 ```
-* dataType="timestamp" format="YYYY/MM/dd hh:mm:ss.SSS"
+* dataType="timestamp" format="YYYY/MM/dd HH:mm:ss.SSS"
 ```
 2006/06/04 02:29:28.504
 2004/02/16 04:42:45.061
@@ -183,7 +183,7 @@ ED43
 ```
 
 ## format
-The following parameter defined: DateFormat(YYYY/MM/dd, hh:mm:ss ...etc) zeroPadding  
+The following parameter defined: DateFormat(YYYY/MM/dd, HH:mm:ss ...etc) zeroPadding  
 DataType: all  
 *(attention! "zeroPadding" parameter is case insensitive)*
 * dataType="date" format="YYYY-MM-dd"

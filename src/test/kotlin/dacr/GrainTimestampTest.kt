@@ -19,7 +19,7 @@ class GrainTimestampTest {
     @Test
     fun fixingMultipleValueTest() {
         val grainTimestamp = GrainTimestamp(ColAttribute(dataType = "timestamp",
-                format = "YYYY/MM/dd hh:mm:ss.SSS", valueType = "fixing",
+                format = "YYYY/MM/dd HH:mm:ss.SSS", valueType = "fixing",
                 value = "2016/09/23 10:40:23.435,2016/09/24 12:15:34.378,2016/09/25 18:36:21.859"))
 
         Assert.assertEquals(grainTimestamp.create(), "2016/09/23 10:40:23.435")
@@ -31,18 +31,18 @@ class GrainTimestampTest {
     @Test
     fun nowTest() {
         var grainTimestamp = GrainTimestamp(ColAttribute(dataType = "timestamp",
-                format = "YYYY/MM/dd hh:mm:ss.SSS", valueType = "fixing", value = "now"))
+                format = "YYYY/MM/dd HH:mm:ss.SSS", valueType = "fixing", value = "now"))
 
         // ミリ秒を合わせるのが辛いので照合は秒までのTimestampでテストする
-        var sdf = SimpleDateFormat("YYYY/MM/dd hh:mm:ss")
+        var sdf = SimpleDateFormat("YYYY/MM/dd HH:mm:ss")
         var retStr = sdf.format(Date())
         Assert.assertTrue(grainTimestamp.create().contains(retStr))
 
         grainTimestamp = GrainTimestamp(ColAttribute(dataType = "timestamp",
-                format = "YYYY-MM-dd hh:mm:ss.SSS", valueType = "variable", value = "now"))
+                format = "YYYY-MM-dd HH:mm:ss.SSS", valueType = "variable", value = "now"))
 
         // ミリ秒を合わせるのが辛いので照合は秒までのTimestampでテストする
-        sdf = SimpleDateFormat("YYYY-MM-dd hh:mm:ss")
+        sdf = SimpleDateFormat("YYYY-MM-dd HH:mm:ss")
         retStr = sdf.format(Date())
         Assert.assertTrue(grainTimestamp.create().contains(retStr))
     }
@@ -58,13 +58,13 @@ class GrainTimestampTest {
     @Test
     fun variableTest() {
         var grainTimestamp = GrainTimestamp(ColAttribute(dataType = "timestamp",
-                format = "YYYY/MM/dd hh:mm:ss.SSS",  valueType = "variable", value = ""))
+                format = "YYYY/MM/dd HH:mm:ss.SSS",  valueType = "variable", value = ""))
         println("variableTest value=" + grainTimestamp.create())
         println("variableTest value=" + grainTimestamp.create())
         Assert.assertTrue(true)
 
         grainTimestamp = GrainTimestamp(ColAttribute(dataType = "timestamp",
-                format = "YYYY-MM-dd hh:mm:ss.SSSSSS", valueType = "variable", value = ""))
+                format = "YYYY-MM-dd HH:mm:ss.SSSSSS", valueType = "variable", value = ""))
         println("variableTest value=" + grainTimestamp.create())
         println("variableTest value=" + grainTimestamp.create())
         Assert.assertTrue(true)
@@ -74,7 +74,7 @@ class GrainTimestampTest {
     fun variableMultipleValueTest() {
         val retList = arrayOf("2016/09/23 10:40:23.435", "2016/09/24 12:15:34.378", "2016/09/25 18:36:21.859")
         val grainTimestamp = GrainTimestamp(ColAttribute(dataType = "timestamp",
-                format = "YYYY/MM/dd hh:mm:ss.SSS", valueType = "variable",
+                format = "YYYY/MM/dd HH:mm:ss.SSS", valueType = "variable",
                 value = "2016/09/23 10:40:23.435,2016/09/24 12:15:34.378,2016/09/25 18:36:21.859"))
         Assert.assertTrue(retList.contains(grainTimestamp.create()))
         Assert.assertTrue(retList.contains(grainTimestamp.create()))
