@@ -36,7 +36,7 @@ class GrainInteger(attr: ColAttribute): IGrain {
                 values = value.split(",").map(String::trim)
                 // 単なる数値型チェック
                 values.forEach { it.toInt() }
-                // valuesが指定されている場合、rangeは使用しないので0s
+                // valuesが指定されている場合、rangeは使用しないので0
                 rangeMin = 0
                 rangeMax = 0
             } else if(attr.value.contains("to")) {
@@ -44,7 +44,7 @@ class GrainInteger(attr: ColAttribute): IGrain {
                 value = betweenList[0].trim()
                 values = null
                 rangeMin = betweenList[0].trim().toInt()
-                rangeMax = if(betweenList.size == 2) betweenList[1].trim().toInt() else Int.MAX_VALUE
+                rangeMax = if(betweenList[1].trim().toLong() < Int.MAX_VALUE) betweenList[1].trim().toInt() else Int.MAX_VALUE
                 sequence = rangeMin
             } else if(attr.value != ""){
                 value = attr.value.trim()
@@ -55,17 +55,16 @@ class GrainInteger(attr: ColAttribute): IGrain {
             } else {
                 value = attr.value
                 values = null
-                rangeMin = 0
+                rangeMin = 1
                 rangeMax = rangeMax()
             }
-
         } catch(e: NumberFormatException) {
             throw NumberFormatException("数値、空白、カンマ、to以外の値が含まれています。 value=" + attr.value)
         }
     }
 
     private fun rangeMax(): Int {
-        if(size == 0) {
+        if(size == 0 || size > 10) {
             return Int.MAX_VALUE
         }
         var tmp: Long = 1

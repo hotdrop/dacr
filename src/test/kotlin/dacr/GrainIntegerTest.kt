@@ -41,38 +41,68 @@ class GrainIntegerTest {
 
     @Test
     fun autoIncrementTest() {
-        var grainInteger = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
+        var gInt = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
                 valueType = "variable", value = ""))
+        Assert.assertEquals(gInt.create(), "1")
+        Assert.assertEquals(gInt.create(), "2")
+        Assert.assertEquals(gInt.create(), "3")
+        Assert.assertEquals(gInt.create(), "4")
+        Assert.assertEquals(gInt.create(), "5")
 
-        Assert.assertEquals(grainInteger.create(), "1")
-        Assert.assertEquals(grainInteger.create(), "2")
-        Assert.assertEquals(grainInteger.create(), "3")
-        Assert.assertEquals(grainInteger.create(), "4")
-        Assert.assertEquals(grainInteger.create(), "5")
-
-        grainInteger = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
+        gInt = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
                 valueType = "variable", value = "355"))
+        Assert.assertEquals(gInt.create(), "355")
+        Assert.assertEquals(gInt.create(), "356")
+        Assert.assertEquals(gInt.create(), "357")
+        Assert.assertEquals(gInt.create(), "358")
+        Assert.assertEquals(gInt.create(), "359")
 
-        Assert.assertEquals(grainInteger.create(), "355")
-        Assert.assertEquals(grainInteger.create(), "356")
-        Assert.assertEquals(grainInteger.create(), "357")
-        Assert.assertEquals(grainInteger.create(), "358")
-        Assert.assertEquals(grainInteger.create(), "359")
+        // To begin the increment from negative number
+        gInt = GrainInteger(ColAttribute(dataType = "integer",  autoIncrement = true,
+                valueType = "variable", value = "-30"))
+        Assert.assertEquals(gInt.create(), "-30")
+        Assert.assertEquals(gInt.create(), "-29")
+        Assert.assertEquals(gInt.create(), "-28")
+        Assert.assertEquals(gInt.create(), "-27")
+        Assert.assertEquals(gInt.create(), "-26")
+
+        //
+        gInt = GrainInteger(ColAttribute(dataType = "integer",  autoIncrement = true,
+                valueType = "variable", value = "23 to 25"))
+        Assert.assertEquals(gInt.create(), "23")
+        Assert.assertEquals(gInt.create(), "24")
+        Assert.assertEquals(gInt.create(), "25")
+        Assert.assertEquals(gInt.create(), "23")
+        Assert.assertEquals(gInt.create(), "24")
+        Assert.assertEquals(gInt.create(), "25")
+
+        gInt = GrainInteger(ColAttribute(dataType = "integer", autoIncrement = true,
+               size=2, valueType = "variable", value = ""))
+        for(i in 1..100) {
+            Assert.assertTrue(gInt.create().toInt() in 1..99)
+        }
     }
 
     @Test
     fun variableTest() {
 
-        var grainInteger = GrainInteger(ColAttribute(dataType = "integer", size = 5, valueType = "variable", value = ""))
+        var gInt = GrainInteger(ColAttribute(dataType = "integer", size = 5, valueType = "variable", value = ""))
         for(i in 1..100) {
-            val test = grainInteger.create().toInt()
+            val test = gInt.create().toInt()
             Assert.assertTrue(0 < test && test < 100000)
         }
 
-        grainInteger = GrainInteger(ColAttribute(dataType = "integer", size = 5, valueType = "variable", value = "7"))
+        gInt = GrainInteger(ColAttribute(dataType = "integer", size = 5, valueType = "variable", value = "7"))
         for(i in 1..100) {
-            val test = grainInteger.create().toInt()
+            val test = gInt.create().toInt()
             Assert.assertTrue(0 < test && test < 100000)
+        }
+
+        // size exceed the maximum value of Int
+        gInt = GrainInteger(ColAttribute(dataType = "integer", size = 99999999, valueType = "variable", value = ""))
+        for(i in 1..10000) {
+            val test = gInt.create().toInt()
+            Assert.assertTrue(0 < test && test < Int.MAX_VALUE)
         }
     }
 
@@ -185,7 +215,7 @@ class GrainIntegerTest {
         gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "-2147483648 to 2147483647"))
         for(i in 1..100) {
             val creVal = gInt.create().toInt()
-            Assert.assertTrue(creVal >= -2147483648 && creVal <= 2147483647)
+            Assert.assertTrue(creVal > -2147483648 && creVal < 2147483647)
         }
 
         // from negative number to negative number
@@ -193,6 +223,16 @@ class GrainIntegerTest {
         for(i in 1..100) {
             val creVal = gInt.create().toInt()
             Assert.assertTrue(creVal >= -30 && creVal <= -10)
+        }
+
+        // exceed MAX INT VALUE
+        val rangeMin = Int.MAX_VALUE - 2
+        val setValue = rangeMin.toString() + " to 9999999999"
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = setValue))
+
+        for(i in 1..100) {
+            val creVal = gInt.create().toInt()
+            Assert.assertTrue(creVal >= rangeMin && creVal < Int.MAX_VALUE)
         }
     }
 }
