@@ -167,6 +167,32 @@ class GrainIntegerTest {
             Assert.assertTrue(creVal >= -128 && creVal <= 127)
         }
 
-        // TODO SMALLINT with singed
+        // SMALLINT with singed
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "-32768 to 32767"))
+        for(i in 1..100) {
+            val creVal = gInt.create().toInt()
+            Assert.assertTrue(creVal >= -32768 && creVal <= 32767)
+        }
+
+        // MEDIUMINT with singed
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "-8388608 to 8388607"))
+        for(i in 1..100) {
+            val creVal = gInt.create().toInt()
+            Assert.assertTrue(creVal >= -8388608 && creVal <= 8388607)
+        }
+
+        // INT with signed
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "-2147483648 to 2147483647"))
+        for(i in 1..100) {
+            val creVal = gInt.create().toInt()
+            Assert.assertTrue(creVal >= -2147483648 && creVal <= 2147483647)
+        }
+
+        // from negative number to negative number
+        gInt = GrainInteger(ColAttribute(dataType = "integer", valueType = "variable", value = "-30 to -10"))
+        for(i in 1..100) {
+            val creVal = gInt.create().toInt()
+            Assert.assertTrue(creVal >= -30 && creVal <= -10)
+        }
     }
 }
