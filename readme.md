@@ -127,7 +127,7 @@ A15  <-
 ```
 
 ## dataType
-The following parameter defined: char/varchar/varchar2/int/integer/date/datetime/timestamp  
+The following parameter defined: char / varchar / varchar2 / int / integer / date / datetime / timestamp  
 DataType: all  
 *(attention! This parameter is case insensitive)*  
 * dataType="char" or dataType="varchar"
