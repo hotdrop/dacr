@@ -135,6 +135,14 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "10001")
     }
 
+    @Test(expected = IllegalStateException::class)
+    fun illegalFormatTest() {
+        val gChar = GrainChar(ColAttribute(dataType = "char", size = 5, format = "zerroPPPaddgn",
+                valueType = "variable", value = ""))
+        gChar.create()
+        Assert.assertTrue(false)
+    }
+
     @Test
     fun fillMaxSizeTest() {
 
@@ -218,6 +226,14 @@ class GrainCharTest {
         Assert.assertTrue(retList2.contains(grainChar.create()))
         Assert.assertTrue(retList2.contains(grainChar.create()))
         Assert.assertTrue(retList2.contains(grainChar.create()))
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun illegalEncloseCharTest() {
+        val gChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
+                valueType = "variable", value = "", encloseChar = """""""))
+        gChar.create()
+        Assert.assertTrue(false)
     }
 
     @Test
