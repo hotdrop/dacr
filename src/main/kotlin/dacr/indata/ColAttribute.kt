@@ -1,34 +1,21 @@
 package dacr.indata
 
 /**
- * レコード情報のうち、1つのカラム属性情報を保持するデータクラス
+ * Column Attribute Data Class
+ * Store one column attribute data
  */
 data class ColAttribute(
 
         val name: String = "",
         val primaryKey: Boolean = false,
         val dataType: String = "",
-        /** 次の型で有効:char varchar Integer */
         val size: Int = 0,
-        /** 次の型で有効:char varchar date timestamp */
         val format: String = "",
         val valueType: String = "",
-        /**
-         * fixingの場合:値を1つ指定するとその値固定で出力する。空の場合は空を入れる。
-         *             値をカンマ区切りで複数指定すると、その値を順番に出力する。
-         * variableの場合:値を指定しても無視してランダム値を出力する。
-         *               値をカンマ区切りで複数指定すると、それらの値をランダムに出力する。
-         *               Integer型かつautoIncrement指定した場合、指定した値から順にインクリメントする。
-         * DateまたはTimestampの場合:nowと指定すると現在日時を出力する。
-         **/
         val value: String = "",
-        /** 次の型で有効:char varchar number */
         val autoIncrement: Boolean = false,
-        /** 次の型で有効:char varchar */
         val fillMaxSize: Boolean = false,
-        /** 次の型で有効:char varchar */
         val hasMultiByte: Boolean = false,
-        /** 次の型で有効:char varchar */
         val encloseChar: String = ""
 ) {
     companion object {

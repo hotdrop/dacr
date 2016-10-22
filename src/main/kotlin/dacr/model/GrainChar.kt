@@ -20,40 +20,46 @@ class GrainChar(attr: ColAttribute): IGrain {
     private var valueIdx = 0
     private var sequence = 1
     private val size: Int
-    private val isZeroPadding: Boolean
     private val fillMaxSize: Boolean
     private val hasMultiByte: Boolean
-    private val encloseMark : String
+    private var isZeroPadding: Boolean = false
+    private var encloseMark : String = ""
 
     init {
         name = attr.name
         primaryKey = attr.primaryKey
         size = attr.size
 
-        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
-        autoIncrement = attr.autoIncrement
-
         value = attr.value
-        // valueが空の場合を除外している理由はsequenceを初期値のままにするため。
-        if(autoIncrement && value != "") {
+        values = if(value.contains(",")) value.split(",") else null
+
+        autoIncrement = attr.autoIncrement
+        fillMaxSize = attr.fillMaxSize
+        hasMultiByte = attr.hasMultiByte
+        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
+
+        if(autoIncrement) {
             sequence = try { value.toInt() } catch (e : NumberFormatException) { 1 }
         }
 
-        values = if(value.contains(",")) value.split(",") else null
+        if(attr.format != "") {
+            when(attr.format.toUpperCase() ) {
+                ColAttribute.FORMAT_ZERO_PADDING -> isZeroPadding = true
+                else -> throw IllegalStateException("incorrect format by char. " +
+                        " columnName=" + name + " format=" + attr.format)
+            }
+        }
 
-        fillMaxSize = attr.fillMaxSize
-        isZeroPadding = if(attr.format.toUpperCase() == ColAttribute.FORMAT_ZERO_PADDING && !fillMaxSize) true else false
-        hasMultiByte = attr.hasMultiByte
-        when(attr.encloseChar.toUpperCase()) {
-            ColAttribute.ENCLOSE_CHAR_SINGLE_QUOTATION -> encloseMark = "'"
-            ColAttribute.ENCLOSE_CHAR_DOUBLE_QUOTATION -> encloseMark = """""""
-            else -> encloseMark = ""
+        if(attr.encloseChar != "") {
+            when(attr.encloseChar.toUpperCase()) {
+                ColAttribute.ENCLOSE_CHAR_SINGLE_QUOTATION -> encloseMark = "'"
+                ColAttribute.ENCLOSE_CHAR_DOUBLE_QUOTATION -> encloseMark = """""""
+                else -> throw IllegalStateException("incorrect encloseChar by char. " +
+                        " columnName=" + name + " encloseChar=" + attr.encloseChar)
+            }
         }
     }
 
-    /**
-     * charの値を生成する
-     */
     override fun create(): String {
 
         fun encloseStr(ret: String): String {

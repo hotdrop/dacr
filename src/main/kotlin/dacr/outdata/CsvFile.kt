@@ -5,9 +5,7 @@ import java.io.BufferedWriter
 import java.io.File
 
 /**
- * データを生成しCSV出力する。
- *
- * 1テーブル分のCsvFileを作成する。
+ * Create and Output CSV File
  */
 class CsvFile(sphere: Sphere, outPath: String, lineNumber: Int) {
 

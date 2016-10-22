@@ -39,8 +39,8 @@ class GrainInteger(attr: ColAttribute): IGrain {
                 // valuesが指定されている場合、rangeは使用しないので0
                 rangeMin = 0
                 rangeMax = 0
-            } else if(attr.value.contains("to")) {
-                val betweenList = attr.value.split("to")
+            } else if(attr.value.toUpperCase().contains("TO")) {
+                val betweenList = attr.value.toUpperCase().split("TO")
                 value = betweenList[0].trim()
                 values = null
                 rangeMin = betweenList[0].trim().toInt()
@@ -59,7 +59,8 @@ class GrainInteger(attr: ColAttribute): IGrain {
                 rangeMax = rangeMax()
             }
         } catch(e: NumberFormatException) {
-            throw NumberFormatException("数値、空白、カンマ、to以外の値が含まれています。 value=" + attr.value)
+            throw NumberFormatException("incorrect value by Integer. " +
+            " columnName=" + name + " format=" + attr.value)
         }
     }
 
@@ -73,9 +74,6 @@ class GrainInteger(attr: ColAttribute): IGrain {
         return if(maxvalue >= Int.MAX_VALUE) Int.MAX_VALUE else maxvalue.toInt()
     }
 
-    /**
-     * numberの値を生成する
-     */
     override fun create(): String {
 
         if(isFixingValue) {

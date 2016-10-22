@@ -47,7 +47,8 @@ class Sphere(colList: List<ColAttribute>) {
                 ColAttribute.DATA_TYPE_DATE      -> grain = GrainDate(column)
                 ColAttribute.DATA_TYPE_DATETIME  -> grain = GrainDate(column)
                 ColAttribute.DATA_TYPE_TIMESTAMP -> grain = GrainTimestamp(column)
-                else ->  throw IllegalStateException("DataTypeが不正です。指定されたType=" + column.dataType)
+                else ->  throw IllegalStateException("unsupported DataType. " +
+                        " columnName=" + column.name + " dataType=" + column.dataType)
             }
 
             setPKInformation(grain)

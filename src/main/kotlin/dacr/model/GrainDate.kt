@@ -26,12 +26,15 @@ class GrainDate(attr: ColAttribute): IGrain {
     init {
         name = attr.name
         primaryKey = attr.primaryKey
-        dataType = attr.dataType.toUpperCase()
 
+        value = attr.value
+        values = if(value.contains(",")) value.split(",") else null
+
+        dataType = attr.dataType.toUpperCase()
         isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
+        isCurrentDate = if(value.toUpperCase() == ColAttribute.VALUE_NOW) true else false
 
         try {
-            // DateTimeFormatter
             var format = if(attr.format.contains("y")) attr.format.replace("y", "u")
                             else if(attr.format.contains("Y")) attr.format.replace("Y", "u")
                             else attr.format
@@ -39,18 +42,11 @@ class GrainDate(attr: ColAttribute): IGrain {
             // 本当はチェック関数を別に作って最初に全部チェックしたほうがいい。
             dtf = DateTimeFormatter.ofPattern(format)
         } catch (e: IllegalArgumentException) {
-            throw IllegalArgumentException("日付フォーマットが誤っています。format=" + attr.format, e)
+            throw IllegalArgumentException("incorrect date format. " +
+                    " columnName=" + name + " format=" + attr.format, e)
         }
-
-        value = attr.value
-        isCurrentDate = if(value.toUpperCase() == ColAttribute.VALUE_NOW) true else false
-
-        values = if(value.contains(",")) value.split(",") else null
     }
 
-    /**
-     * dateの値を生成する
-     */
     override fun create(): String {
 
         // Dateの場合、valueに「now」指定がされていた場合はそれを最優先とする

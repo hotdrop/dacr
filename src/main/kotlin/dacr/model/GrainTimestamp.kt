@@ -8,8 +8,6 @@ import java.util.*
 
 /**
  * timestamp型カラムのGrainクラス
- *
- * 現状、ほぼGrainDateと同じ
  */
 class GrainTimestamp(attr: ColAttribute): IGrain {
 
@@ -40,13 +38,11 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
             dtf = if(isCurrentDate) DateTimeFormatter.ofPattern(replaceYearFormat)
                     else DateTimeFormatter.ofPattern(replaceYearAndNanoFormat)
         } catch (e: IllegalArgumentException) {
-            throw IllegalArgumentException("日付フォーマットが誤っています。format=" + attr.format, e)
+            throw IllegalArgumentException("incorrect date format. " +
+                    " columnName=" + name + " format=" + attr.format, e)
         }
     }
 
-    /**
-     * timestampの値を生成する
-     */
     override fun create() : String {
 
         // valueに「now」指定がされていた場合はそれを最優先とする
@@ -89,6 +85,6 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
                 .plusSeconds(randObj.nextInt(59).toLong())
                 .plusNanos(randObj.nextInt(999).toLong()))
         // TODO 今はNanosを3桁999にしているため、nnnnnnとしても先頭３バイトは必ず000になる。
-        // TODO そのため、本当はフォーマットのナノ桁数をcountしてnextIntの値を変えるべき
+        // そのため、本当はフォーマットのナノ桁数をcountしてnextIntの値を変えるべき
     }
 }
