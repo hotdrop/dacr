@@ -27,9 +27,9 @@ class Sphere(colList: List<ColAttribute>) {
 
     init {
         fun setPKInformation(grain: IGrain) {
-            if(!grain.primaryKey || grain.isFixingValue || judgePKCnt == -1) {
+            if(!grain.isPrimaryKey() || grain.isFixingValue() || judgePKCnt == -1) {
                 return
-            } else if(grain.autoIncrement) {
+            } else if(grain.isAutoIncrement()) {
                 judgePKCnt = -1
             } else {
                 judgePKCnt++
@@ -78,7 +78,7 @@ class Sphere(colList: List<ColAttribute>) {
 
             for(grain in grainList) {
                 val value = grain.create()
-                if(grain.primaryKey && !grain.isFixingValue) {
+                if(grain.isPrimaryKey() && !grain.isFixingValue()) {
                     pkConcatStr += value
                     pkCnt--
                     if(pkCnt == 0) {

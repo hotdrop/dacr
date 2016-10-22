@@ -11,22 +11,21 @@ import java.util.*
  */
 class GrainTimestamp(attr: ColAttribute): IGrain {
 
-    override val name: String
-    override val primaryKey: Boolean
-    override val autoIncrement: Boolean = false
-    override val isFixingValue: Boolean
-
+    private val name: String
+    private val primaryKey: Boolean
+    private val fixingValue: Boolean
     private val value: String
     private val values: List<String>?
-    private var valueIdx = 0
     private val dtf: DateTimeFormatter
     private val isCurrentDate: Boolean
+
+    private var valueIdx = 0
 
     init {
         name = attr.name
         primaryKey = attr.primaryKey
 
-        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
+        fixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
         value = attr.value
         values = if(value.contains(",")) value.split(",") else null
         isCurrentDate = if(value.toUpperCase() == ColAttribute.VALUE_NOW) true else false
@@ -43,6 +42,18 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
         }
     }
 
+    override fun isPrimaryKey(): Boolean {
+        return primaryKey
+    }
+
+    override fun isAutoIncrement(): Boolean {
+        return false
+    }
+
+    override fun isFixingValue(): Boolean {
+        return fixingValue
+    }
+
     override fun create() : String {
 
         // valueに「now」指定がされていた場合はそれを最優先とする
@@ -50,7 +61,7 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
             return dtf.format(LocalDateTime.now())
         }
 
-        if(isFixingValue) {
+        if(fixingValue) {
             return makeFixingValue()
         }
 

@@ -9,11 +9,8 @@ package dacr.model
  * そのため、Grainの集合体であるSphereクラスを形成して処理を行う。
  */
 interface IGrain {
-
-    val name : String
-    val primaryKey : Boolean
-    val autoIncrement : Boolean
-    val isFixingValue: Boolean
-
     fun create() : String
+    fun isPrimaryKey(): Boolean
+    fun isFixingValue(): Boolean
+    fun isAutoIncrement(): Boolean
 }

@@ -10,20 +10,20 @@ import java.util.*
  */
 class GrainChar(attr: ColAttribute): IGrain {
 
-    override val name: String
-    override val primaryKey: Boolean
-    override val autoIncrement: Boolean
-    override val isFixingValue: Boolean
-
+    private val name: String
+    private val primaryKey: Boolean
+    private val autoIncrement: Boolean
+    private val fixingValue: Boolean
     private val value: String
     private val values: List<String>?
-    private var valueIdx = 0
-    private var sequence = 1
     private val size: Int
     private val fillMaxSize: Boolean
     private val hasMultiByte: Boolean
-    private var isZeroPadding: Boolean = false
-    private var encloseMark : String = ""
+    private val isZeroPadding: Boolean
+    private val encloseMark: String
+
+    private var valueIdx = 0
+    private var sequence = 1
 
     init {
         name = attr.name
@@ -36,7 +36,7 @@ class GrainChar(attr: ColAttribute): IGrain {
         autoIncrement = attr.autoIncrement
         fillMaxSize = attr.fillMaxSize
         hasMultiByte = attr.hasMultiByte
-        isFixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
+        fixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
 
         if(autoIncrement) {
             sequence = try { value.toInt() } catch (e : NumberFormatException) { 1 }
@@ -48,6 +48,8 @@ class GrainChar(attr: ColAttribute): IGrain {
                 else -> throw IllegalStateException("incorrect format by char. " +
                         " columnName=" + name + " format=" + attr.format)
             }
+        } else {
+            isZeroPadding = false
         }
 
         if(attr.encloseChar != "") {
@@ -57,7 +59,21 @@ class GrainChar(attr: ColAttribute): IGrain {
                 else -> throw IllegalStateException("incorrect encloseChar by char. " +
                         " columnName=" + name + " encloseChar=" + attr.encloseChar)
             }
+        } else {
+            encloseMark = ""
         }
+    }
+
+    override fun isPrimaryKey(): Boolean {
+        return primaryKey
+    }
+
+    override fun isAutoIncrement(): Boolean {
+        return autoIncrement
+    }
+
+    override fun isFixingValue(): Boolean {
+        return fixingValue
     }
 
     override fun create(): String {
@@ -68,7 +84,7 @@ class GrainChar(attr: ColAttribute): IGrain {
 
         var retVal: String
 
-        if(isFixingValue) {
+        if(fixingValue) {
             retVal = makeFixingValue()
         } else if(autoIncrement) {
             retVal = makeAutoIncrement()
