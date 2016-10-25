@@ -46,8 +46,8 @@ java -jar build/libs/dacr.jar [json file path] [output file path] [number of row
   {
     "name": "name2",
     "primaryKey": false,
-    "dataType": "char",
-    "size": 10,
+    "dataType": "varchar",
+    "size": 5,
     "format": "",
     "autoIncrement": false,
     "fillMaxSize": false,
@@ -76,11 +76,11 @@ java -jar dacr.jar /var/tmp/sample.json /var/tmp/result.csv 5
 
 * result(/var/tmp/result.csv)
 ```
-0000B,A01,'4'
-00002,A02,'C'
-00004,B03,'A'
-00001,B04,'D'
-0000E,C05,'1'
+0000B,A01,'4    '
+00002,A02,'C    '
+00004,B03,'A    '
+00001,B04,'D    '
+0000E,C05,'1    '
 ```
 
 ## Definition file description
@@ -127,14 +127,21 @@ A15  <-
 ```
 
 ## dataType
-The following parameter defined: char / varchar / varchar2 / int / integer / date / datetime / timestamp  
+The following parameter defined: char/varchar/varchar2/int/integer/date/datetime/timestamp  
 DataType: all  
 *(attention! This parameter is case insensitive)*  
-* dataType="char" or dataType="varchar"
+* dataType="char" size = 5, encloseChar="SingleQuotation"
 ```
-A03
-BE5
-BC3
+'A03  ' <-
+'BE5  ' <- char is fixed length according to the size
+'BC3  ' <-
+ :
+```
+* dataType="varchar" size = 5, encloseChar="SingleQuotation"
+```
+'A03' <-
+'BE5' <- varchar is variable length
+'BC3' <-
  :
 ```
 * dataType="integer"
@@ -174,7 +181,7 @@ B5
 4A
  :
 ```
-* dataType="char" size=12 valueType="variable"
+* dataType="varchar" size=12 valueType="variable"
 ```
 BC1C <- create to 12/3=4 byte character
 A2C5
@@ -307,14 +314,14 @@ DataType: char/varchar/varchar2/int/integer
 ## fillMaxSize
 The following parameter defined: true/false  
 DataType: char/varchar  
-* dataType="char" size=6 valueType="variable" fillMaxSize=false
+* dataType="varchar" size=6 valueType="variable" fillMaxSize=false
 ```
 A1 <- create to 6/3=2 byte character
 B5
 4A
  :
 ```
-* dataType="char" size=6 valueType="variable" fillMaxSize=**true**
+* dataType="varchar" size=6 valueType="variable" fillMaxSize=**true**
 ```
 3D3A2 <- fill up to a maximum of size
 C25CB
