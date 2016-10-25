@@ -4,10 +4,9 @@ import dacr.indata.ColAttribute
 import java.util.*
 
 /**
- * char型カラムのGrainクラス
+ * varchar型カラムのGrainクラス
  */
-class GrainChar(attr: ColAttribute): IGrain {
-
+class GrainVarchar(attr: ColAttribute): IGrain {
     private val name: String
     private val primaryKey: Boolean
     private val autoIncrement: Boolean
@@ -90,7 +89,7 @@ class GrainChar(attr: ColAttribute): IGrain {
             retVal = makeVariableValue()
         }
 
-        return encloseStr(retVal.padEnd(size, ' '))
+        return encloseStr(retVal)
     }
 
     private fun makeFixingValue(): String {
@@ -115,13 +114,13 @@ class GrainChar(attr: ColAttribute): IGrain {
 
         fun makeMultiByteString(): String {
 
-            val rand =Random()
+            val rand = Random()
             // 日本語文字はUTF8だと1文字3バイトになるため、例えばデータ長をバイトで計算するOracleとかでも
             // 入れられるよう1/3とした。fillMaxSizeを指定してしまった場合は仕方ないのでinsertエラーになってもらう。
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
             val sb = buildString {
                 for(idx in 1..makeSize) {
-                    append(MULTI_BYTE_WORDS[rand.nextInt(MULTI_BYTE_WORDS.size)])
+                    append(GrainChar.MULTI_BYTE_WORDS[rand.nextInt(GrainChar.MULTI_BYTE_WORDS.size)])
                 }
             }
             return sb
@@ -129,28 +128,21 @@ class GrainChar(attr: ColAttribute): IGrain {
 
         fun makeSingleByteString(): String {
 
-            val rand =Random()
+            val rand = Random()
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
             val sb = buildString {
                 for(idx in 1..makeSize) {
-                    append(WORDS[rand.nextInt(WORDS.size)])
+                    append(GrainChar.WORDS[rand.nextInt(GrainChar.WORDS.size)])
                 }
             }
             return sb
         }
-        
+
         if(values != null) {
             return values[Random().nextInt(values.size)]
         }
 
         val retVal = if(hasMultiByte) makeMultiByteString() else makeSingleByteString()
         return if(isZeroPadding) retVal.padStart(size, '0') else retVal
-    }
-    companion object {
-        // もっと増やしてもいいかもしれないが、ランダム生成のコストが大きくなることを恐れて一旦この数にした
-        val MULTI_BYTE_WORDS = arrayOf("あ","い","う","え","お")
-        val WORDS = arrayOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N"
-                ,"O","P","Q","R","S","T","U","V","W","X","Y","Z"
-                ,"1","2","3","4","5","6","7","8","9")
     }
 }

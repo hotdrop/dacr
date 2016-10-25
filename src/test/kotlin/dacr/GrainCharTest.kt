@@ -10,65 +10,62 @@ class GrainCharTest {
     @Test
     fun fixingTest() {
 
-        var grainChar = GrainChar(ColAttribute(dataType = "char",
+        var grainChar = GrainChar(ColAttribute(dataType = "char", size = 5,
                 valueType = "fixing", value = "test"))
-        val retStr = grainChar.create()
-        val retStr2 = grainChar.create()
-        Assert.assertEquals(retStr, retStr2)
+        Assert.assertEquals(grainChar.create(), grainChar.create())
 
-        grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "fixing", value = ""))
-        val retStr3 = grainChar.create()
-        Assert.assertEquals(retStr3, "")
+        grainChar = GrainChar(ColAttribute(dataType = "char", size = 5, valueType = "fixing", value = ""))
+        Assert.assertEquals(grainChar.create(), "     ")
     }
 
     @Test
     fun fixingMultipleValueTest() {
-        var grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "fixing",
+        var grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "fixing", size =5 ,
                         value = "A01,A02,B03,B04,C05"))
 
-        Assert.assertEquals(grainChar.create(), "A01")
-        Assert.assertEquals(grainChar.create(), "A02")
-        Assert.assertEquals(grainChar.create(), "B03")
-        Assert.assertEquals(grainChar.create(), "B04")
-        Assert.assertEquals(grainChar.create(), "C05")
-        Assert.assertEquals(grainChar.create(), "A01")
-        Assert.assertEquals(grainChar.create(), "A02")
+        Assert.assertEquals(grainChar.create(), "A01  ")
+        Assert.assertEquals(grainChar.create(), "A02  ")
+        Assert.assertEquals(grainChar.create(), "B03  ")
+        Assert.assertEquals(grainChar.create(), "B04  ")
+        Assert.assertEquals(grainChar.create(), "C05  ")
+        Assert.assertEquals(grainChar.create(), "A01  ")
+        Assert.assertEquals(grainChar.create(), "A02  ")
     }
 
     @Test
     fun variableTest() {
 
         var grainChar = GrainChar(ColAttribute(dataType = "char", size = 5,
-                valueType = "variable", value = "test"))
+                valueType = "variable", value = "test "))
         val retStr = grainChar.create()
         val retStr2 = grainChar.create()
-        Assert.assertNotEquals(retStr, "test")
-        Assert.assertNotEquals(retStr2, "test")
-        Assert.assertEquals(retStr.length, 1)
-        Assert.assertEquals(retStr2.length, 1)
+        Assert.assertNotEquals(retStr, "test ")
+        Assert.assertNotEquals(retStr2, "test ")
+        Assert.assertEquals(retStr.length, 5)
+        Assert.assertEquals(retStr2.length, 5)
 
         grainChar = GrainChar(ColAttribute(dataType = "char", size = 6, valueType = "variable"))
-        Assert.assertEquals(grainChar.create().length, 2)
+        Assert.assertEquals(grainChar.create().length, 6)
 
         grainChar = GrainChar(ColAttribute(dataType = "char", size = 12, valueType = "variable"))
         println("variableTest singleByteStr=" + grainChar.create())
-        Assert.assertEquals(grainChar.create().length, 4)
-        Assert.assertEquals(grainChar.create().length, 4)
-        Assert.assertEquals(grainChar.create().length, 4)
+        Assert.assertEquals(grainChar.create().length, 12)
+        Assert.assertEquals(grainChar.create().length, 12)
+        Assert.assertEquals(grainChar.create().length, 12)
 
         // hasMultiByte is true
         grainChar = GrainChar(ColAttribute(dataType = "char", size = 60,
                 valueType = "variable", hasMultiByte = true))
         println("variableTest multiByteStr=" + grainChar.create())
-        Assert.assertEquals(grainChar.create().length, 20)
-        Assert.assertEquals(grainChar.create().length, 20)
-        Assert.assertEquals(grainChar.create().length, 20)
+        Assert.assertEquals(grainChar.create().length, 60)
+        Assert.assertEquals(grainChar.create().length, 60)
+        Assert.assertEquals(grainChar.create().length, 60)
     }
 
     @Test
     fun variableMultipleValueTest() {
-        val retList = arrayListOf("A01", "A02", "B03", "B04", "C05")
-        var grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "variable",
+        val retList = arrayListOf("A01  ", "A02  ", "B03  ", "B04  ", "C05  ")
+        var grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "variable", size = 5,
                 value = "A01,A02,B03,B04,C05"))
         Assert.assertTrue(retList.contains(grainChar.create()))
         Assert.assertTrue(retList.contains(grainChar.create()))
@@ -84,10 +81,10 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create(), "2")
 
         // string(not number) in value field
-        grainChar = GrainChar(ColAttribute(dataType = "char", autoIncrement = true,
+        grainChar = GrainChar(ColAttribute(dataType = "char", autoIncrement = true, size = 5,
                 valueType = "variable", value = "test"))
-        Assert.assertEquals(grainChar.create(), "1")
-        Assert.assertEquals(grainChar.create(), "2")
+        Assert.assertEquals(grainChar.create(), "1    ")
+        Assert.assertEquals(grainChar.create(), "2    ")
 
         // number in value field
         grainChar = GrainChar(ColAttribute(dataType = "char", autoIncrement = true,
@@ -120,7 +117,7 @@ class GrainCharTest {
         // fixing(no zero padding)
         grainChar = GrainChar(ColAttribute(dataType = "char", size = 10, format = "zeroPadding",
                 valueType = "fixing", value = "test"))
-        Assert.assertEquals(grainChar.create(), "test")
+        Assert.assertEquals(grainChar.create(), "test      ")
 
         // auto increment
         grainChar = GrainChar(ColAttribute(dataType = "char", size = 5, format = "zeroPadding",
@@ -169,10 +166,10 @@ class GrainCharTest {
         Assert.assertEquals(grainChar.create().length, 10)
 
         // ignore fillMaxSize and hasMultiByte when autoIncrement is true
-        grainChar = GrainChar(ColAttribute(dataType = "char", size = 10, autoIncrement = true,
+        grainChar = GrainChar(ColAttribute(dataType = "char", size = 5, autoIncrement = true,
                 fillMaxSize = true, valueType = "variable", value = "", hasMultiByte = true))
-        Assert.assertEquals(grainChar.create(), "1")
-        Assert.assertEquals(grainChar.create(), "2")
+        Assert.assertEquals(grainChar.create(), "1    ")
+        Assert.assertEquals(grainChar.create(), "2    ")
     }
 
     @Test
@@ -187,7 +184,7 @@ class GrainCharTest {
         // single quotation mark
         var grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
                 valueType = "FIXING", value = "test", encloseChar = "SingleQuotation"))
-        var correctStr = "'test'"
+        var correctStr = "'test      '"
         Assert.assertEquals(grainChar.create(), correctStr)
 
         grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10, format = "ZeroPadding",
@@ -196,7 +193,7 @@ class GrainCharTest {
 
         grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
                 valueType = "variable", value = "", encloseChar = "SingleQuotation"))
-        Assert.assertEquals(grainChar.create().length, 5)
+        Assert.assertEquals(grainChar.create().length, 12)
 
         val retList = arrayListOf("'A01'", "'A02'", "'B03'")
         grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "variable",
@@ -208,8 +205,8 @@ class GrainCharTest {
 
         // double quotation mark
         grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
-                valueType = "fixing", value = "test", encloseChar = "DoubleQuotation"))
-        correctStr = """"test""""
+                valueType = "fixing", value = "testtest", encloseChar = "DoubleQuotation"))
+        correctStr = """"testtest  """"
         Assert.assertEquals(grainChar.create(), correctStr)
 
         grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10, format = "ZeroPadding",
@@ -218,7 +215,7 @@ class GrainCharTest {
 
         grainChar = GrainChar(ColAttribute(dataType = "CHAR", size = 10,
                 valueType = "variable", value = "", encloseChar = "DoubleQuotation"))
-        Assert.assertEquals(grainChar.create().length, 5)
+        Assert.assertEquals(grainChar.create().length, 12)
 
         val retList2 = arrayListOf(""""A01"""", """"A02"""", """"B03"""")
         grainChar = GrainChar(ColAttribute(dataType = "char", valueType = "variable",
@@ -236,13 +233,4 @@ class GrainCharTest {
         Assert.assertTrue(false)
     }
 
-    @Test
-    fun varcharTest() {
-        var grainChar = GrainChar(ColAttribute(dataType = "varchar", size = 10, format = "",
-                fillMaxSize = true, valueType = "VARIABLE", value = ""))
-        Assert.assertEquals(grainChar.create().length, 10)
-        grainChar = GrainChar(ColAttribute(dataType = "varChar2", size = 20, format = "",
-                fillMaxSize = true, valueType = "VARIABLE", value = ""))
-        Assert.assertEquals(grainChar.create().length, 20)
-    }
 }
