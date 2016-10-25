@@ -130,6 +130,8 @@ class GrainChar(attr: ColAttribute): IGrain {
         fun makeSingleByteString(): String {
 
             val rand =Random()
+            // 英数字は１バイトなので、1/3にする明確な理由はない。単に1/3くらいなら程よい性能だろうと言うことと
+            // makeMultiByteStringと合わせた方が分かりやすいかと思って同じ仕様にした。
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
             val sb = buildString {
                 for(idx in 1..makeSize) {
