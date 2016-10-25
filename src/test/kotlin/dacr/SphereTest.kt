@@ -12,9 +12,9 @@ class SphereTest {
         var colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "col1", dataType = "char", size = 5, format = "zeroPadding",
                 valueType = "variable", value = ""))
-        colAttrList.add(ColAttribute(name = "col2", dataType = "char", size = 10, format = "",
+        colAttrList.add(ColAttribute(name = "col2", dataType = "varchar", size = 10, format = "",
                 valueType = "fixing", value = "A01,A02,B03,B04,C05"))
-        colAttrList.add(ColAttribute(name = "col3", dataType = "char", size = 5, format = "",
+        colAttrList.add(ColAttribute(name = "col3", dataType = "varchar", size = 5, format = "",
                 valueType = "variable", value = ""))
 
         val dataSphere = Sphere(colAttrList)
@@ -50,10 +50,10 @@ class SphereTest {
     fun createWithMultipleValuePKTest() {
         var colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true,
-                size = 20, valueType = "variable", value = ""))
-        colAttrList.add(ColAttribute(name = "pk2", dataType = "char", primaryKey = true,
+                size = 5, valueType = "variable", value = ""))
+        colAttrList.add(ColAttribute(name = "pk2", dataType = "varchar", primaryKey = true,
                 size = 5, valueType = "variable", value = "A01,A02"))
-        colAttrList.add(ColAttribute(name = "pk3", dataType = "char", primaryKey = true,
+        colAttrList.add(ColAttribute(name = "pk3", dataType = "varchar", primaryKey = true,
                 size = 5, valueType = "fixing", value = "test"))
 
         val dataSphere = Sphere(colAttrList)
