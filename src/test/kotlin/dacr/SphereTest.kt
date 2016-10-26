@@ -49,22 +49,23 @@ class SphereTest {
     @Test
     fun createWithMultipleValuePKTest() {
         var colAttrList = mutableListOf<ColAttribute>()
-        colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true,
-                size = 5, valueType = "variable", value = ""))
-        colAttrList.add(ColAttribute(name = "pk2", dataType = "varchar", primaryKey = true,
-                size = 5, valueType = "variable", value = "A01,A02"))
-        colAttrList.add(ColAttribute(name = "pk3", dataType = "varchar", primaryKey = true,
-                size = 5, valueType = "fixing", value = "test"))
+        // this attribute is primary key
+        colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true, size = 1, valueType = "variable", value = ""))
+        // this attribute also is primary key
+        colAttrList.add(ColAttribute(name = "pk2", dataType = "varchar", primaryKey = true, valueType = "variable", value = "A01,A02"))
+        // this attribute is not key. because valueType is fixing
+        colAttrList.add(ColAttribute(name = "pk3", dataType = "varchar", primaryKey = true, valueType = "fixing", value = "test"))
 
         val dataSphere = Sphere(colAttrList)
         var duplicateMap = mutableMapOf<String, Boolean>()
         for(i in 0..9) {
             val tmpList = dataSphere.create()
-            if(duplicateMap.containsKey(tmpList[0])) {
+            val key = tmpList[0] + tmpList[1]
+            if(duplicateMap.containsKey(key)) {
                 Assert.assertFalse(true)
                 break
             } else {
-                duplicateMap.put(tmpList[0], true)
+                duplicateMap.put(key, true)
             }
         }
         Assert.assertTrue(true)
