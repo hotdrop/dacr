@@ -80,13 +80,13 @@ class GrainIntegerTest {
         var gInt = GrainInteger(ColAttribute(size = 5, valueType = "variable", value = ""))
         for(i in 1..100) {
             val test = gInt.create().toInt()
-            Assert.assertTrue(0 < test && test < 100000)
+            Assert.assertTrue(test in 1..99999)
         }
 
         gInt = GrainInteger(ColAttribute(size = 5, valueType = "variable", value = "7"))
         for(i in 1..100) {
             val test = gInt.create().toInt()
-            Assert.assertTrue(0 < test && test < 100000)
+            Assert.assertTrue(test in 1..99999)
         }
 
         // size exceed the maximum value of Int

@@ -18,7 +18,7 @@ class GrainVarcharTest {
 
     @Test
     fun fixingMultipleValueTest() {
-        var gChar = GrainVarchar(ColAttribute(valueType = "fixing", value = "A01,A02,B03,B04,C05"))
+        val gChar = GrainVarchar(ColAttribute(valueType = "fixing", value = "A01,A02,B03,B04,C05"))
 
         Assert.assertEquals(gChar.create(), "A01")
         Assert.assertEquals(gChar.create(), "A02")
@@ -58,7 +58,7 @@ class GrainVarcharTest {
     @Test
     fun variableMultipleValueTest() {
         val retList = arrayListOf("A01", "A02", "B03", "B04", "C05")
-        var gChar = GrainVarchar(ColAttribute(valueType = "variable", value = "A01,A02,B03,B04,C05"))
+        val gChar = GrainVarchar(ColAttribute(valueType = "variable", value = "A01,A02,B03,B04,C05"))
         Assert.assertTrue(retList.contains(gChar.create()))
         Assert.assertTrue(retList.contains(gChar.create()))
     }
@@ -145,7 +145,7 @@ class GrainVarcharTest {
 
     @Test
     fun upperCastTest() {
-        var gChar = GrainVarchar(ColAttribute(dataType = "CHAR", size = 5, format = "ZEROPADDING", fillMaxSize = true, valueType = "VARIABLE", value = "0"))
+        val gChar = GrainVarchar(ColAttribute(dataType = "CHAR", size = 5, format = "ZEROPADDING", fillMaxSize = true, valueType = "VARIABLE", value = "0"))
         Assert.assertEquals(gChar.create().length, 5)
     }
 
@@ -153,7 +153,7 @@ class GrainVarcharTest {
     fun encloseCharTest() {
         // single quotation mark
         var gChar = GrainVarchar(ColAttribute(dataType = "CHAR", size = 10, valueType = "FIXING", value = "test", encloseChar = "SingleQuotation"))
-        var correctStr = "'test'"
+        val correctStr = "'test'"
         Assert.assertEquals(gChar.create(), correctStr)
 
         gChar = GrainVarchar(ColAttribute(dataType = "CHAR", size = 10, format = "ZeroPadding", valueType = "Variable", value = "test", encloseChar = "SingleQuotation"))

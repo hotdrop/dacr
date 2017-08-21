@@ -30,14 +30,13 @@ class GrainTimestampTest {
     fun nowTest() {
         var gTime = GrainTimestamp(ColAttribute(format = "YYYY/MM/dd HH:mm:ss.SSS", valueType = "fixing", value = "now"))
 
-        // ミリ秒を合わせるのが辛いので照合は秒までのTimestampでテストする
+        // It is difficult to match milliseconds, so test with Timestamp until seconds
         var sdf = SimpleDateFormat("YYYY/MM/dd HH:mm:ss")
         var retStr = sdf.format(Date())
         Assert.assertTrue(gTime.create().contains(retStr))
 
         gTime = GrainTimestamp(ColAttribute(format = "YYYY-MM-dd HH:mm:ss.SSS", valueType = "variable", value = "now"))
 
-        // ミリ秒を合わせるのが辛いので照合は秒までのTimestampでテストする
         sdf = SimpleDateFormat("YYYY-MM-dd HH:mm:ss")
         retStr = sdf.format(Date())
         Assert.assertTrue(gTime.create().contains(retStr))

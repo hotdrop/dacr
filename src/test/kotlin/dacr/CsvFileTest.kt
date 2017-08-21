@@ -23,9 +23,9 @@ class CsvFileTest {
         csvFile.output()
 
         File(outPath).bufferedReader().forEachLine { line ->
-            Assert.assertTrue(if(line.contains("firstValue")) true else false)
-            Assert.assertTrue(if(line.contains("secondValue")) true else false)
-            Assert.assertTrue(if(line.contains("thirdValue")) true else false)
+            Assert.assertTrue(line.contains("firstValue"))
+            Assert.assertTrue(line.contains("secondValue"))
+            Assert.assertTrue(line.contains("thirdValue"))
         }
 
         File(outPath).delete()
@@ -33,7 +33,7 @@ class CsvFileTest {
 
     @Test
     fun makeComplexCsvFileTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
+        val colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "char_no", dataType = "char", primaryKey = true,
                 size = 10, format = "zeroPadding", autoIncrement = true, fillMaxSize = false,
                 valueType = "variable", value = "2", hasMultiByte = false))
@@ -79,7 +79,7 @@ class CsvFileTest {
 
     @Test
     fun makeCsvFileWithPKTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
+        val colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true,
                 size = 5, format = "zeroPadding", autoIncrement = false, fillMaxSize = false,
                 valueType = "variable", value = "", hasMultiByte = false))

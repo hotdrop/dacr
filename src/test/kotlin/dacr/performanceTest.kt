@@ -17,22 +17,22 @@ class performanceTest {
 
     @Test
     fun charTest() {
-        var fixingList = mutableListOf<ColAttribute>()
+        val fixingList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             fixingList.add(ColAttribute(dataType = "char", size = 20, valueType = "fixing", value = "12345678901234567890"))
         }
 
-        var varList = mutableListOf<ColAttribute>()
+        val varList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             varList.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = ""))
         }
 
-        var varFillList = mutableListOf<ColAttribute>()
+        val varFillList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             varFillList.add(ColAttribute(dataType = "char", size = 200, fillMaxSize = true, valueType = "variable", value = ""))
         }
 
-        var varEncloseMarkList = mutableListOf<ColAttribute>()
+        val varEncloseMarkList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             varEncloseMarkList.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = "", encloseChar = ColAttribute.ENCLOSE_CHAR_DOUBLE_QUOTATION))
         }
@@ -60,17 +60,17 @@ class performanceTest {
 
     @Test
     fun dateTimeTest() {
-        var fixingList = mutableListOf<ColAttribute>()
+        val fixingList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             fixingList.add(ColAttribute(dataType = "dateTime", valueType = "fixing", value = "2016/09/30 12:50:25"))
         }
 
-        var nowList = mutableListOf<ColAttribute>()
+        val nowList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             nowList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
 
-        var varList = mutableListOf<ColAttribute>()
+        val varList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             varList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = ""))
         }
@@ -87,15 +87,15 @@ class performanceTest {
 
     @Test
     fun dateFormatPatternTest() {
-        var yyyySlashList = mutableListOf<ColAttribute>()
+        val yyyySlashList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             yyyySlashList.add(ColAttribute(dataType = "dateTime", format="YYYY/MM/dd HH:mm:ss", valueType = "variable", value = "now"))
         }
-        var yyyyISOLocalList = mutableListOf<ColAttribute>()
+        val yyyyISOLocalList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             yyyyISOLocalList.add(ColAttribute(dataType = "dateTime", format="YYYY-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
-        var correctList = mutableListOf<ColAttribute>()
+        val correctList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             correctList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
@@ -114,17 +114,17 @@ class performanceTest {
 
     @Test
     fun timestampTest() {
-        var fixingList = mutableListOf<ColAttribute>()
+        val fixingList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             fixingList.add(ColAttribute(dataType = "Timestamp", valueType = "fixing", value = "2016/09/30 12:50:25.382124"))
         }
 
-        var nowList = mutableListOf<ColAttribute>()
+        val nowList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             nowList.add(ColAttribute(dataType = "Timestamp", format="yyyy/MM/dd hh:mm:ss.SSSSSS", valueType = "variable", value = "now"))
         }
 
-        var varList = mutableListOf<ColAttribute>()
+        val varList = mutableListOf<ColAttribute>()
         for(i in 1..testListSize) {
             varList.add(ColAttribute(dataType = "Timestamp", format="yyyy-MM-dd HH:mm:ss.SSSSSS", valueType = "variable", value = ""))
         }
@@ -150,7 +150,7 @@ class performanceTest {
         }
     }
 
-    // おまけテスト
+    // This performance Test is very load.
     //@Test
     fun sdfVsDtfTest() {
 

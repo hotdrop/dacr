@@ -18,7 +18,7 @@ class GrainCharTest {
 
     @Test
     fun fixingMultipleValueTest() {
-        var gChar = GrainChar(ColAttribute(valueType = "fixing", size =5 , value = "A01,A02,B03,B04,C05"))
+        val gChar = GrainChar(ColAttribute(valueType = "fixing", size =5 , value = "A01,A02,B03,B04,C05"))
         Assert.assertEquals(gChar.create(), "A01  ")
         Assert.assertEquals(gChar.create(), "A02  ")
         Assert.assertEquals(gChar.create(), "B03  ")
@@ -57,7 +57,7 @@ class GrainCharTest {
     @Test
     fun variableMultipleValueTest() {
         val retList = arrayListOf("A01  ", "A02  ", "B03  ", "B04  ", "C05  ")
-        var gChar = GrainChar(ColAttribute(valueType = "variable", size = 5, value = "A01,A02,B03,B04,C05"))
+        val gChar = GrainChar(ColAttribute(valueType = "variable", size = 5, value = "A01,A02,B03,B04,C05"))
         Assert.assertTrue(retList.contains(gChar.create()))
         Assert.assertTrue(retList.contains(gChar.create()))
     }
@@ -146,7 +146,7 @@ class GrainCharTest {
 
     @Test
     fun upperCastTest() {
-        var gChar = GrainChar(ColAttribute(size = 5, format = "ZEROPADDING", fillMaxSize = true, valueType = "VARIABLE", value = "0"))
+        val gChar = GrainChar(ColAttribute(size = 5, format = "ZEROPADDING", fillMaxSize = true, valueType = "VARIABLE", value = "0"))
         Assert.assertEquals(gChar.create().length, 5)
     }
 

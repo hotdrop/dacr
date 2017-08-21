@@ -9,7 +9,7 @@ class SphereTest {
 
     @Test
     fun createTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
+        val colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "col1", dataType = "char", size = 5, format = "zeroPadding",
                 valueType = "variable", value = ""))
         colAttrList.add(ColAttribute(name = "col2", dataType = "varchar", size = 10, format = "",
@@ -18,9 +18,8 @@ class SphereTest {
                 valueType = "variable", value = ""))
 
         val dataSphere = Sphere(colAttrList)
-        var mutableList = mutableListOf<String>()
+        val mutableList = mutableListOf<String>()
         for(i in 1..5) {
-            // 適当なデータが5レコードできれば良い
             mutableList.add(dataSphere.create().joinToString(","))
         }
         Assert.assertEquals(mutableList.size, 5)
@@ -28,12 +27,12 @@ class SphereTest {
 
     @Test
     fun createWithPKTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
+        val colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true,
                 size = 5, valueType = "variable", value = ""))
 
         val dataSphere = Sphere(colAttrList)
-        var duplicateMap = mutableMapOf<String, Boolean>()
+        val duplicateMap = mutableMapOf<String, Boolean>()
         for(i in 0..9) {
             val tmpList = dataSphere.create()
             if(duplicateMap.containsKey(tmpList[0])) {
@@ -48,7 +47,7 @@ class SphereTest {
 
     @Test
     fun createWithMultipleValuePKTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
+        val colAttrList = mutableListOf<ColAttribute>()
         // this attribute is primary key
         colAttrList.add(ColAttribute(name = "pk1", dataType = "char", primaryKey = true, size = 1, valueType = "variable", value = ""))
         // this attribute also is primary key
@@ -57,7 +56,7 @@ class SphereTest {
         colAttrList.add(ColAttribute(name = "pk3", dataType = "varchar", primaryKey = true, valueType = "fixing", value = "test"))
 
         val dataSphere = Sphere(colAttrList)
-        var duplicateMap = mutableMapOf<String, Boolean>()
+        val duplicateMap = mutableMapOf<String, Boolean>()
         for(i in 0..9) {
             val tmpList = dataSphere.create()
             val key = tmpList[0] + tmpList[1]
@@ -73,7 +72,7 @@ class SphereTest {
 
     @Test(expected = IllegalStateException::class)
     fun illegalDataTypeTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
+        val colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(dataType = "CHAR", valueType = "variable"))
         colAttrList.add(ColAttribute(dataType = "VARCHAR", valueType = "variable"))
         colAttrList.add(ColAttribute(dataType = "DATE", valueType = "variable"))
@@ -87,7 +86,7 @@ class SphereTest {
 
     @Test(expected = IllegalStateException::class)
     fun numberOfTrialErrorTest() {
-        var colAttrList = mutableListOf<ColAttribute>()
+        val colAttrList = mutableListOf<ColAttribute>()
         colAttrList.add(ColAttribute(dataType = "char", primaryKey = true, valueType = "variable", value = "A01,A02"))
         val dataSphere = Sphere(colAttrList)
         for(i in 1..10) {

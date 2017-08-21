@@ -72,8 +72,8 @@ class GrainDateTest {
     fun dateInTimeTest() {
 
         var gDate = GrainDate(ColAttribute(format = "YYYY/MM/dd hh:mm:ss", valueType = "variable", value = "now"))
-        var sdf = SimpleDateFormat("YYYY/MM/dd hh:mm:ss")
-        var retStr = sdf.format(Date())
+        val sdf = SimpleDateFormat("YYYY/MM/dd hh:mm:ss")
+        val retStr = sdf.format(Date())
         Assert.assertEquals(gDate.create(), retStr)
 
         // dataType is date. fixing hour, minute and second if hh:mm:ss in format
