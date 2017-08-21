@@ -12,8 +12,8 @@ import kotlin.system.measureTimeMillis
 
 class performanceTest {
 
-    val benchMarkLoopCnt = 10
-    val testListSize = 10
+    private val benchMarkLoopCnt = 10
+    private val testListSize = 10
 
     @Test
     fun charTest() {
