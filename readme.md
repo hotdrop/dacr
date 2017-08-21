@@ -1,4 +1,4 @@
-[![Kotlin 1.0.4](https://img.shields.io/badge/Kotlin-1.0.4-blue.svg)](http://kotlinlang.org)
+[![Kotlin 1.1.4](https://img.shields.io/badge/Kotlin-1.0.4-blue.svg)](http://kotlinlang.org)
 [![Build Status](https://travis-ci.org/hotdrop/dacr.svg?branch=master)](https://travis-ci.org/hotdrop/dacr)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/licenses/LICENSE)
 
@@ -6,13 +6,8 @@
 Read the column definition file of json format, to generate the random data of csv format.  
 Please use in generating the dummy data, such as a performance test.
 
-## description in Japanese
-負荷試験で大量のダミーデータをDBにinsertしたかったため、このツールを作成しました。  
-ダミーデータを生成したいテーブルの全カラム情報をjson形式で定義します。  
-そのjsonファイルに定義された列情報に従って、指定した行数のダミーデータをCSV形式で出力します。
-
 ## Requirement
-* Kotlin 1.0.4
+* Kotlin 1.1.4
 * gson 2.7  
 
 > Gson is released under the Apache 2.0 license.
