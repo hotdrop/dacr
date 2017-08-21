@@ -73,7 +73,7 @@ class CsvFileTest {
         val csvFile = CsvFile(dataSphere, outPath, 10)
         csvFile.output()
 
-        // 出力ファイルを目視する目的なので、Assertでのテストもファイル削除もしない。
+        // Since we look at the output file, we do not test or delete files in Assert.
         Assert.assertTrue(true)
     }
 
@@ -97,7 +97,7 @@ class CsvFileTest {
         val csvFile = CsvFile(dataSphere, outPath, 5)
         csvFile.output()
 
-        // 出力ファイルを目視する目的なので、Assertでのテストもファイル削除もしない。
+        // Since we look at the output file, we do not test or delete files in Assert.
         Assert.assertTrue(true)
     }
 }
