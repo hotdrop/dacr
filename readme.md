@@ -1,4 +1,4 @@
-[![Kotlin 1.1.4](https://img.shields.io/badge/Kotlin-1.0.4-blue.svg)](http://kotlinlang.org)
+[![Kotlin 1.1.4](https://img.shields.io/badge/Kotlin-1.1.4-blue.svg)](http://kotlinlang.org)
 [![Build Status](https://travis-ci.org/hotdrop/dacr.svg?branch=master)](https://travis-ci.org/hotdrop/dacr)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/licenses/LICENSE)
 
