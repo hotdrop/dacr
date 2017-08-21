@@ -3,4 +3,5 @@
 build
 src/test/kotlin/dacr/testdata/*.csv
 reports
+out
 
