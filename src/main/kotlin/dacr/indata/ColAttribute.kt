@@ -29,7 +29,6 @@ data class ColAttribute(
         const val DATA_TYPE_TIMESTAMP = "TIMESTAMP"
 
         const val VALUE_TYPE_FIXING = "FIXING"
-        const val VALUE_TYPE_VARIABLE = "VARIABLE"
 
         const val VALUE_NOW = "NOW"
         const val FORMAT_ZERO_PADDING = "ZEROPADDING"
