@@ -1,34 +1,30 @@
 package dacr.model
 
 import dacr.indata.ColAttribute
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
- * timestamp型カラムのGrainクラス
+ * Grain Class of Timestamp type column
  */
 class GrainTimestamp(attr: ColAttribute): IGrain {
 
-    private val name: String
-    private val primaryKey: Boolean
-    private val fixingValue: Boolean
-    private val value: String
+    private val name = attr.name
+    private val isPrimaryKey = attr.primaryKey
+    private val isFixingValue = (attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING)
+
+    private val value = attr.value
+    private val isCurrentDate = (value.toUpperCase() == ColAttribute.VALUE_NOW)
+
     private val values: List<String>?
     private val dtf: DateTimeFormatter
-    private val isCurrentDate: Boolean
 
     private var valueIdx = 0
 
     init {
-        name = attr.name
-        primaryKey = attr.primaryKey
 
-        fixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
-        value = attr.value
         values = if(value.contains(",")) value.split(",") else null
-        isCurrentDate = if(value.toUpperCase() == ColAttribute.VALUE_NOW) true else false
 
         try {
             // LocalDateTime.nowを使用する場合、ナノ秒nはエラーになるので以下の通り分ける
@@ -42,26 +38,19 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
         }
     }
 
-    override fun isPrimaryKey(): Boolean {
-        return primaryKey
-    }
+    override fun isPrimaryKey() = isPrimaryKey
 
-    override fun isAutoIncrement(): Boolean {
-        return false
-    }
+    override fun isAutoIncrement() = false
 
-    override fun isFixingValue(): Boolean {
-        return fixingValue
-    }
+    override fun isFixingValue() = isFixingValue
 
     override fun create() : String {
 
-        // valueに「now」指定がされていた場合はそれを最優先とする
         if(isCurrentDate) {
             return dtf.format(LocalDateTime.now())
         }
 
-        if(fixingValue) {
+        if(isFixingValue) {
             return makeFixingValue()
         }
 
@@ -95,7 +84,7 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
                 .plusMinutes(randObj.nextInt(59).toLong())
                 .plusSeconds(randObj.nextInt(59).toLong())
                 .plusNanos(randObj.nextInt(999).toLong()))
-        // TODO 今はNanosを3桁999にしているため、nnnnnnとしても先頭３バイトは必ず000になる。
-        // そのため、本当はフォーマットのナノ桁数をcountしてnextIntの値を変えるべき
+        // 今はNanosを3桁999にしているため、nnnnnnとしても先頭３バイトは必ず000になる。
+        // 本当はフォーマットのナノ桁数をcountしてnextIntの値を変えるべき
     }
 }

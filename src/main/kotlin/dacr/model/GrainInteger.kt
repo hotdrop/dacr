@@ -4,17 +4,19 @@ import dacr.indata.ColAttribute
 import java.util.*
 
 /**
- * Integer型カラムのGrainクラス
+ * Grain Class of Integer type column
  */
 class GrainInteger(attr: ColAttribute): IGrain {
 
-    private val name: String
-    private val primaryKey: Boolean
-    private val autoIncrement: Boolean
-    private val fixingValue: Boolean
+    private val name = attr.name
+    private val isPrimaryKey = attr.primaryKey
+    private val isAutoIncrement = attr.autoIncrement
+    private val isFixingValue = (attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING)
+    private val size: Int = attr.size
+
     private val value: String
     private val values: List<String>?
-    private val size: Int
+
     private val rangeMin: Int
     private val rangeMax: Int
 
@@ -22,40 +24,37 @@ class GrainInteger(attr: ColAttribute): IGrain {
     private var sequence = 1
 
     init {
-        name = attr.name
-        primaryKey = attr.primaryKey
-        size = attr.size
-
-        fixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
-        autoIncrement = attr.autoIncrement
 
         try {
-            if (attr.value.contains(",")) {
-                value = attr.value
-                values = value.split(",").map(String::trim)
-                // 単なる数値型チェック
-                values.forEach { it.toInt() }
-                // valuesが指定されている場合、rangeは使用しないので0
-                rangeMin = 0
-                rangeMax = 0
-            } else if(attr.value.toUpperCase().contains("TO")) {
-                val betweenList = attr.value.toUpperCase().split("TO")
-                value = betweenList[0].trim()
-                values = null
-                rangeMin = betweenList[0].trim().toInt()
-                rangeMax = if(betweenList[1].trim().toLong() < Int.MAX_VALUE) betweenList[1].trim().toInt() else Int.MAX_VALUE
-                sequence = rangeMin
-            } else if(attr.value != ""){
-                value = attr.value.trim()
-                values = null
-                rangeMin = value.toInt()
-                rangeMax = rangeMax()
-                sequence = rangeMin
-            } else {
-                value = attr.value
-                values = null
-                rangeMin = 1
-                rangeMax = rangeMax()
+            when {
+                attr.value.contains(",") -> {
+                    value = attr.value
+                    values = value.split(",").map(String::trim)
+                    values.forEach { it.toInt() }
+                    rangeMin = 0
+                    rangeMax = 0
+                }
+                attr.value.toUpperCase().contains("TO") -> {
+                    val betweenList = attr.value.toUpperCase().split("TO")
+                    value = betweenList[0].trim()
+                    values = null
+                    rangeMin = betweenList[0].trim().toInt()
+                    rangeMax = if(betweenList[1].trim().toLong() < Int.MAX_VALUE) betweenList[1].trim().toInt() else Int.MAX_VALUE
+                    sequence = rangeMin
+                }
+                attr.value != "" -> {
+                    value = attr.value.trim()
+                    values = null
+                    rangeMin = value.toInt()
+                    rangeMax = rangeMax()
+                    sequence = rangeMin
+                }
+                else -> {
+                    value = attr.value
+                    values = null
+                    rangeMin = 1
+                    rangeMax = rangeMax()
+                }
             }
         } catch(e: NumberFormatException) {
             throw NumberFormatException("incorrect value by Integer. " +
@@ -73,25 +72,19 @@ class GrainInteger(attr: ColAttribute): IGrain {
         return if(maxvalue >= Int.MAX_VALUE) Int.MAX_VALUE else maxvalue.toInt()
     }
 
-    override fun isPrimaryKey(): Boolean {
-        return primaryKey
-    }
+    override fun isPrimaryKey() = isPrimaryKey
 
-    override fun isAutoIncrement(): Boolean {
-        return autoIncrement
-    }
+    override fun isAutoIncrement() = isAutoIncrement
 
-    override fun isFixingValue(): Boolean {
-        return fixingValue
-    }
+    override fun isFixingValue() = isFixingValue
 
     override fun create(): String {
 
-        if(fixingValue) {
+        if(isFixingValue) {
             return makeFixingValue()
         }
 
-        if(autoIncrement) {
+        if(isAutoIncrement) {
             return makeAutoIncrement()
         }
 
@@ -110,7 +103,7 @@ class GrainInteger(attr: ColAttribute): IGrain {
     }
 
     private fun makeAutoIncrement(): String {
-        var retVal = sequence.toString()
+        val retVal = sequence.toString()
         sequence = if(sequence >= rangeMax) rangeMin else ++sequence
         return retVal
     }

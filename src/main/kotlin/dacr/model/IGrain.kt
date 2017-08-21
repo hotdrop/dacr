@@ -1,12 +1,12 @@
 package dacr.model
 
 /**
- * 1つのカラム情報を保持するGrainクラスのインタフェース。
+ * Interface of Grain class holding one column information.
  *
- * ColAttributeクラスは外部から入ってきた情報の受け皿の役割であり
- * Grainはプログラムに合わせて情報を加工し使いやすくする役割となる。
- * このクラスが持つ情報は1つのカラムだけなので意味を成さない。
- * そのため、Grainの集合体であるSphereクラスを形成して処理を行う。
+ * The ColAttribute class is the role of the receiver of information entered from the outside,
+ * and Grain is the role of processing information according to the program and making it easy to use.
+ * Since this class has only one column of information, it does not make sense.
+ * Therefore, we form Sphere class which is an aggregate of Grain and process it.
  */
 interface IGrain {
     fun create() : String

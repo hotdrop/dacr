@@ -1,42 +1,37 @@
 package dacr.model
 
 import dacr.indata.ColAttribute
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
- * date型カラムのGrainクラス
+ * Grain Class of Date type column
  */
 class GrainDate(attr: ColAttribute): IGrain {
 
-    private val name: String
-    private val primaryKey: Boolean
-    private val fixingValue: Boolean
-    private val dataType: String
-    private val value: String
+    private val name = attr.name
+    private val isPrimaryKey = attr.primaryKey
+    private val isFixingValue = (attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING)
+
+    private val value = attr.value
+    private val isCurrentDate = (value.toUpperCase() == ColAttribute.VALUE_NOW)
+
     private val values: List<String>?
     private val dtf: DateTimeFormatter
-    private val isCurrentDate: Boolean
 
     private var valueIdx = 0
 
     init {
-        name = attr.name
-        primaryKey = attr.primaryKey
 
-        value = attr.value
         values = if(value.contains(",")) value.split(",") else null
 
-        dataType = attr.dataType.toUpperCase()
-        fixingValue = if(attr.valueType.toUpperCase() == ColAttribute.VALUE_TYPE_FIXING) true else false
-        isCurrentDate = if(value.toUpperCase() == ColAttribute.VALUE_NOW) true else false
-
         try {
-            var format = if(attr.format.contains("y")) attr.format.replace("y", "u")
-                            else if(attr.format.contains("Y")) attr.format.replace("Y", "u")
-                            else attr.format
+            val format = when {
+                attr.format.contains("y") -> attr.format.replace("y", "u")
+                attr.format.contains("Y") -> attr.format.replace("Y", "u")
+                else -> attr.format
+            }
             // formatが誤っていた場合、早めに検知したいのでこのタイミングでofPatternに入れてチェックする
             // 本当はチェック関数を別に作って最初に全部チェックしたほうがいい。
             dtf = DateTimeFormatter.ofPattern(format)
@@ -46,17 +41,11 @@ class GrainDate(attr: ColAttribute): IGrain {
         }
     }
 
-    override fun isPrimaryKey(): Boolean {
-        return primaryKey
-    }
+    override fun isPrimaryKey() = isPrimaryKey
 
-    override fun isAutoIncrement(): Boolean {
-        return false
-    }
+    override fun isAutoIncrement() = false
 
-    override fun isFixingValue(): Boolean {
-        return fixingValue
-    }
+    override fun isFixingValue() = isFixingValue
 
     override fun create(): String {
 
@@ -65,7 +54,7 @@ class GrainDate(attr: ColAttribute): IGrain {
             return dtf.format(LocalDateTime.now())
         }
 
-        if(fixingValue) {
+        if(isFixingValue) {
             return makeFixingValue()
         }
 

@@ -13,7 +13,7 @@ class CsvFile(sphere: Sphere, outPath: String, lineNumber: Int) {
     private val outputPath = outPath
     private val outLineNum = lineNumber
 
-    fun BufferedWriter.writeLine(line : String) {
+    private fun BufferedWriter.writeLine(line : String) {
         this.write(line)
         this.newLine()
     }
