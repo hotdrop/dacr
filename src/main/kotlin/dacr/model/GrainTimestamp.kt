@@ -27,7 +27,6 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
         values = if(value.contains(",")) value.split(",") else null
 
         try {
-            // LocalDateTime.nowを使用する場合、ナノ秒nはエラーになるので以下の通り分ける
             val replaceYearFormat = attr.format.replace("y", "u").replace("Y", "u")
             val replaceYearAndNanoFormat = attr.format.replace("S", "n")
             dtf = if(isCurrentDate) DateTimeFormatter.ofPattern(replaceYearFormat)
@@ -84,7 +83,6 @@ class GrainTimestamp(attr: ColAttribute): IGrain {
                 .plusMinutes(randObj.nextInt(59).toLong())
                 .plusSeconds(randObj.nextInt(59).toLong())
                 .plusNanos(randObj.nextInt(999).toLong()))
-        // 今はNanosを3桁999にしているため、nnnnnnとしても先頭３バイトは必ず000になる。
-        // 本当はフォーマットのナノ桁数をcountしてnextIntの値を変えるべき
+        // Now 3 digits 999 for Nanos, so even for nnnnnn the first 3 bytes will always be 000.
     }
 }

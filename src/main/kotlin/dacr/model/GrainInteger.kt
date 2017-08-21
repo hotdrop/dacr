@@ -114,7 +114,6 @@ class GrainInteger(attr: ColAttribute): IGrain {
             return values[Random().nextInt(values.size)]
         }
 
-        // 範囲が負数の場合だけ少し特殊な計算をする
         if(rangeMax < 0) {
             val argNextInt = (rangeMin * -1) - (rangeMax * -1)
             val randInt = Random().nextInt(argNextInt) + (rangeMax * -1)

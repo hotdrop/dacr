@@ -32,8 +32,6 @@ class GrainDate(attr: ColAttribute): IGrain {
                 attr.format.contains("Y") -> attr.format.replace("Y", "u")
                 else -> attr.format
             }
-            // formatが誤っていた場合、早めに検知したいのでこのタイミングでofPatternに入れてチェックする
-            // 本当はチェック関数を別に作って最初に全部チェックしたほうがいい。
             dtf = DateTimeFormatter.ofPattern(format)
         } catch (e: IllegalArgumentException) {
             throw IllegalArgumentException("incorrect date format. " +
@@ -49,7 +47,6 @@ class GrainDate(attr: ColAttribute): IGrain {
 
     override fun create(): String {
 
-        // Dateの場合、valueに「now」指定がされていた場合はそれを最優先とする
         if(isCurrentDate) {
             return dtf.format(LocalDateTime.now())
         }

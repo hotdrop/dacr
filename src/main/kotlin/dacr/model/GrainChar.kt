@@ -98,9 +98,10 @@ class GrainChar(attr: ColAttribute): IGrain {
 
         fun makeMultiByteString(): String {
 
-            val rand =Random()
-            // 日本語文字はUTF8だと1文字3バイトになるため、例えばデータ長をバイトで計算するOracleとかでも
-            // 入れられるよう1/3とした。fillMaxSizeを指定してしまった場合は仕方ないのでinsertエラーになってもらう。
+            val rand = Random()
+            // When Japanese characters are UTF 8, they become variable bytes.
+            // In this case, it was set to 1/3 so that Oracle can also insert data.
+            // If "fillMaxSize" is specified, insert error is assumed
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
             return buildString {
                 for(idx in 1..makeSize) {
@@ -112,8 +113,8 @@ class GrainChar(attr: ColAttribute): IGrain {
         fun makeSingleByteString(): String {
 
             val rand =Random()
-            // 英数字は１バイトなので、1/3にする明確な理由はない。単に1/3くらいなら程よい性能だろうと言うことと
-            // makeMultiByteStringと合わせた方が分かりやすいかと思って同じ仕様にした。
+            // It is not necessary to set it to 1/3, because alphanumeric characters are 1 byte.
+            // I thought it better to compare with makeMultiByteString.
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
             return buildString {
                 for(idx in 1..makeSize) {
@@ -131,7 +132,7 @@ class GrainChar(attr: ColAttribute): IGrain {
     }
 
     companion object {
-        // もっと増やしてもいいかもしれないが、ランダム生成のコストが大きくなることを恐れて一旦この数にした
+        // it even more
         val MULTI_BYTE_WORDS = arrayOf("あ","い","う","え","お")
         val WORDS = arrayOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N"
                 ,"O","P","Q","R","S","T","U","V","W","X","Y","Z"

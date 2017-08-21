@@ -100,8 +100,9 @@ class GrainVarchar(attr: ColAttribute): IGrain {
         fun makeMultiByteString(): String {
 
             val rand = Random()
-            // 日本語文字はUTF8だと1文字3バイトになるため、例えばデータ長をバイトで計算するOracleとかでも
-            // 入れられるよう1/3とした。fillMaxSizeを指定してしまった場合は仕方ないのでinsertエラーになってもらう。
+            // When Japanese characters are UTF 8, they become variable bytes.
+            // In this case, it was set to 1/3 so that Oracle can also insert data.
+            // If "fillMaxSize" is specified, insert error is assumed
             val makeSize = if(fillMaxSize) size else if (size >= 6) size/3 else 1
             return buildString {
                 for(idx in 1..makeSize) {
