@@ -77,10 +77,7 @@ class GrainChar(attr: ColAttribute): IGrain {
     }
 
     private fun makeFixingValue(): String {
-
-        if(values == null) {
-            return value
-        }
+        values ?: return value
 
         val retVal = values[valueIdx]
         valueIdx = if(valueIdx >= values.size - 1) 0 else ++valueIdx

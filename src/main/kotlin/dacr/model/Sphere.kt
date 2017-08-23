@@ -10,7 +10,7 @@ import dacr.indata.ColAttribute
  */
 class Sphere(colList: List<ColAttribute>) {
 
-    private var grainList: MutableList<IGrain> = mutableListOf()
+    private var grains: MutableList<IGrain> = mutableListOf()
 
     /**
      * The Map of Count of Columns to make PK judgment and PrimaryKey.
@@ -25,15 +25,6 @@ class Sphere(colList: List<ColAttribute>) {
     private var judgePKCnt = 0
 
     init {
-        fun setPKInformation(grain: IGrain) {
-            if(!grain.isPrimaryKey() || grain.isFixingValue() || judgePKCnt == -1) {
-                return
-            } else if(grain.isAutoIncrement()) {
-                judgePKCnt = -1
-            } else {
-                judgePKCnt++
-            }
-        }
 
         var grain: IGrain
         for(column in colList) {
@@ -51,16 +42,25 @@ class Sphere(colList: List<ColAttribute>) {
             }
 
             setPKInformation(grain)
-            grainList.add(grain)
+            grains.add(grain)
         }
     }
 
-    fun create(): List<String> = if(judgePKCnt > 0) createWithPK()
-                                 else grainList.map(IGrain::create)
+    private fun setPKInformation(grain: IGrain) {
+        if(!grain.isPrimaryKey() || grain.isFixingValue() || judgePKCnt == -1) {
+            return
+        } else if(grain.isAutoIncrement()) {
+            judgePKCnt = -1
+        } else {
+            judgePKCnt++
+        }
+    }
+
+    fun create(): List<String> = if(judgePKCnt > 0) createWithPK() else grains.map(IGrain::create)
 
     private fun createWithPK(): List<String> {
 
-        val valueList = mutableListOf<String>()
+        val values = mutableListOf<String>()
         var duplicateCount = 0
         // It should fluctuate according to generation number
         val maxDuplicateCount = 100
@@ -72,11 +72,11 @@ class Sphere(colList: List<ColAttribute>) {
                         "Stopped because there was a possibility of infinite loop.")
             }
 
-            valueList.clear()
+            values.clear()
             var pkCnt = judgePKCnt
             var pkConcatStr = ""
 
-            for(grain in grainList) {
+            for(grain in grains) {
                 val value = grain.create()
                 if(grain.isPrimaryKey() && !grain.isFixingValue()) {
                     pkConcatStr += value
@@ -90,10 +90,10 @@ class Sphere(colList: List<ColAttribute>) {
                         }
                     }
                 }
-                valueList.add(value)
+                values.add(value)
             }
             break
         }
-        return valueList
+        return values
     }
 }

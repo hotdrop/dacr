@@ -7,11 +7,9 @@ import java.io.File
 /**
  * Create and Output CSV File
  */
-class CsvFile(sphere: Sphere, outPath: String, lineNumber: Int) {
-
-    private val dataSphere = sphere
-    private val outputPath = outPath
-    private val outLineNum = lineNumber
+class CsvFile(private val sphere: Sphere,
+              private val outputPath: String,
+              private val lineNumber: Int) {
 
     private fun BufferedWriter.writeLine(line : String) {
         this.write(line)
@@ -20,8 +18,8 @@ class CsvFile(sphere: Sphere, outPath: String, lineNumber: Int) {
 
     fun output() {
         File(outputPath).bufferedWriter().use { out ->
-            for (i in 1..outLineNum) {
-                out.writeLine(dataSphere.create().joinToString(","))
+            for (i in 1..lineNumber) {
+                out.writeLine(sphere.create().joinToString(","))
             }
         }
     }

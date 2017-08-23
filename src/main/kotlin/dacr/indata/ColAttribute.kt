@@ -5,7 +5,6 @@ package dacr.indata
  * Store one column attribute data
  */
 data class ColAttribute(
-
         val name: String = "",
         val primaryKey: Boolean = false,
         val dataType: String = "",
