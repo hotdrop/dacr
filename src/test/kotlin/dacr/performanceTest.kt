@@ -12,142 +12,157 @@ import kotlin.system.measureTimeMillis
 
 class performanceTest {
 
-    private val benchMarkLoopCnt = 10
-    private val testListSize = 10
+    // parameter for performance test
+    private val createRecordCount = 1000
+    private val createColumnNum = 100
+    private val loopCntForAverage = 10
 
     @Test
     fun charTest() {
-        val fixingList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            fixingList.add(ColAttribute(dataType = "char", size = 20, valueType = "fixing", value = "12345678901234567890"))
+        // make test data
+        val fixingColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            fixingColumns.add(ColAttribute(dataType = "char", size = 20, valueType = "fixing", value = "12345678901234567890"))
         }
 
-        val varList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            varList.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = ""))
+        val varColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            varColumns.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = ""))
         }
 
-        val varFillList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            varFillList.add(ColAttribute(dataType = "char", size = 200, fillMaxSize = true, valueType = "variable", value = ""))
+        val varFillColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            varFillColumns.add(ColAttribute(dataType = "char", size = 200, fillMaxSize = true, valueType = "variable", value = ""))
         }
 
-        val varEncloseMarkList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            varEncloseMarkList.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = "", encloseChar = ColAttribute.ENCLOSE_CHAR_DOUBLE_QUOTATION))
+        val varEncloseMarkColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            varEncloseMarkColumns.add(ColAttribute(dataType = "char", size = 200, valueType = "variable", value = "", encloseChar = ColAttribute.ENCLOSE_CHAR_DOUBLE_QUOTATION))
         }
+
+        // execute test
 
         // These Test TimeValues on Mac Book Pro Retina
-        //  OS: OS X El Capitan
+        //  OS: OS X
         //  CPU: Intel Core i5 2.7GHx
         //  Memory: 8GB 1867 MHz DDR3
-        val fixingTimeAvg = benchMark(fixingList)
-        println("CharTest fixing   time:" + fixingTimeAvg)
-        Assert.assertTrue(fixingTimeAvg < 100)
+        val purposeFixingTime = 100
+        val purposeVariableTime = 2000
+        val purposeEncloseTime = 2000
+        val purposeFillMaxTime = 4000
 
-        val variableTimeAvg = benchMark(varList)
-        println("CharTest variable time:" + variableTimeAvg)
-        Assert.assertTrue(fixingTimeAvg < 1500)
+        println("Start Char performance test.")
+        println("  Benchmark data: char columns = $createColumnNum. create records = $createRecordCount.")
 
-        val charEncloseTimeAvg = benchMark(varEncloseMarkList)
-        println("CharTest enclose  time:" + charEncloseTimeAvg)
-        Assert.assertTrue(fixingTimeAvg < 1500)
-
-        val fillMaxTimeAvg = benchMark(varFillList)
-        println("CharTest fillMax  time:" + fillMaxTimeAvg)
-        Assert.assertTrue(fixingTimeAvg < 4000)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(fixingColumns) }.average(), purposeFixingTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(varColumns) }.average(), purposeVariableTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(varEncloseMarkColumns) }.average(), purposeEncloseTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(varFillColumns) }.average(), purposeFillMaxTime)
     }
 
     @Test
     fun dateTimeTest() {
-        val fixingList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            fixingList.add(ColAttribute(dataType = "dateTime", valueType = "fixing", value = "2016/09/30 12:50:25"))
+        // make test data
+        val fixingColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            fixingColumns.add(ColAttribute(dataType = "dateTime", valueType = "fixing", value = "2016/09/30 12:50:25"))
         }
 
-        val nowList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            nowList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
+        val nowColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            nowColumns.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
 
-        val varList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            varList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = ""))
+        val varColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            varColumns.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = ""))
         }
 
-        val fixingTimeAvg = benchMark(fixingList)
-        println("DateTest fixing   time:" + fixingTimeAvg)
+        // execute test
+        val purposeFixingTime = 100
+        val purposeNowTime = 200
+        val purposeVariableTime = 200
 
-        val nowTimeAvg = benchMark(nowList)
-        println("DateTest now      time:" + nowTimeAvg)
+        println("Start Date performance test.")
+        println("  Benchmark data: date columns = $createColumnNum. create records = $createRecordCount.")
 
-        val variableTimeAvg = benchMark(varList)
-        println("DateTest variable time:" + variableTimeAvg)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(fixingColumns) }.average(), purposeFixingTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(nowColumns) }.average(), purposeNowTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(varColumns) }.average(), purposeVariableTime)
     }
 
     @Test
     fun dateFormatPatternTest() {
-        val yyyySlashList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            yyyySlashList.add(ColAttribute(dataType = "dateTime", format="YYYY/MM/dd HH:mm:ss", valueType = "variable", value = "now"))
+        // make test data
+        val yyyySlashColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            yyyySlashColumns.add(ColAttribute(dataType = "dateTime", format="YYYY/MM/dd HH:mm:ss", valueType = "variable", value = "now"))
         }
-        val yyyyISOLocalList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            yyyyISOLocalList.add(ColAttribute(dataType = "dateTime", format="YYYY-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
+        val yyyyISOLocalColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            yyyyISOLocalColumns.add(ColAttribute(dataType = "dateTime", format="YYYY-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
-        val correctList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            correctList.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
+        val correctColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            correctColumns.add(ColAttribute(dataType = "dateTime", format="uuuu-MM-dd HH:mm:ss", valueType = "variable", value = "now"))
         }
 
-        val yyyyTimeAvg = benchMark(yyyySlashList)
-        println("DateFormatTest yyyy/MM/dd time:" + yyyyTimeAvg)
-        val isoLocalTimeAvg = benchMark(yyyyISOLocalList)
-        println("DateFormatTest YYYY-MM-dd time:" + isoLocalTimeAvg)
-        val correctTImeAvg = benchMark(correctList)
-        println("DateFormatTest uuuu-MM-dd time:" + correctTImeAvg)
+        // execute test
+        val purposeSlashTime = 100
+        val purposeIsoLocalTime = 100
+        val purposeCorrectTime = 100
 
-        val indication = correctTImeAvg + 500 //ms
-        Assert.assertTrue(yyyyTimeAvg < indication)
-        Assert.assertTrue(isoLocalTimeAvg < indication)
+        println("Start DateFormat performance test.")
+        println("  Benchmark data: DateFormat columns = $createColumnNum. create records = $createRecordCount.")
+
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(yyyySlashColumns) }.average(), purposeSlashTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(yyyyISOLocalColumns) }.average(), purposeIsoLocalTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(correctColumns) }.average(), purposeCorrectTime)
     }
 
     @Test
     fun timestampTest() {
-        val fixingList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            fixingList.add(ColAttribute(dataType = "Timestamp", valueType = "fixing", value = "2016/09/30 12:50:25.382124"))
+        // make test data
+        val fixingColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            fixingColumns.add(ColAttribute(dataType = "Timestamp", valueType = "fixing", value = "2016/09/30 12:50:25.382124"))
         }
 
-        val nowList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            nowList.add(ColAttribute(dataType = "Timestamp", format="yyyy/MM/dd hh:mm:ss.SSSSSS", valueType = "variable", value = "now"))
+        val nowColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            nowColumns.add(ColAttribute(dataType = "Timestamp", format="yyyy/MM/dd hh:mm:ss.SSSSSS", valueType = "variable", value = "now"))
         }
 
-        val varList = mutableListOf<ColAttribute>()
-        for(i in 1..testListSize) {
-            varList.add(ColAttribute(dataType = "Timestamp", format="yyyy-MM-dd HH:mm:ss.SSSSSS", valueType = "variable", value = ""))
+        val varColumns = mutableListOf<ColAttribute>()
+        for(i in 1..createColumnNum) {
+            varColumns.add(ColAttribute(dataType = "Timestamp", format="yyyy-MM-dd HH:mm:ss.SSSSSS", valueType = "variable", value = ""))
         }
 
-        val fixingTimeAvg = benchMark(fixingList)
-        println("TimestampTest fixing   time:" + fixingTimeAvg)
+        // execute test
+        val purposeFixingTime = 100
+        val purposeNowTime = 200
+        val purposeVariableTime = 200
 
-        val nowTimeAvg = benchMark(nowList)
-        println("TimestampTest now      time:" + nowTimeAvg)
+        println("Start Timestamp performance test.")
+        println("  Benchmark data: Timestamp columns = $createColumnNum. create records = $createRecordCount.")
 
-        val variableTimeAvg = benchMark(varList)
-        println("TimestampTest variable time:" + variableTimeAvg)
-
-        Assert.assertTrue(true)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(fixingColumns) }.average(), purposeFixingTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(nowColumns) }.average(), purposeNowTime)
+        printResultAndAssert((1..loopCntForAverage).map { benchMark(varColumns) }.average(), purposeVariableTime)
     }
 
     private fun benchMark(list: List<ColAttribute>): Long {
         val dataSphere = Sphere(list)
         return measureTimeMillis {
-            for(i in 1..benchMarkLoopCnt) {
+            for(i in 1..createRecordCount) {
                 dataSphere.create()
             }
         }
+    }
+
+    private fun printResultAndAssert(avg: Double, purposeTime: Int) {
+        println("   Average of $loopCntForAverage times: $avg ms")
+        assert(avg < purposeTime) { "   Performance shortage! target $purposeTime ms under." }
     }
 
     // This performance Test is very load.
