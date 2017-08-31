@@ -13,8 +13,8 @@ import kotlin.system.measureTimeMillis
 class performanceTest {
 
     // parameter for performance test
-    private val createRecordCount = 1000
-    private val createColumnNum = 100
+    private val createRecordCount = 100
+    private val createColumnNum = 10
     private val loopCntForAverage = 10
 
     @Test
@@ -43,9 +43,6 @@ class performanceTest {
         // execute test
 
         // These Test TimeValues on Mac Book Pro Retina
-        //  OS: OS X
-        //  CPU: Intel Core i5 2.7GHx
-        //  Memory: 8GB 1867 MHz DDR3
         val purposeFixingTime = 100
         val purposeVariableTime = 2000
         val purposeEncloseTime = 2000
